@@ -1,0 +1,1559 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#06040A">
+<meta name="description" content="Entrenamiento diario para porteros sin entrenador de porteros.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Portero Diario">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Portero Diario</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Manrope:wght@400;500;600;700;800&family=Saira+Extra+Condensed:wght@600;700;800&display=swap">
+<style>
+/* Layout: app de una columna (máx. 560 px) sobre negro. Cabecera con degradado negro → morado, tarjetas de superficie
+   violeta oscura, dorado solo para lo conseguido. Barra de pestañas fija abajo. Tema único oscuro, a petición. */
+:root{
+  color-scheme:dark;
+  --black:#06040A; --bg:#0B0712; --bg-2:#110A1C; --surface:#170F26; --surface-2:#211634; --line:#2E2246; --line-2:#45335F;
+  --purple:#6A2FC2; --purple-hi:#8E55EA; --purple-deep:#3B176F; --lav:#CBB6F4; --text:#F3EEFA; --muted:#AA9DC3; --faint:#7D7097;
+  --gold:#D9B65E; --gold-soft:#33290F;
+  --ok:#5BD098; --ok-soft:#12301F; --warn:#F2B451; --warn-soft:#382A0F; --bad:#F27D70; --bad-soft:#381614;
+  --fig:#EEE7F8; --fig-far:#7A6B97; --ball:#F6F2FB; --ball-line:#0B0712; --tennis:#D7E34B; --tennis-line:#8E9622; --band:#F08A5D; --wall:#1D1430; --wall-2:#281C3F;
+  --t-fuerza:#EC8A70; --t-tecnica:#A274FF; --t-reaccion:#62C6EA; --t-activacion:#5BD098; --t-recuperacion:#8A9AC2; --t-base:#CBB6F4; --t-equipo:#F2A15E; --t-partido:#D9B65E; --t-descanso:#5A4C75;
+  --f-display:"Saira Extra Condensed","Arial Narrow","Roboto Condensed",Impact,sans-serif;
+  --f-body:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{background:var(--black)}
+body{color:var(--text);font-family:var(--f-body);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+a{color:var(--lav)}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:6px}
+h1,h2,h3,h4{margin:0;text-wrap:balance}
+p{margin:0}
+.shell{max-width:560px;margin:0 auto;min-height:100vh;background:var(--bg);position:relative;padding-bottom:calc(88px + env(safe-area-inset-bottom,0px))}
+.pad{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.disp{font-family:var(--f-display);text-transform:uppercase;letter-spacing:.01em;line-height:.95}
+.eyebrow{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+
+/* Barra superior */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:15;background:rgba(6,4,10,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top-in{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-block:10px}
+.mark{font-family:var(--f-display);font-weight:800;font-size:22px;letter-spacing:.04em;text-transform:uppercase;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.top .mono{white-space:nowrap}
+.mark i{display:inline-block;width:18px;height:18px;border-radius:5px;background:linear-gradient(160deg,#000 10%,var(--purple) 90%);border:1px solid var(--gold)}
+.top .mono{font-size:12px;color:var(--muted)}
+
+/* Cabecera */
+.hero{position:relative;overflow:hidden;background:linear-gradient(180deg,var(--black) 0%,#150A26 52%,var(--purple-deep) 100%)}
+.hero::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.55;
+  background-image:radial-gradient(ellipse 13px 9px at 50% 100%,rgba(217,182,94,.07) 46%,transparent 49%);background-size:22px 15px}
+.hero .pad{position:relative;padding-block:22px 22px;display:grid;gap:14px}
+.hello{font-size:15px;color:var(--lav)}
+.hero h1{font-size:clamp(40px,11vw,58px);font-weight:800}
+.phase{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.pill{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:999px;border:1px solid rgba(203,182,244,.35);color:var(--lav)}
+.pill.gold{border-color:var(--gold);color:var(--gold)}
+
+/* Tarjetas */
+.sec{padding-block:18px 4px;display:grid;gap:12px}
+.sec-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.sec-h h2{font-family:var(--f-display);font-weight:800;font-size:28px;text-transform:uppercase}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px;display:grid;gap:12px}
+.today{background:linear-gradient(160deg,rgba(142,85,234,.22),rgba(23,15,38,.9) 55%);border:1px solid var(--line-2);border-radius:20px;padding:18px;display:grid;gap:14px}
+.ttype{display:flex;align-items:center;gap:10px}
+.dot{width:12px;height:12px;border-radius:50%;flex:none;background:var(--c,var(--lav))}
+.today h3{font-family:var(--f-display);font-size:34px;font-weight:800;text-transform:uppercase;line-height:.95}
+.today .sub{color:var(--muted);font-size:15px}
+.facts{display:flex;flex-wrap:wrap;gap:8px}
+.fact{font-size:13px;background:rgba(6,4,10,.45);border:1px solid var(--line);border-radius:10px;padding:5px 9px;display:flex;gap:6px;align-items:center}
+.fact b{font-family:var(--f-mono);font-weight:700}
+.intens{display:inline-flex;gap:3px}
+.intens i{width:6px;height:12px;border-radius:2px;background:var(--line-2)}
+.intens i.on{background:var(--gold)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:0 20px;border-radius:14px;border:0;cursor:pointer;font-weight:800;font-size:16px;text-decoration:none;
+  background:linear-gradient(135deg,var(--purple-hi),var(--purple));color:#fff;box-shadow:0 8px 24px rgba(106,47,194,.35)}
+.btn:disabled{opacity:.4;cursor:not-allowed;box-shadow:none}
+.btn.ghost{background:transparent;border:1px solid var(--line-2);box-shadow:none;color:var(--text);font-weight:700}
+.btn.gold{background:linear-gradient(135deg,#E8CB7A,var(--gold));color:#1A1206;box-shadow:0 8px 24px rgba(217,182,94,.25)}
+.btn.small{min-height:40px;font-size:14px;padding:0 14px;border-radius:12px}
+.btn.full{width:100%}
+.btn.danger{background:var(--bad-soft);color:var(--bad);border:1px solid var(--bad);box-shadow:none}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.ctrl{display:grid;gap:6px}
+.ctrl > span{font-size:12px;color:var(--muted);font-family:var(--f-mono);letter-spacing:.06em;text-transform:uppercase}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:1px solid var(--line-2);background:transparent;border-radius:999px;padding:7px 12px;font-size:13.5px;font-weight:600;cursor:pointer;color:var(--muted);white-space:nowrap}
+.chip.on{background:rgba(142,85,234,.22);border-color:var(--purple-hi);color:var(--text)}
+.done-badge{display:flex;align-items:center;gap:10px;background:var(--gold-soft);border:1px solid var(--gold);border-radius:14px;padding:12px 14px;color:var(--gold);font-weight:700}
+
+/* Semana */
+.week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
+.wd{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:8px 2px 7px;display:grid;justify-items:center;gap:4px;cursor:pointer;min-width:0}
+.wd .l{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+.wd .n{font-family:var(--f-display);font-size:20px;font-weight:700;line-height:1}
+.wd .dot{width:9px;height:9px}
+.wd.today-d{border-color:var(--purple-hi);background:var(--surface-2)}
+.wd.done{border-color:var(--gold)}
+.wd.done .n{color:var(--gold)}
+.wd .s{font-size:9.5px;color:var(--faint);letter-spacing:.02em;text-transform:uppercase;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:2px}
+.stat b{font-family:var(--f-display);font-size:32px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.stat span{font-size:12px;color:var(--muted);line-height:1.3}
+.tip{border-left:0;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px;display:grid;gap:8px}
+.tip p{font-size:15.5px}
+.tip .src{font-family:var(--f-mono);font-size:11.5px;color:var(--faint)}
+.note{font-size:14px;color:var(--warn);background:var(--warn-soft);border-radius:12px;padding:10px 12px}
+.note.info{color:var(--lav);background:rgba(142,85,234,.12)}
+
+/* Sesión */
+.back{background:none;border:0;color:var(--lav);font-weight:700;cursor:pointer;padding:12px 0;font-size:15px}
+.block{display:grid;gap:8px}
+.block-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding-top:8px}
+.block-h h3{font-family:var(--f-display);font-size:22px;font-weight:800;text-transform:uppercase;letter-spacing:.02em}
+.block-h span{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.item{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px 14px;display:grid;gap:10px}
+.item.ok{border-color:var(--gold)}
+.item-top{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:start;cursor:pointer;background:none;border:0;padding:0;text-align:left;width:100%}
+.item-top h4{font-size:16.5px;font-weight:700;line-height:1.3}
+.item-top .dose{font-family:var(--f-mono);font-size:13px;color:var(--lav);margin-top:3px;display:block}
+.item-top .more{font-size:12.5px;color:var(--muted);border:1px solid var(--line-2);border-radius:999px;padding:3px 9px;white-space:nowrap}
+.tags{display:flex;flex-wrap:wrap;gap:5px}
+.tag{font-size:11.5px;padding:2px 8px;border-radius:999px;background:var(--surface-2);color:var(--muted);font-weight:600}
+.tag.pair{background:rgba(242,161,94,.14);color:var(--t-equipo)}
+.tag.cat{background:rgba(142,85,234,.16);color:var(--lav)}
+.sets{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.set{width:38px;height:38px;border-radius:50%;border:2px solid var(--line-2);background:transparent;color:var(--muted);font-family:var(--f-mono);font-weight:700;font-size:13px;cursor:pointer}
+.set[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:#1A1206}
+.tbtn{border:0;border-radius:999px;background:var(--purple);color:#fff;font-family:var(--f-mono);font-weight:700;font-size:13.5px;padding:0 14px;min-height:38px;cursor:pointer;font-variant-numeric:tabular-nums}
+.tbtn.run{background:var(--text);color:var(--bg)}
+.tbtn.rest{background:var(--surface-2);color:var(--lav);border:1px solid var(--line-2)}
+.sticky-act{position:sticky;bottom:calc(76px + env(safe-area-inset-bottom,0px));z-index:5;padding-block:10px;background:linear-gradient(180deg,transparent,var(--bg) 35%)}
+
+/* Hoja de detalle y superposiciones */
+.over{position:fixed;inset:0;z-index:40;display:flex;align-items:flex-end;justify-content:center;background:rgba(3,2,6,.72)}
+.sheet{width:100%;max-width:560px;max-height:90vh;overflow:auto;background:var(--bg-2);border:1px solid var(--line-2);border-bottom:0;border-radius:22px 22px 0 0;
+  padding-top:8px;padding-bottom:calc(20px + env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:14px}
+.grab{width:42px;height:5px;border-radius:3px;background:var(--line-2);justify-self:center}
+.sheet h2{font-family:var(--f-display);font-size:32px;font-weight:800;text-transform:uppercase;line-height:.98}
+.sheet h3{font-size:13px;font-family:var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.sheet ol,.sheet ul{margin:0;padding-left:20px;display:grid;gap:6px;font-size:15px}
+.sheet ul li::marker{color:var(--purple-hi)}
+.anim{background:var(--surface);border:1px solid var(--line);border-radius:16px;display:flex;justify-content:center;padding:6px}
+.anim svg{width:100%;max-width:320px;height:auto;max-height:240px;display:block}
+.yt{display:inline-flex;align-items:center;gap:6px;font-weight:700;text-decoration:none;border:1px solid var(--line-2);border-radius:12px;padding:10px 14px;color:var(--text);justify-self:start}
+.full-over{position:fixed;inset:0;z-index:45;background:var(--bg);overflow:auto;padding-top:env(safe-area-inset-top,0px)}
+.full-in{max-width:560px;margin:0 auto;padding-block:12px calc(24px + env(safe-area-inset-bottom,0px));display:grid;gap:14px;min-height:100%}
+.g-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.g-prog{height:4px;border-radius:2px;background:var(--line);overflow:hidden}
+.g-prog i{display:block;height:100%;background:linear-gradient(90deg,var(--purple-hi),var(--gold))}
+.g-name{font-family:var(--f-display);font-size:38px;font-weight:800;text-transform:uppercase;line-height:.95}
+.g-dose{font-family:var(--f-mono);font-size:18px;color:var(--gold)}
+.g-timer{font-family:var(--f-mono);font-size:64px;font-weight:700;text-align:center;font-variant-numeric:tabular-nums;line-height:1}
+.g-nav{display:grid;grid-template-columns:1fr 1.4fr;gap:10px}
+.rpe{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.rpe button{min-height:46px;border-radius:12px;border:1px solid var(--line-2);background:var(--surface);font-family:var(--f-mono);font-weight:700;cursor:pointer}
+.rpe button.on{background:var(--purple);border-color:var(--purple-hi)}
+textarea,input[type=text],input[type=search],input[type=number]{width:100%;background:var(--surface);border:1px solid var(--line-2);border-radius:12px;color:var(--text);font:inherit;padding:12px 14px}
+textarea{min-height:80px;resize:vertical}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(96px + env(safe-area-inset-bottom,0px));z-index:60;background:var(--gold);color:#1A1206;font-weight:800;border-radius:999px;padding:10px 18px;box-shadow:0 10px 30px rgba(0,0,0,.5);max-width:calc(100% - 32px)}
+
+/* Test inicial */
+.ob{position:fixed;inset:0;z-index:50;overflow:auto;background:linear-gradient(180deg,var(--black) 0%,#12091F 55%,#24103F 100%);padding-top:env(safe-area-inset-top,0px)}
+.ob-in{max-width:560px;margin:0 auto;min-height:100%;display:grid;grid-template-rows:auto 1fr auto;padding-block:14px calc(16px + env(safe-area-inset-bottom,0px))}
+.ob-bar{display:flex;gap:3px}
+.ob-bar i{flex:1;height:4px;border-radius:2px;background:var(--line)}
+.ob-bar i.on{background:var(--purple-hi)}
+.ob-bar i.cur{background:var(--gold)}
+.ob-body{display:grid;align-content:start;gap:16px;padding-block:22px}
+.ob-body h2{font-family:var(--f-display);font-size:clamp(34px,9vw,46px);font-weight:800;text-transform:uppercase;line-height:.95}
+.ob-body .s{color:var(--muted);font-size:15.5px}
+.opts{display:grid;gap:8px}
+.opt{display:grid;grid-template-columns:minmax(0,1fr) 26px;gap:12px;align-items:center;text-align:left;border:1px solid var(--line-2);background:rgba(23,15,38,.75);border-radius:16px;padding:14px 16px;cursor:pointer;min-height:56px}
+.opt b{font-size:16.5px;font-weight:700;display:block}
+.opt small{display:block;color:var(--muted);font-size:13.5px;margin-top:2px}
+.opt .ck{width:26px;height:26px;border-radius:50%;border:2px solid var(--line-2);display:grid;place-items:center;font-size:14px;color:#1A1206}
+.opt.multi .ck{border-radius:8px}
+.opt.on{border-color:var(--purple-hi);background:rgba(142,85,234,.2)}
+.opt.on .ck{background:var(--gold);border-color:var(--gold)}
+.opt.on .ck::after{content:"✓";font-weight:800}
+.days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.dayb{aspect-ratio:1/1.15;border-radius:14px;border:1px solid var(--line-2);background:rgba(23,15,38,.75);display:grid;place-items:center;cursor:pointer;font-family:var(--f-display);font-size:24px;font-weight:800;padding:0}
+.dayb small{display:block;font-family:var(--f-body);font-size:10px;font-weight:600;color:var(--muted);text-transform:none}
+.dayb.on{background:var(--purple);border-color:var(--purple-hi)}
+.dayb.on small{color:var(--lav)}
+.ob-act{display:grid;grid-template-columns:auto 1fr;gap:10px;padding-top:8px}
+.intro-list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.intro-list li{display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:start;font-size:15px;color:var(--lav)}
+.intro-list li b{font-family:var(--f-display);font-size:28px;color:var(--gold);line-height:1}
+.gen{display:grid;gap:10px;list-style:none;margin:0;padding:0}
+.gen li{display:flex;gap:10px;align-items:center;color:var(--muted);font-size:15px;opacity:.35;transition:opacity .4s}
+.gen li.on{opacity:1;color:var(--text)}
+.gen li.on::before{content:"✓";color:var(--gold);font-weight:800}
+.gen li::before{content:"·";width:14px;display:inline-block}
+.plan-list{display:grid;gap:6px}
+.pl{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:10px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.pl .d{font-family:var(--f-display);font-size:20px;font-weight:800;color:var(--muted)}
+.pl b{font-size:15px}
+.pl small{display:block;color:var(--muted);font-size:12.5px}
+.pl .m{font-family:var(--f-mono);font-size:12px;color:var(--lav)}
+
+/* Plan */
+.phases{display:flex;gap:3px}
+.phases i{flex:1;height:26px;border-radius:5px;display:grid;place-items:center;font-family:var(--f-mono);font-size:10px;font-style:normal;color:rgba(255,255,255,.75)}
+.ph-base{background:#3B2465}.ph-des{background:#5A2FA0}.ph-esp{background:#7B46D6}.ph-desc{background:#2A2238}.ph-man{background:#2A2238}
+.phases i.cur{outline:2px solid var(--gold);outline-offset:1px;color:#fff}
+.legend{display:flex;flex-wrap:wrap;gap:10px;font-size:12.5px;color:var(--muted)}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.wnav{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.wnav button{width:44px;height:44px;border-radius:12px;border:1px solid var(--line-2);background:var(--surface);cursor:pointer;font-size:18px}
+.wnav b{font-family:var(--f-display);font-size:24px;font-weight:800;text-transform:uppercase}
+.why{display:grid;gap:8px}
+.why div{display:grid;grid-template-columns:12px 1fr;gap:10px;align-items:start;font-size:14.5px}
+.why div .dot{margin-top:5px}
+
+/* Biblioteca */
+.lib-list{display:grid;gap:8px}
+.lib{display:grid;gap:6px;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;cursor:pointer;width:100%}
+.lib b{font-size:15.5px}
+.count{font-size:13px;color:var(--muted)}
+
+/* Progreso */
+.chart svg{width:100%;height:auto;display:block}
+.chart text{font-family:var(--f-mono);font-size:10px;fill:var(--muted)}
+.tests{display:grid;gap:10px}
+.test{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;display:grid;gap:10px}
+.test-h{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.test-h b{font-size:16px}
+.test-v{display:flex;gap:14px;font-size:13px;color:var(--muted)}
+.test-v strong{font-family:var(--f-mono);color:var(--text);font-size:16px}
+.test-v .best strong{color:var(--gold)}
+.test-in{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}
+.spark{height:28px}
+.hist{display:grid;gap:6px}
+.hrow{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;font-size:14px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.hrow .mono{font-size:12px;color:var(--muted)}
+
+/* Perfil */
+.kv{display:grid;gap:0}
+.kv div{display:grid;grid-template-columns:120px minmax(0,1fr);gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14.5px}
+.kv div:last-child{border-bottom:0}
+.kv span{color:var(--muted)}
+.ev{display:grid;gap:10px}
+.ev article{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:4px}
+.ev h4{font-size:15.5px}
+.ev p{font-size:14.5px;color:var(--muted)}
+.srcs{margin:0;padding-left:18px;display:grid;gap:6px;font-size:14px;color:var(--muted)}
+details.acc{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+details.acc summary{cursor:pointer;font-weight:700}
+details.acc[open] summary{margin-bottom:10px}
+
+/* Barra inferior */
+.tabs{position:fixed;bottom:0;left:0;right:0;z-index:20;display:flex;justify-content:center;pointer-events:none}
+.tabs-in{pointer-events:auto;width:100%;max-width:560px;background:rgba(11,7,18,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--line);
+  display:grid;grid-template-columns:repeat(5,minmax(0,1fr));padding-bottom:env(safe-area-inset-bottom,0px);padding-left:max(4px,env(safe-area-inset-left,0px));padding-right:max(4px,env(safe-area-inset-right,0px))}
+.tab{background:none;border:0;cursor:pointer;display:grid;justify-items:center;gap:3px;padding:9px 2px 10px;color:var(--faint);font-size:11px;font-weight:700}
+.tab svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tab.on{color:var(--text)}
+.tab.on svg{stroke:var(--gold)}
+
+/* Figura animada */
+.fig line{stroke:var(--fig);stroke-width:4.4;stroke-linecap:round;fill:none}
+.fig .far line{stroke:var(--fig-far)}
+.fig .head{fill:var(--fig)}
+.fig .glove{fill:var(--gold)}
+.fig .far .glove{opacity:.6}
+.fig .bc{fill:var(--ball);stroke:var(--ball-line);stroke-width:1.6}
+.fig .bp{fill:var(--ball-line)}
+.fig .tbl{fill:var(--tennis);stroke:var(--tennis-line);stroke-width:.8}
+.fig .band{stroke:var(--band);stroke-width:2.6;fill:none}
+.fig .db line{stroke:var(--muted);stroke-width:3}
+.fig .db circle{fill:var(--muted)}
+.fig .floor{stroke:var(--line-2);stroke-width:2}
+.fig .wall{fill:var(--wall)}
+.fig .wall2{fill:var(--wall-2)}
+.fig .edge{stroke:var(--line-2);stroke-width:1.3;fill:none}
+.fig .lbl{font-family:var(--f-display);font-weight:800;font-size:16px;fill:var(--gold);letter-spacing:.04em}
+@media (prefers-reduced-motion: reduce){.gen li{transition:none}}
+</style>
+<style>
+html,body{margin:0}
+:root{padding-top:env(safe-area-inset-top,0px)}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="over"></div>
+
+<script id="core">
+var CORE=(function(){
+'use strict';
+var DAYS=['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
+var DSH=['L','M','X','J','V','S','D'];
+function pad(n){return (n<10?'0':'')+n;}
+function keyOf(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
+function parseKey(k){var a=k.split('-');return new Date(+a[0],+a[1]-1,+a[2]);}
+function dayIdx(d){return (d.getDay()+6)%7;}
+function addDays(k,n){var d=parseKey(k);d.setDate(d.getDate()+n);return keyOf(d);}
+function mondayKey(k){var d=parseKey(k);d.setDate(d.getDate()-dayIdx(d));return keyOf(d);}
+function daysBetween(a,b){return Math.round((parseKey(b)-parseKey(a))/864e5);}
+function weekIndex(P,k){return Math.floor(daysBetween(P.start,k)/7);}
+function hash(str){var h=2166136261>>>0;for(var i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}return h>>>0;}
+function rng(seed){var a=seed>>>0;return function(){a=(a+0x6D2B79F5)>>>0;var t=a;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return ((t^(t>>>14))>>>0)/4294967296;};}
+
+var LOCS={campo:'Campo con portería',parque:'Parque o césped',gimnasio:'Gimnasio',pared:'Pared o frontón',casa:'Casa o sala'};
+var LOCSH={campo:'Campo',parque:'Parque',gimnasio:'Gimnasio',pared:'Pared',casa:'Casa'};
+var GEAR={balon:'Un balón',balones:'Varios balones',tenis:'Pelotas de tenis',conos:'Conos o marcas',banda:'Banda elástica',pesas:'Mancuernas o kettlebell',escalera:'Escalera de agilidad',vallas:'Vallas pequeñas',medicinal:'Balón medicinal',rebounder:'Red de rebote',esterilla:'Esterilla'};
+var GOALS={manos:{n:'Blocaje y manos',cat:'man'},caidas:{n:'Estiradas y caídas',cat:'cai'},aereo:{n:'Juego aéreo y centros',cat:'aer'},uno:{n:'1 contra 1',cat:'uno'},pies:{n:'Juego de pies y saques',cat:'dis'},reflejos:{n:'Reflejos y reacción',cat:'rea'},potencia:{n:'Potencia y salto',cat:'pot'},cabeza:{n:'Confianza y cabeza',cat:'men'}};
+var INJ={hombro:'Hombro',muneca:'Muñeca o dedos',espalda:'Espalda',cadera:'Cadera o ingle',rodilla:'Rodilla',tobillo:'Tobillo'};
+var LEVELS=['Empezando','Amateur o regional','Semiprofesional','Alto nivel'];
+var CATS={cal:'Calentamiento',mov:'Movilidad y recuperación',man:'Blocaje y manos',cai:'Caídas y estiradas',aer:'Juego aéreo',uno:'1 contra 1',pie:'Desplazamientos',rea:'Reacción',dis:'Juego de pies y saques',pot:'Potencia',fue:'Fuerza',pre:'Prevención',men:'Cabeza',pp:'Día de partido'};
+var TYPES={
+  fuerza:{n:'Fuerza y potencia',s:'Piernas, tronco y saltos de calidad',int:3,why:'Lejos del partido hay margen para cargar. Fuerza de piernas y tronco y saltos de calidad: el motor de la estirada.'},
+  tecnica:{n:'Técnica intensa',s:'Caídas, juego aéreo y 1 contra 1',int:3,why:'El día de más volumen técnico: caídas, salidas y duelos, con tiempo para recuperar antes del partido.'},
+  reaccion:{n:'Reacción y pies',s:'Pies rápidos, reflejos y saques',int:2,why:'A dos días del partido: volumen moderado y mucha velocidad de pies y de ojos.'},
+  activacion:{n:'Activación',s:'Corta y explosiva, sin cansarte',int:1,why:'El día antes del partido la carga es la más baja de la semana. Sesión corta que deja chispa.'},
+  recuperacion:{n:'Recuperación',s:'Movilidad, automasaje y manos suaves',int:1,why:'El día después de jugar toca soltar el cuerpo. Si no jugaste, márcalo y se convierte en técnica intensa.'},
+  base:{n:'Técnica base y prevención',s:'Manos, pies, saques y prevención',int:2,why:'Fundamentos: repeticiones limpias de lo que más usas y los ejercicios que evitan lesiones.'},
+  equipo:{n:'Complemento al entreno',s:'Activación de portero y prevención',int:1,why:'Hoy entrenas con tu equipo. Llega activado como portero y suma la prevención que el equipo no suele hacer.'},
+  partido:{n:'Día de partido',s:'Calentamiento progresivo de portero',int:0,why:'Calentamiento de portero de menos a más y la cabeza preparada.'},
+  descanso:{n:'Descanso',s:'Opcional: 10 minutos de movilidad',int:0,why:'Descansar también es entrenar: aquí se asimila el trabajo de la semana.'}
+};
+var PREF={fuerza:['gimnasio','parque','casa','campo','pared'],tecnica:['campo','parque','pared','gimnasio','casa'],reaccion:['pared','campo','parque','casa','gimnasio'],activacion:['campo','pared','parque','casa','gimnasio'],recuperacion:['casa','parque','gimnasio','campo','pared'],base:['campo','pared','parque','casa','gimnasio'],equipo:['campo','parque','casa','gimnasio','pared'],descanso:['casa','parque','gimnasio','campo','pared'],partido:['campo','parque','pared','casa','gimnasio']};
+var ROT={1:['tecnica'],2:['fuerza','tecnica'],3:['fuerza','tecnica','reaccion'],4:['fuerza','tecnica','reaccion','base'],5:['fuerza','tecnica','reaccion','recuperacion','base'],6:['fuerza','tecnica','reaccion','recuperacion','fuerza','tecnica'],7:['fuerza','tecnica','reaccion','recuperacion','base','tecnica','descanso']};
+
+function D(s,r,u,rest,sec){return {s:s,r:r,u:u||'',rest:rest||0,sec:sec||0};}
+function X(id,cat,n,o){o.id=id;o.cat=cat;o.n=n;o.loc=o.loc||'any';o.need=o.need||[];o.mode=o.mode||'ambos';o.lvl=o.lvl||0;o.int=o.int||2;o.avoid=o.avoid||[];o.t=o.t||4;o.cues=o.cues||[];o.err=o.err||[];return o;}
+
+var EX=[
+/* Calentamiento */
+X('cal-mov','cal','Movilidad articular de portero',{int:1,t:4,d:D([1,1,1,1],null,'',0,240),anim:'march',
+  how:['De abajo arriba: tobillos, rodillas, cadera, columna, hombros, muñecas y dedos.','De 8 a 10 repeticiones de cada movimiento, ampliando el recorrido poco a poco.'],
+  cues:['Cadera y hombros con calma: son las articulaciones que más castigas en las caídas.','Termina abriendo y cerrando las manos con fuerza.'],err:['Saltarte muñecas y dedos.'],yt:'calentamiento movilidad articular portero'}),
+X('cal-banda','cal','Activación con banda',{need:['banda'],int:1,t:4,d:D([1,2,2,2],'10','de cada'),anim:'bandwalk',
+  how:['Pasos laterales con la banda sobre las rodillas, puente de glúteo, aperturas y rotación externa de hombros.','10 repeticiones de cada uno, sin pausa entre ejercicios.'],
+  cues:['Banda siempre tensa.','Glúteo y hombro despiertos: son los motores de la estirada.'],err:['Hacerlo deprisa con la banda floja.'],yt:'activación banda elástica glúteo hombro'}),
+X('cal-balon','cal','Manejo de balón',{need:['balon'],int:1,t:3,d:D([1,1,1,1],null,'',0,150),
+  how:['Pasa el balón alrededor de la cintura, de las rodillas y de la cabeza, en los dos sentidos.','Bótalo fuerte contra el suelo y atrápalo en W; lánzalo al aire y blócalo arriba.'],
+  cues:['Dedos abiertos y blandos: el balón no debe sonar al entrar.'],err:['Atrapar con las palmas rígidas.'],yt:'ejercicios manejo de balón portero calentamiento'}),
+X('cal-desp','cal','Desplazamientos de portero',{loc:['campo','parque','gimnasio','pared'],int:1,t:3,d:D([1,1,1,1],null,'',0,180),anim:'march',
+  how:['Ida y vuelta de 8 a 10 m: laterales, de frente, hacia atrás, cruces y skipping bajo.','Termina cada pasada con un set: un pequeño rebote en posición de base.'],
+  cues:['Pasos cortos y rápidos; en los laterales, sin juntar los pies.'],err:['Correr apoyando los talones.'],yt:'desplazamientos portero calentamiento'}),
+X('cal-pared','cal','Activación de manos contra la pared',{need:['balon','rebote'],int:1,t:4,d:D([1,1,1,1],'20','blocajes'),anim:'catchW',
+  how:['A 3 m de la pared: 5 blocajes rasos, 5 medios, 5 altos y 5 alternando lados.','Empieza suave y sube la fuerza del lanzamiento en cada tanda.'],
+  cues:['Balón siempre al pecho después de cada blocaje.'],err:['Empezar lanzando fuerte con las manos frías.'],pair:'Tu compañero te sirve con la mano a 5 m y después de volea.',yt:'calentamiento portero blocajes contra la pared'}),
+X('cal-tenis','cal','Botes con pelota de tenis',{need:['tenis'],int:1,t:3,d:D([1,1,1,1],null,'',0,120),
+  how:['Bota la pelota contra el suelo y atrápala con una mano; alterna manos.','Lánzala alto, deja que bote una vez y atrápala lo más bajo posible.'],
+  cues:['Mano blanda y ojos en la pelota hasta que entre.'],err:['Atraparla pegada al cuerpo.'],yt:'pelota de tenis coordinación portero'}),
+X('cal-fifa','cal','Calentamiento de prevención',{loc:['campo','parque','gimnasio'],int:2,t:8,d:D([1,1,1,1],null,'',0,480),
+  how:['2 minutos de carrera suave con apertura y cierre de cadera, carioca y cambios de ritmo.','Plancha frontal y lateral, puente, sentadilla a una pierna y saltos suaves: 30 s de cada uno.'],
+  cues:['Rodilla alineada con el pie en cada apoyo.'],err:['Recortarlo cuando vas justo de tiempo: es lo que más lesiones evita.'],yt:'FIFA 11+ calentamiento completo'}),
+
+/* Movilidad y recuperación */
+X('mov-masaje','mov','Automasaje con pelota de tenis',{need:['tenis'],int:1,t:4,d:D([4,4,4,4],null,'por zona',0,60),anim:'calf',
+  how:['Gemelo, planta del pie, glúteo y lateral del muslo: un minuto en cada zona.','Rueda despacio y, si encuentras un punto cargado, quédate 10 s encima respirando.'],
+  cues:['Presión cómoda, alrededor de 5 sobre 10.'],err:['Apretar hasta que duela mucho.','Rodar sobre huesos o detrás de la rodilla.'],yt:'automasaje pelota de tenis gemelo glúteo planta del pie'}),
+X('mov-cadera','mov','90-90 de cadera',{int:1,t:3,d:D([2,2,2,2],'6','por lado'),
+  how:['Sentado en el suelo con las dos rodillas dobladas a 90°, una delante y otra al lado.','Gira las rodillas al otro lado sin ayudarte con las manos si puedes, y vuelve.'],
+  cues:['Espalda alta y movimiento lento.'],err:['Forzar la rodilla si notas pinchazo.'],yt:'90 90 movilidad cadera'}),
+X('mov-tobillo','mov','Rodilla a la pared',{int:1,t:2,d:D([2,2,2,2],'10','por pierna'),anim:'kneewall',
+  how:['Pie a un palmo de una pared, un poste o un banco, talón en el suelo.','Lleva la rodilla a tocar la pared sin levantar el talón.'],
+  cues:['Un tobillo que se mueve bien te deja bajar más en la posición de base.'],err:['Levantar el talón o meter la rodilla hacia dentro.'],yt:'knee to wall movilidad tobillo'}),
+X('mov-zancada','mov','Zancada con rotación',{int:1,t:3,d:D([1,2,2,2],'5','por lado'),anim:'lungerot',
+  how:['Zancada larga con las dos manos en el suelo por dentro del pie adelantado.','Gira el pecho, lleva un brazo al techo y sigue la mano con la mirada.'],
+  cues:['Lento: es movilidad, no fuerza.'],err:['Dejar caer la rodilla de atrás contra el suelo.'],yt:'zancada con rotación movilidad'}),
+X('mov-hombro','mov','Movilidad de hombros y espalda alta',{int:1,t:3,d:D([2,2,2,2],'8','de cada'),
+  how:['Libro abierto: tumbado de lado con las rodillas dobladas, abre el brazo de arriba hasta el otro lado.','Ángeles en la pared: espalda y brazos pegados, sube y baja los brazos sin despegarlos.'],
+  cues:['Respira al abrir.'],err:['Arquear la zona lumbar para llegar más lejos.'],yt:'movilidad torácica libro abierto ángeles en la pared'}),
+X('mov-piernas','mov','Piernas en la pared y respiración',{int:1,t:3,d:D([1,1,1,1],null,'',0,180),anim:'legsup',
+  how:['Boca arriba con los glúteos cerca de la pared y las piernas apoyadas en ella.','Inspira 4 s por la nariz hinchando el abdomen y suelta el aire en 6 s.'],
+  cues:['Sigue el ritmo de la animación.'],err:['Contener el aire.'],yt:'piernas en la pared respiración diafragmática'}),
+X('mov-suave','mov','Paseo o bici suave',{int:1,t:10,d:D([1,1,1,1],null,'',0,600),
+  how:['10 minutos a ritmo de conversación: caminar, bici o elíptica.'],cues:['Deberías poder hablar sin esfuerzo.'],err:['Convertirlo en un entreno de carrera.'],yt:'recuperación activa futbolistas'}),
+X('mov-balanceo','mov','Balanceos de pierna',{int:1,t:2,d:D([1,2,2,2],'10','por pierna y dirección'),anim:'legswing',
+  how:['Apoyado en la pared: balanceos de delante atrás y de lado a lado.','Empieza con poco recorrido y amplía poco a poco.'],cues:['Tronco quieto.'],err:['Dar tirones.'],yt:'balanceos de pierna movilidad dinámica'}),
+
+/* Blocaje y manos */
+X('man-w','man','Blocaje alto en W',{need:['balon','rebote'],t:4,d:D([2,3,3,4],[6,8,10,10],'',45),anim:'catchW',
+  how:['A 3–4 m de la pared, lanza de pecho para que el rebote vuelva a la altura de la cara.','Pulgares casi juntos por detrás del balón y dedos abiertos: las manos forman una W.','Atrapa delante de los ojos con los codos flexionados y lleva el balón al pecho.'],
+  cues:['Mira el balón hasta que entre en las manos.','Las manos van al balón; no esperes a que llegue.'],err:['Brazos estirados y rígidos: el balón rebota.','Pulgares separados: el balón se cuela.'],
+  pair:'Tu compañero te lanza de volea a la cara desde 6–8 m.',yt:'blocaje portero mano en W ejercicio'}),
+X('man-cesta','man','Blocaje medio en cesta',{need:['balon','rebote'],t:4,d:D([2,3,3,3],[6,8,10,10],'',45),anim:'catchC',
+  how:['Lanza más bajo para que el rebote llegue entre el pecho y la cintura.','Meñiques juntos, palmas arriba y antebrazos por delante.','Deja que el balón llegue al estómago, inclina el tronco sobre él y ciérralo.'],
+  cues:['Hombros por delante del balón.'],err:['Echar el tronco hacia atrás.'],pair:'Tu compañero te golpea de volea al estómago desde 8 m.',yt:'blocaje portero balón medio cesta técnica'}),
+X('man-pala','man','Blocaje raso en pala',{need:['balon','rebote'],t:4,d:D([2,2,3,3],[5,6,8,8],'por pie',45),anim:'scoop',
+  how:['Golpea el balón raso contra la pared con el interior del pie.','Ponte detrás de la línea del balón con las piernas juntas, que hagan de barrera.','Manos en pala: meñiques juntos, dedos al suelo; recoge y lleva al pecho.'],
+  cues:['Cabeza y pecho sobre el balón.'],err:['Agacharte con las piernas abiertas.'],pair:'Tu compañero te pasa rasos fuertes desde 10 m.',yt:'blocaje raso portero recogida técnica'}),
+X('man-lateral','man','Blocaje con desplazamiento lateral',{need:['balon','rebote'],t:5,d:D([2,2,3,3],[4,5,6,6],'por lado',45),anim:'lateral',
+  how:['Lanza a la pared con ángulo para que el rebote salga hacia un lado.','Pasos laterales cortos sin cruzar las piernas; llega antes que el balón.','Bloca en W o en cesta con el cuerpo detrás de la trayectoria.'],
+  cues:['Set justo antes de recibir.'],err:['Llegar estirando solo los brazos.'],pair:'Tu compañero lanza alternando lados y tú te desplazas de poste a poste.',yt:'blocaje portero desplazamiento lateral ejercicio'}),
+X('man-serie','man','Serie de partido: elige la técnica',{need:['balon','rebote'],t:4,d:D([1,2,2,3],'10','balones',60),anim:'mix',
+  how:['Cambia la altura y la fuerza de cada lanzamiento sin pensarlo mucho.','Lee la altura y elige: W, cesta o pala.','Tras cada blocaje, saca rodado con la mano hacia un punto, como si arrancaras un contraataque.'],
+  cues:['Elige la técnica antes de que llegue el balón.'],err:['Usar la misma técnica para cualquier altura.'],pair:'Tu compañero varía alturas sin avisar.',yt:'ejercicios blocaje portero solo pared'}),
+X('man-sombra','man','Blocajes en sombra',{int:1,t:2,d:D([2,2,3,3],null,'',20,30),anim:'shadow',
+  how:['Sin balón: posición de base y pequeño set.','Ensaya W arriba, cesta en el estómago y pala abajo, rápido y limpio.'],
+  cues:['Peso en la parte delantera del pie.'],err:['Talones apoyados y manos bajas.'],yt:'posición de base portero técnica'}),
+X('man-bote','man','Bote fuerte y blocaje',{need:['balon'],t:4,d:D([2,3,3,3],'8','',30),
+  how:['Lanza el balón con fuerza contra el suelo delante de ti y bloca el rebote arriba o en cesta.','Alterna con lanzamientos altos y blocaje en el punto más alto.'],
+  cues:['Ataca el balón, no lo esperes.'],err:['Atraparlo pegado al cuerpo.'],yt:'ejercicios portero solo con balón blocaje'}),
+X('man-desvio','man','Desvío con la palma',{need:['balon','rebote'],lvl:1,t:4,d:D([2,2,3,3],'6','por lado',45),
+  how:['Lanza fuerte con ángulo para que el rebote pase lejos de tu cuerpo.','Desvía con la palma abierta hacia fuera, como a córner; si es alto, con la mano de arriba.'],
+  cues:['Muñeca firme y mano abierta.'],err:['Desviar hacia el centro, donde llega el rematador.'],pair:'Tu compañero tira a dos palmos fuera de tu alcance de blocaje.',yt:'desvío portero mano abierta técnica'}),
+X('man-volea','man','Voleas del compañero a todas las alturas',{need:['balon'],mode:'pareja',int:2,t:5,d:D([2,3,3,4],'10','balones',60),anim:'mix',
+  how:['Tu compañero, a 8–12 m, golpea de volea con la mano a distintas alturas.','Tú, en posición de base: W, cesta o pala según la altura; devuelves con saque de mano.'],
+  cues:['Set en cada golpeo.'],err:['Moverte mientras golpea.'],yt:'ejercicios portero con compañero voleas blocaje'}),
+X('man-cerca','man','Tiros cercanos de reacción',{need:['balon'],mode:'pareja',lvl:1,int:3,t:4,d:D([2,2,3,3],'8','',60),
+  how:['Tu compañero, a 6 m, golpea de volea fuerte al cuerpo.','Bloca si puedes; si no, rechaza fuera y hacia los lados.'],
+  cues:['Manos por delante y blandas.'],err:['Girar la cara.'],yt:'portero reflejos tiros cercanos ejercicio'}),
+
+/* Caídas y estiradas */
+X('cai-sentado','cai','Caída desde sentado',{need:['balon','blando'],int:1,t:3,d:D([2,2,2,2],'5','por lado',30),
+  how:['Sentado con las piernas delante y el balón quieto a un brazo de distancia, a un lado.','Rueda sobre el costado y atrápalo: mano de arriba encima, la de abajo detrás.'],
+  cues:['Caes sobre el costado y el hombro, nunca sobre el codo.','Las dos manos van al balón a la vez.'],err:['Apoyar el codo para frenar.'],pair:'Tu compañero te rueda el balón a un lado y luego te lo lanza.',yt:'caída portero desde sentado progresión'}),
+X('cai-rodillas','cai','Caída desde rodillas',{need:['balon','blando'],int:2,t:4,d:D([2,3,3,3],'5','por lado',30),
+  how:['De rodillas, con el cuerpo alto y el balón quieto a un lado.','Cae de costado hacia el balón llevando las manos juntas; termina con el balón contra el suelo.'],
+  cues:['El balón al suelo funciona como tercer apoyo.'],err:['Caer de frente sobre el pecho.'],pair:'Tu compañero te lo lanza a media altura a un lado.',yt:'caída portero desde rodillas técnica'}),
+X('cai-cuclillas','cai','Caída desde cuclillas',{need:['balon','cesped'],int:2,t:4,d:D([2,3,3,3],'5','por lado',30),
+  how:['En cuclillas, con el balón quieto a un metro, a un lado.','Pequeño paso lateral y caída de costado sobre el balón.'],
+  cues:['Cabeza detrás del balón.'],err:['Saltar hacia arriba en lugar de hacia el lado.'],yt:'caída lateral portero cuclillas progresión'}),
+X('cai-base','cai','Caída lateral desde posición de base',{need:['balon','cesped'],lvl:1,int:3,t:5,d:D([2,3,3,4],'4','por lado',45),
+  how:['Balón quieto a 1,5–2 m a un lado. Posición de base y set.','Paso corto con el pie del lado del balón, empuje y caída de costado.','Mano de abajo detrás del balón y la de arriba encima.'],
+  cues:['Cuerpo y cabeza detrás del balón, no por delante.','Termina con la cabeza y las manos más adelante que al empezar.'],err:['Cruzar las piernas antes de caer.'],pair:'Tu compañero te tira rasos y a media altura a 2 m de ti.',yt:'caída lateral portero técnica posición de base'}),
+X('cai-poste','cai','Estirada a balón quieto junto al poste',{need:['balon','cesped','porteria'],lvl:1,int:3,t:5,d:D([2,3,3,4],'3','por lado',60),
+  how:['Coloca un balón o una marca a un metro de cada poste.','Desde el centro, en base: set, paso y estirada para tocar o blocar; levántate y repite al otro lado.'],
+  cues:['Impulso con la pierna del lado al que vas.'],err:['Dar pasos de más antes de estirarte.'],yt:'estirada portero ejercicio solo portería'}),
+X('cai-rebote','cai','Estirada a rebote propio',{need:['balon','cesped','rebote'],lvl:2,int:3,t:5,d:D([2,3,3,4],'4','por lado',60),
+  how:['Lanza fuerte en diagonal contra la pared o la red de rebote.','El rebote sale hacia un lado: estírate y bloca o desvía.'],
+  cues:['Decide pronto: blocar o desviar.'],err:['Lanzar tan fuerte que no llegas a colocarte.'],yt:'portero rebounder estiradas solo'}),
+X('cai-levanta','cai','Caída y segunda acción',{need:['balon','cesped'],lvl:1,int:3,t:4,d:D([2,3,3,3],'3','pares',60),
+  how:['Un balón quieto a cada lado, a 1,5 m.','Caída a uno, levántate en un solo movimiento y caída al otro.'],
+  cues:['Levántate sin apoyar las rodillas si puedes.'],err:['Quedarte sentado mirando.'],yt:'portero caída y recuperación segunda acción'}),
+X('cai-alta','cai','Estiradas altas con servicio',{need:['balon','cesped'],mode:'pareja',lvl:2,int:3,t:5,d:D([2,3,3,4],'4','por lado',60),
+  how:['Tu compañero lanza con la mano a la escuadra imaginaria, a dos metros de tu cuerpo.','Paso, impulso con la pierna del lado del balón y blocaje o desvío alto.'],
+  cues:['Brazo de arriba guía la estirada.'],err:['Arquear la espalda en el aire.'],yt:'estirada alta portero técnica'}),
+X('cai-pareja','cai','Estiradas con tiro del compañero',{need:['balon','cesped'],mode:'pareja',lvl:1,int:3,t:6,d:D([2,3,3,4],'5','por lado',60),
+  how:['Tu compañero tira rasos y a media altura desde 10–12 m, alternando lados.','Set en cada golpeo, caída y balón al pecho.'],
+  cues:['Mira el pie de golpeo.'],err:['Adivinar el lado antes del golpeo.'],yt:'ejercicios estiradas portero con compañero'}),
+
+/* Juego aéreo */
+X('aer-batida','aer','Batida a una pierna con rodilla arriba',{loc:['campo','parque','gimnasio','pared'],avoid:['rodilla','tobillo'],t:3,d:D([2,3,3,3],'5','por pierna',45),
+  how:['Dos pasos de carrera y batida con la pierna del lado del balón.','Rodilla libre arriba, brazos arriba; aterriza estable sobre las dos piernas.'],
+  cues:['La rodilla arriba te da altura y protección.'],err:['Saltar con los dos pies.'],yt:'portero batida una pierna rodilla centros'}),
+X('aer-auto','aer','Autolanzamiento alto y blocaje arriba',{need:['balon'],loc:['campo','parque'],avoid:['rodilla','tobillo'],t:4,d:D([2,3,3,4],'6','',45),
+  how:['Lanza el balón alto y algo por delante.','Ataca con 2–3 pasos, batida a una pierna y blocaje en el punto más alto; grita «¡mía!».','Balón al pecho al caer.'],
+  cues:['Pulgares juntos, dedos abiertos y firmes.'],err:['Esperar a que el balón baje.'],yt:'portero blocaje balón alto salto técnica'}),
+X('aer-punos','aer','Despeje de puños',{need:['balon'],loc:['campo','parque'],lvl:1,avoid:['muneca'],t:4,d:D([2,2,3,3],'6','',45),
+  how:['Autolanzamiento alto, batida y golpeo con los dos puños juntos.','Despeja hacia arriba y lejos, hacia la banda.'],
+  cues:['Si no puedes asegurar el balón, mejor dos puños que uno.'],err:['Golpear con los nudillos abiertos.'],yt:'despeje de puños portero técnica'}),
+X('aer-pared','aer','Blocaje alto con salto contra la pared',{need:['balon','pared'],lvl:1,avoid:['rodilla','tobillo'],t:4,d:D([2,3,3,3],'6','',45),
+  how:['Lanza por encima de tu cabeza a la parte alta de la pared.','Salto corto y blocaje en el punto más alto.'],cues:['Brazos extendidos, no rígidos.'],err:['Saltar tarde.'],yt:'portero ejercicio pared balón alto'}),
+X('aer-centros','aer','Centros del compañero',{need:['balon','porteria'],mode:'pareja',lvl:1,int:3,t:6,d:D([2,3,3,4],'6','por banda',60),
+  how:['Desde el centro de la portería, tu compañero centra desde un costado.','Decide si sales o te quedas, avisa con la voz y bloca o despeja.'],
+  cues:['Paso hacia la trayectoria nada más salir el centro.','«¡Mía!» si sales, «¡fuera!» si no.'],err:['Quedarte clavado en la línea.'],yt:'portero salidas centros técnica'}),
+X('aer-atras','aer','Retroceso y balón por encima',{loc:['campo','parque'],lvl:1,t:3,d:D([2,3,3,3],'4','por lado',45),
+  how:['De frente al juego, paso cruzado hacia atrás.','Salta y toca un larguero imaginario con la mano de atrás.'],cues:['Nunca corras de espaldas.'],err:['Retroceder de espaldas al balón.'],yt:'portero retroceso balón por encima técnica'}),
+
+/* 1 contra 1 */
+X('uno-formas','uno','Formas de bloqueo en sombra',{int:1,t:3,d:D([2,3,3,3],'5','de cada',30),
+  how:['K o barrera: rodilla de atrás al suelo y la pierna del lado grande abierta para tapar.','Estrella: de pie, abres brazos y piernas y aguantas quieto.','Bloqueo bajo: manos a los lados del cuerpo, pegadas al suelo.'],
+  cues:['Pierna del lado del pie de tiro del rival abierta, rodilla doblada.'],err:['Tirarte antes de que dispare.'],yt:'portero 1 contra 1 bloqueo técnica K estrella'}),
+X('uno-achique','uno','Achique y frenada',{loc:['campo','parque'],int:3,t:4,d:D([3,4,4,5],'1','salida de 5–8 m',45),
+  how:['Salida rápida de 5–8 m hacia una marca.','Frena con pasos cortos y quédate en set bajo antes del disparo imaginario.'],
+  cues:['Frena antes del disparo, no llegues corriendo.'],err:['Llegar de pie y abierto.'],yt:'portero achique 1 contra 1 ejercicio'}),
+X('uno-pies','uno','Ir a los pies sobre balón quieto',{need:['balon','cesped'],lvl:1,int:3,t:4,d:D([2,3,3,3],'4','',45),
+  how:['Balón quieto a 3 m, como si fuera el pie del rival.','Sal y lánzate de lado con manos y tronco por delante hasta cubrir el balón.'],
+  cues:['Si el rival está a menos de un cuerpo, a sus pies; si está algo más lejos y va a tirar, bloquea.'],err:['Ir de cabeza.'],yt:'portero ir a los pies 1 contra 1 técnica'}),
+X('uno-real','uno','1 contra 1 real',{need:['balon'],mode:'pareja',lvl:1,int:3,t:6,d:D([2,3,3,4],'5','duelos',90),
+  how:['Tu compañero arranca con balón desde 15–20 m.','Achica y decide: pies o bloqueo. Cuenta cuántos salvas.'],
+  cues:['Llevarlo hacia fuera ya es ganar el duelo.'],err:['Vender el cuerpo demasiado pronto.'],yt:'portero 1 contra 1 ejercicio'}),
+
+/* Desplazamientos */
+X('pie-escalera','pie','Escalera de agilidad',{need:['escalera'],avoid:['tobillo'],t:4,d:D([3,4,4,5],'2','pasadas',45),
+  how:['Lateral dentro-fuera, dos apoyos dentro, cruces.','Al salir, set y blocaje en sombra.'],cues:['Contactos cortos con la parte delantera del pie.'],err:['Mirar al suelo todo el rato.'],yt:'escalera agilidad portero ejercicios'}),
+X('pie-conos','pie','Triángulo de conos y set',{need:['conos'],t:4,d:D([3,3,4,4],null,'',30,20),
+  how:['Tres conos a 3 m entre sí. Desplázate a uno, set y blocaje en sombra.','Vuelve al centro y elige otro cono al azar.'],cues:['Siempre de cara al juego.'],err:['Cruzar las piernas en los laterales.'],yt:'portero desplazamientos conos set'}),
+X('pie-poste','pie','Poste a poste',{need:['porteria'],t:3,d:D([3,3,4,4],'3','idas y vueltas',45),
+  how:['Desplazamiento lateral de poste a poste.','Haz tres sets en el camino.'],cues:['Pasos cortos, nunca juntes los pies.'],err:['Correr de frente.'],yt:'portero poste a poste desplazamiento'}),
+X('pie-coloca','pie','Colocación con conos',{need:['conos|porteria'],loc:['campo','parque'],int:1,t:3,d:D([2,2,3,3],'1','vuelta',30),
+  how:['Pon 5 conos en semicírculo a unos 16 m de la portería (o de dos conos que hagan de postes).','Imagina el balón en cada cono y colócate en la línea entre el balón y el centro de la portería.'],
+  cues:['Un paso adelante si el balón está centrado; más cerca del poste si está escorado.'],err:['Quedarte siempre en el centro de la portería.'],yt:'colocación portero bisectriz ángulo'}),
+X('pie-vallas','pie','Vallas y set',{need:['vallas'],lvl:1,avoid:['rodilla','tobillo'],t:4,d:D([3,3,4,4],'2','pasadas',45),
+  how:['Saltos laterales o de frente sobre vallas bajas.','Al terminar, set y blocaje en sombra.'],cues:['Contactos cortos.'],err:['Aterrizar con las rodillas hacia dentro.'],yt:'vallas portero agilidad'}),
+X('pie-lateral','pie','Desplazamientos laterales con set',{t:3,d:D([3,4,4,5],null,'',30,20),
+  how:['Tres pasos laterales a un lado, set, tres al otro.','Lo más rápido posible sin cruzar las piernas.'],cues:['Cadera baja, cabeza quieta.'],err:['Subir y bajar en cada paso.'],yt:'desplazamiento lateral portero'}),
+
+/* Reacción */
+X('rea-t1','rea','Pelota de tenis: una mano contra la pared',{need:['tenis','pared'],t:3,d:D([2,2,3,3],null,'por mano',30,30),anim:'tennis1',
+  how:['A 1,5–2 m de la pared, en posición de base.','Lanza y atrapa con la misma mano; luego cambia.'],cues:['Atrapa delante del cuerpo con la mano blanda.'],err:['Atraparla pegada al cuerpo.'],yt:'portero pelota de tenis pared una mano'}),
+X('rea-tx','rea','Pelota de tenis: mano cruzada',{need:['tenis','pared'],t:3,d:D([2,2,3,3],null,'',30,30),anim:'tennisx',
+  how:['Lanza con una mano y atrapa con la otra, alternando.'],cues:['Pies vivos para colocarte detrás de la pelota.'],err:['Girar todo el cuerpo.'],yt:'coordinación óculo manual portero pelota de tenis'}),
+X('rea-t2','rea','Dos pelotas a la vez',{need:['tenis','pared'],t:3,d:D([2,3,3,3],null,'',30,30),anim:'tennis2',
+  how:['Una pelota en cada mano: lanza las dos a la vez contra la pared y atrápalas.'],cues:['Abre la vista para ver las dos.'],err:['Fijar la mirada en una sola.'],yt:'dos pelotas de tenis pared coordinación'}),
+X('rea-esq','rea','Esquina impredecible',{need:['tenis','pared'],t:3,d:D([2,3,3,4],null,'',30,30),anim:'corner',
+  how:['Lanza a la esquina entre dos paredes: el rebote cambia cada vez.','Reacciona con un paso corto y atrapa con una mano.'],cues:['Lee el rebote, no lances fuerte.'],err:['Tirarte al suelo.'],yt:'reaction ball portero ejercicio'}),
+X('rea-giro','rea','De espaldas, giro y atrapa',{need:['tenis','pared'],lvl:1,t:3,d:D([2,3,3,3],'8','',30),
+  how:['De espaldas a 1,5 m de la pared.','Lanza la pelota por encima de tu hombro contra la pared, gira y atrápala tras un bote.'],cues:['Gira la cabeza primero.'],err:['Girar tarde y perder el bote.'],yt:'ejercicio reacción giro pelota de tenis portero'}),
+X('rea-suelo','rea','Desde el suelo, arriba y bloca',{need:['balon','rebote'],lvl:1,int:3,t:4,d:D([2,3,3,3],'5','',45),
+  how:['Boca abajo frente a la pared, a 3 m.','Lanza el balón contra la pared, levántate rápido y bloca el rebote.'],cues:['Levántate ya en posición de base.'],err:['Levantarte por etapas.'],yt:'portero levantarse rápido reacción ejercicio'}),
+X('rea-drop','rea','Suelta y atrapa',{need:['tenis'],t:2,d:D([2,2,3,3],'10','por mano',20),
+  how:['Brazo estirado a la altura del hombro con la pelota en la mano.','Suéltala y atrápala con la misma mano antes de que toque el suelo; luego con la otra.'],cues:['Mano rápida y relajada.'],err:['Bajar el cuerpo en lugar de la mano.'],yt:'drop ball reaction drill'}),
+X('rea-vista','rea','Entrenamiento visual',{int:1,t:2,d:D([1,2,2,2],null,'',20,60),
+  how:['Alterna el foco entre un objeto cercano y otro lejano durante 30 s.','Sigue con los ojos un objeto en movimiento sin mover la cabeza durante 30 s.'],cues:['Cambios de foco rápidos y nítidos.'],err:['Mover la cabeza en lugar de los ojos.'],yt:'entrenamiento visual deportistas ejercicios'}),
+X('rea-pareja','rea','Pelotas de tenis del compañero',{need:['tenis'],mode:'pareja',t:3,d:D([2,3,3,3],null,'',30,30),
+  how:['Tu compañero, a 3–4 m, lanza pelotas de tenis a los dos lados, a veces dos seguidas.','Atrapa con una mano y devuelve.'],cues:['Set antes de cada lanzamiento.'],err:['Atrapar con las dos manos.'],yt:'portero pelotas de tenis compañero reacción'}),
+
+/* Juego de pies y saques */
+X('dis-pared','dis','Pase y control contra la pared',{need:['balon','pared'],t:4,d:D([2,3,3,3],null,'',30,60),
+  how:['Pase con el interior a la pared, control orientado con un pie y pase con el otro.','Cambia de pierna cada minuto.'],cues:['Primer toque fuera de los pies.'],err:['Controlar debajo del cuerpo.'],yt:'portero juego de pies pared ejercicio'}),
+X('dis-mira','dis','Mirar antes de recibir',{need:['balon','pared'],lvl:1,t:3,d:D([2,2,3,3],null,'',30,60),
+  how:['Antes de cada recepción, mira por encima del hombro.','Primer toque hacia fuera y pase en dos toques.'],cues:['Mira dos veces: antes y justo al llegar el balón.'],err:['Mirar solo el balón.'],yt:'portero juego de pies orientación'}),
+X('dis-zona','dis','Golpeo largo a una zona',{need:['balon'],loc:['campo','parque'],t:6,d:D([1,2,2,2],'10','golpeos por pierna',0),
+  how:['Marca una zona de 10 × 10 m a unos 35–40 m.','10 saques largos con cada pierna; apunta los aciertos.'],cues:['Pie de apoyo apuntando al objetivo.','Echarte hacia atrás hace que el balón flote.'],err:['Buscar distancia antes que precisión.'],yt:'saque de puerta portero técnica precisión'}),
+X('dis-mano','dis','Saque con la mano a un objetivo',{need:['balon'],loc:['campo','parque'],t:4,d:D([2,2,3,3],'6','de cada',0),
+  how:['Saque rodado a un cono a 15 m.','Saque por encima del hombro a 25–30 m.'],cues:['Pierna contraria al brazo adelantada.'],err:['Echar la cabeza atrás al lanzar.'],yt:'saque con la mano portero técnica'}),
+X('dis-volea','dis','Saque de volea y semivolea',{need:['balon'],loc:['campo','parque'],t:4,d:D([2,2,3,3],'6','de cada',0),
+  how:['Volea y semivolea hacia una zona o un compañero lejano.','Precisión antes que distancia.'],cues:['Suelta el balón, no lo lances hacia arriba.'],err:['Golpear con la puntera.'],yt:'saque de volea semivolea portero técnica'}),
+X('dis-presion','dis','Pases bajo presión con compañero',{need:['balon'],mode:'pareja',lvl:1,t:5,d:D([2,3,3,3],null,'',60,90),
+  how:['Tu compañero te pasa y presiona.','Control orientado lejos de él y pase a una de dos porterías pequeñas.'],cues:['Decide antes de recibir.'],err:['Conducir hacia el presionador.'],yt:'portero pases bajo presión ejercicio'}),
+
+/* Potencia */
+X('pot-skater','pot','Saltos laterales a una pierna',{avoid:['rodilla','tobillo'],int:3,t:4,d:D([2,3,3,4],'5','por lado',60),
+  how:['Salto lateral de una pierna a la otra, como un patinador.','Aguanta un segundo en cada aterrizaje.'],cues:['El trabajo a una pierna y lateral es el que más se parece a tus acciones.'],err:['Aterrizar con la rodilla hacia dentro.'],yt:'skater jumps técnica'}),
+X('pot-cmj','pot','Salto vertical',{avoid:['rodilla','tobillo'],int:3,t:3,d:D([2,3,3,4],'4','',60),
+  how:['Bajada rápida y salto máximo con brazos.','Aterriza suave y descansa: cada salto al máximo.'],cues:['Calidad: si saltas menos, para.'],err:['Encadenar saltos cansado.'],yt:'salto con contramovimiento técnica'}),
+X('pot-imp','pot','Impulso de estirada sin caída',{avoid:['rodilla','tobillo'],int:3,t:4,d:D([2,3,3,4],'4','por lado',60),
+  how:['Desde posición de base, paso corto e impulso lateral explosivo.','Aterriza en la otra pierna y aguanta 2 s.'],cues:['El empuje lateral es lo que más alarga tu estirada.'],err:['Saltar hacia arriba en lugar de hacia el lado.'],yt:'portero potencia lateral impulso estirada'}),
+X('pot-cajon','pot','Salto al cajón',{need:['cajon'],lvl:1,avoid:['rodilla','tobillo'],int:3,t:4,d:D([3,3,4,4],'3','',90),
+  how:['Salto al cajón con brazos y aterrizaje suave arriba.','Baja andando, no saltando.'],cues:['Cajón que puedas subir con margen.'],err:['Cajón tan alto que aterrizas en sentadilla profunda.'],yt:'salto al cajón técnica'}),
+X('pot-med','pot','Lanzamiento de balón medicinal por encima de la cabeza',{need:['medicinal'],avoid:['hombro','espalda'],int:3,t:4,d:D([2,3,3,4],'5','',60),
+  how:['Balón por encima de la cabeza, lanzamiento explosivo contra el suelo o la pared.','Recoge y repite con calma.'],cues:['El tronco tira de los brazos.'],err:['Arquear la zona lumbar.'],yt:'lanzamiento balón medicinal por encima de la cabeza'}),
+X('pot-medrot','pot','Lanzamiento rotacional de balón medicinal',{need:['medicinal','pared'],avoid:['espalda'],int:3,t:4,d:D([2,3,3,3],'5','por lado',60),
+  how:['De lado a la pared, gira la cadera y lanza el balón con fuerza.','Recoge el rebote y repite.'],cues:['El giro nace de la cadera.'],err:['Lanzar solo con los brazos.'],yt:'lanzamiento rotacional balón medicinal pared'}),
+X('pot-swing','pot','Swing con kettlebell o mancuerna',{need:['pesas'],lvl:1,avoid:['espalda'],int:3,t:4,d:D([2,3,3,4],'10','',60),
+  how:['Bisagra de cadera y golpe de cadera explosivo para subir la pesa a la altura del pecho.'],cues:['Espalda neutra; la fuerza sale del glúteo.'],err:['Levantar la pesa con los brazos.'],yt:'kettlebell swing técnica'}),
+X('pot-rapida','pot','Sentadilla rápida con mancuernas ligeras',{need:['pesas'],avoid:['rodilla'],int:3,t:4,d:D([2,3,3,4],'3','',90),anim:'speedsquat',
+  how:['Peso ligero. Baja controlando en 2 s.','Sube lo más rápido posible hasta ponerte de puntillas.'],cues:['Si la última sale más lenta, para.'],err:['Usar demasiado peso.'],yt:'sentadilla explosiva mancuernas'}),
+X('pot-pase','pot','Pase de pecho explosivo a la pared',{need:['balon','pared'],int:2,t:3,d:D([2,2,3,3],'5','',30),anim:'chestpass',
+  how:['A 2–3 m de la pared, balón al pecho y pies escalonados.','Empuja explosivo extendiendo todo el cuerpo y recibe el rebote.'],cues:['Velocidad, no cansancio.'],err:['Encadenar pases sin pausa.'],yt:'pase de pecho explosivo pared'}),
+
+/* Fuerza */
+X('fue-goblet','fue','Sentadilla goblet',{need:['pesas'],avoid:['rodilla'],int:3,t:6,d:D([2,3,3,4],[10,8,8,6],'',90),anim:'speedsquat',
+  how:['Mancuerna o kettlebell pegada al pecho.','Baja entre las piernas con el pecho alto y sube empujando el suelo.'],cues:['Rodillas en la dirección de los pies.'],err:['Despegar los talones.'],yt:'sentadilla goblet técnica'}),
+X('fue-bulgara','fue','Sentadilla búlgara',{avoid:['rodilla'],int:3,t:6,d:D([2,3,3,4],[8,8,8,6],'por pierna',90),
+  how:['Pie de atrás en un banco o una silla.','Baja hasta que la rodilla de atrás casi toque el suelo y sube; con mancuernas si tienes.'],cues:['La fuerza a una pierna es la que usas en cada impulso.'],err:['Rodilla de delante hacia dentro.'],yt:'sentadilla búlgara técnica'}),
+X('fue-rdl','fue','Peso muerto rumano a una pierna',{int:2,t:5,d:D([2,3,3,3],'8','por pierna',60),
+  how:['De pie sobre una pierna, inclina el tronco y lleva la otra pierna atrás en línea.','Vuelve apretando el glúteo; con mancuerna si tienes.'],cues:['Espalda recta, cadera cuadrada.'],err:['Girar la cadera al bajar.'],yt:'peso muerto rumano a una pierna técnica'}),
+X('fue-puente','fue','Puente de glúteo a una pierna',{int:2,t:4,d:D([2,3,3,4],'10','por pierna',60),anim:'bridge',
+  how:['Boca arriba, un pie en el suelo y la otra pierna estirada.','Sube la cadera apretando el glúteo, aguanta 2 s y baja.'],cues:['Costillas abajo.'],err:['Arquear la espalda.'],yt:'puente de glúteo a una pierna'}),
+X('fue-flex','fue','Flexiones',{avoid:['hombro','muneca'],int:2,t:4,d:D([2,3,3,4],[8,10,12,15],'',60),
+  how:['Manos a la anchura de los hombros y cuerpo recto.','Baja el pecho casi al suelo y sube.'],cues:['Codos a 45°, no abiertos.'],err:['Dejar caer la cadera.'],yt:'flexiones técnica correcta'}),
+X('fue-remoinv','fue','Remo invertido',{need:['barra|mesa'],int:2,t:4,d:D([2,3,3,4],[6,8,10,12],'',60),
+  how:['Bajo una barra baja del parque o una mesa firme, cuerpo recto.','Tira del pecho hacia la barra juntando los omóplatos.'],cues:['Cuerpo en bloque.'],err:['Tirar con el cuello.'],yt:'remo invertido técnica'}),
+X('fue-remo','fue','Remo a una mano con mancuerna',{need:['pesas'],int:2,t:4,d:D([2,3,3,4],'10','por brazo',60),
+  how:['Una mano y una rodilla en un banco, espalda plana.','Tira de la mancuerna hacia la cadera.'],cues:['Codo pegado al cuerpo.'],err:['Girar el tronco.'],yt:'remo con mancuerna a una mano técnica'}),
+X('fue-dominadas','fue','Dominadas',{need:['barra'],lvl:1,avoid:['hombro'],int:3,t:5,d:D([2,3,3,4],[3,5,6,8],'',90),
+  how:['Colgado de la barra, sube hasta pasar la barbilla.','Baja controlando.'],cues:['Hombros lejos de las orejas.'],err:['Balancearte.'],yt:'dominadas técnica principiante'}),
+X('fue-press','fue','Press de hombros con mancuernas',{need:['pesas'],avoid:['hombro'],int:2,t:4,d:D([2,3,3,3],'8','',60),
+  how:['De pie, mancuernas a la altura de los hombros.','Empuja hacia arriba sin arquear la espalda.'],cues:['Abdomen firme.'],err:['Arquear la zona lumbar.'],yt:'press de hombros mancuernas técnica'}),
+X('fue-pallof','fue','Press Pallof',{need:['banda'],int:2,t:4,d:D([2,3,3,3],'10','por lado',45),
+  how:['Banda anclada a un lado a la altura del pecho.','Empuja las manos al frente sin dejar que el tronco gire y vuelve.'],cues:['El tronco que no gira transmite la fuerza a los brazos.'],err:['Rotar la cadera.'],yt:'press pallof banda técnica'}),
+X('fue-plancha','fue','Plancha lateral',{int:2,t:3,d:D([2,3,3,3],null,'por lado',30,30),
+  how:['Sobre el antebrazo, cuerpo recto de la cabeza a los pies.'],cues:['Cadera alta.'],err:['Dejar caer la cadera.'],yt:'plancha lateral técnica'}),
+X('fue-gemelo','fue','Elevación de talones a una pierna',{int:2,t:3,d:D([2,3,3,3],'12','por pierna',45),
+  how:['Apoyado en una pared, sube de puntillas con una pierna y baja despacio.'],cues:['Recorrido completo.'],err:['Rebotar abajo.'],yt:'elevación de talones a una pierna'}),
+X('fue-sentadilla','fue','Sentadilla con barra',{need:['gym'],lvl:2,avoid:['rodilla','espalda'],int:3,t:7,d:D([3,3,4,4],[8,6,5,5],'',120),
+  how:['Barra apoyada en la espalda alta, pies a la anchura de los hombros.','Baja controlado y sube fuerte.'],cues:['Peso que puedas mover con técnica perfecta.'],err:['Despegar los talones o redondear la espalda.'],yt:'sentadilla con barra técnica'}),
+X('fue-pmuerto','fue','Peso muerto con barra',{need:['gym'],lvl:2,avoid:['espalda'],int:3,t:7,d:D([3,3,4,4],[6,5,5,4],'',120),
+  how:['Barra pegada a las espinillas, espalda neutra.','Empuja el suelo y extiende la cadera.'],cues:['Mejor con barra hexagonal si la hay.'],err:['Tirar con la espalda redonda.'],yt:'peso muerto técnica barra hexagonal'}),
+
+/* Prevención */
+X('pre-copen','pre','Aductor de Copenhague',{fix:true,int:2,t:3,d:D([1,1,1,1],[5,8,10,12],'por lado',60),
+  how:['De lado, con la pierna de arriba apoyada en un banco, una silla o en las manos de tu compañero.','Sube la cadera hasta alinear el cuerpo y baja despacio.','Niveles: 1, tumbado subiendo la pierna de abajo; 2, con la rodilla apoyada; 3, con el tobillo apoyado.'],
+  cues:['Si duele más de 3 sobre 10, baja un nivel.','Una vez por semana en temporada y dos o tres en pretemporada.'],err:['Dejar caer la cadera.'],yt:'aductor de Copenhague progresión'}),
+X('pre-nordico','pre','Nórdico de isquiotibiales',{need:['compa|ancla'],avoid:['rodilla'],int:3,t:4,d:D([1,2,2,3],[3,5,6,8],'',90),
+  how:['De rodillas con los tobillos sujetos: un compañero, un sofá o una espaldera.','Déjate caer hacia delante lo más lento posible y frena con las manos al final.'],
+  cues:['Cuerpo recto de rodillas a cabeza.'],err:['Doblar la cadera para no caer.'],yt:'nórdico isquiotibiales progresión'}),
+X('pre-hombro','pre','Hombros de portero con banda',{need:['banda'],int:1,t:3,d:D([2,2,3,3],'12','',45),anim:'extrot',
+  how:['Rotación externa con los codos pegados al costado.','Aperturas con la banda a la altura del pecho.'],cues:['Hombros protegidos para estiradas y saques.'],err:['Separar los codos.'],yt:'rotación externa hombro banda elástica'}),
+X('pre-ytw','pre','Hombros sin material: Y, T y W',{int:1,t:3,d:D([2,2,3,3],'8','de cada',45),
+  how:['Boca abajo, brazos en Y, en T y en W con los pulgares arriba.','Aguanta 2 s arriba en cada repetición.'],cues:['Omóplatos hacia atrás y abajo.'],err:['Levantar el pecho del suelo.'],yt:'ejercicios Y T W hombro'}),
+X('pre-dedos','pre','Fuerza de dedos y muñecas',{need:['tenis|balon'],int:1,t:3,d:D([2,2,3,3],'15','por mano',30),
+  how:['Aprieta una pelota de tenis con fuerza 15 veces por mano.','Círculos y flexiones de muñeca sujetando el balón con los dedos.'],cues:['Los dedos absorben cada blocaje.'],err:['Hacerlo con la muñeca dolorida.'],yt:'fuerza de dedos portero ejercicios'}),
+X('pre-equil','pre','Equilibrio a una pierna con atrapes',{need:['tenis|balon'],int:1,t:3,d:D([2,2,3,3],null,'por pierna',20,30),
+  how:['De pie sobre una pierna, lanza y atrapa la pelota o el balón.','Prueba con los ojos siguiendo la pelota y la rodilla un poco doblada.'],cues:['Tobillo estable.'],err:['Bloquear la rodilla.'],yt:'equilibrio una pierna propiocepción tobillo'}),
+X('pre-core','pre','Bicho muerto y pájaro-perro',{int:1,t:3,d:D([2,2,3,3],'8','por lado',45),
+  how:['Bicho muerto: boca arriba, estira brazo y pierna contrarios sin despegar la zona lumbar.','Pájaro-perro: a cuatro patas, estira brazo y pierna contrarios.'],cues:['Lento y con la espalda quieta.'],err:['Arquear la espalda.'],yt:'dead bug bird dog técnica'}),
+
+/* Cabeza */
+X('men-visual','men','Visualiza tres acciones',{int:1,t:2,d:D([1,1,1,1],null,'',0,120),anim:'visual',
+  how:['Ojos cerrados: un blocaje alto, uno raso y una salida.','Imagínalas bien hechas y con detalle: sonido, agarre, saque posterior.'],cues:['Termina con una frase tuya.'],err:[],yt:'visualización deportiva portero'}),
+X('men-reinicio','men','Rutina de reinicio tras un error',{int:1,t:1,d:D([1,1,1,1],null,'',0,60),
+  how:['Respira: 4 s dentro, 6 s fuera.','Un gesto (choca los guantes), una palabra (por ejemplo, «siguiente») y la vista en la próxima acción.'],cues:['Ensáyala en el entreno para que salga en el partido.'],err:[],yt:'rutina mental después de un error deportistas'}),
+X('men-video','men','Graba y revisa',{int:1,t:3,d:D([1,1,1,1],null,'',0,180),
+  how:['Apoya el móvil y graba 2–3 repeticiones de un ejercicio de hoy.','Revisa manos, pies y cabeza y apunta una corrección para mañana.'],cues:['Verte es lo más parecido a tener entrenador.'],err:[],yt:'portero analizar vídeo técnica'}),
+X('men-objetivo','men','Objetivo medible de la semana',{int:1,t:1,d:D([1,1,1,1],null,'',0,60),
+  how:['Elige un número que puedas medir, por ejemplo 10 de 10 blocajes en W sin soltar.','Apúntalo en la nota al terminar la sesión.'],cues:['Medible y tuyo.'],err:[],yt:'objetivos deportivos medibles'}),
+
+/* Día de partido */
+X('pp-mov','pp','Movilidad y activación',{int:1,t:4,d:D([1,1,1,1],null,'',0,240),anim:'march',how:['Tobillos, cadera, hombros y muñecas; activación con banda si la llevas.'],cues:['Sin prisa.'],yt:'calentamiento portero partido'}),
+X('pp-manos','pp','Blocajes suaves a corta distancia',{int:1,t:4,d:D([1,1,1,1],null,'',0,240),anim:'catchW',how:['Con quien te tire, contra una pared o contra la red.','Rasos, medios y altos, de menos a más fuerza.'],cues:['Sensación de manos, no esfuerzo.'],yt:'calentamiento portero blocajes'}),
+X('pp-desp','pp','Desplazamientos y set',{int:1,t:3,d:D([1,1,1,1],null,'',0,180),how:['Laterales, de frente y atrás, con set al final de cada uno.'],cues:['Pies rápidos.'],yt:'calentamiento portero desplazamientos'}),
+X('pp-caidas','pp','Caídas progresivas',{int:2,t:4,d:D([1,1,1,1],'2','por lado y altura',0),how:['Desde rodillas, desde cuclillas y desde de pie.','Dos por lado en cada altura, de menos a más.'],cues:['Aumenta poco a poco.'],yt:'calentamiento portero caídas progresivas'}),
+X('pp-todas','pp','Blocajes a todas las alturas',{int:2,t:4,d:D([1,1,1,1],null,'',0,240),how:['A más distancia y más fuerza: rasos, medios, altos y a los lados.'],cues:['Elige la técnica según la altura.'],yt:'calentamiento portero antes del partido'}),
+X('pp-aereo','pp','Balones altos',{int:2,t:2,d:D([1,1,1,1],'4','balones',0),how:['Tres o cuatro balones altos: batida, blocaje y voz.'],cues:['¡Mía!'],yt:'calentamiento portero centros'}),
+X('pp-tiros','pp','Tiros y saques finales',{int:2,t:3,d:D([1,1,1,1],null,'',0,180),how:['Algunos tiros de tus compañeros y unos saques largos para calibrar el pie.'],cues:['Acaba con una buena parada.'],yt:'calentamiento portero tiros'}),
+X('pp-cabeza','pp','Cabeza lista',{int:1,t:1,d:D([1,1,1,1],null,'',0,60),anim:'visual',how:['Respiración 4–6 y tu palabra clave.','Repasa una acción que vas a hacer bien.'],cues:['Preparado para el primer balón.'],yt:'rutina mental portero antes del partido'})
+];
+var EXI={};EX.forEach(function(e){EXI[e.id]=e;});
+
+var TESTS=[
+  {id:'salto',n:'Salto vertical',u:'cm',up:true,how:'De lado a la pared, marca con la mano estirada estando de pie. Salta con contramovimiento y marca lo más alto. Mide la diferencia. Mejor de 3.'},
+  {id:'tenis30',n:'Atrapes de tenis en 30 s',u:'atrapes',up:true,how:'A 2 m de la pared, alternando manos. Cuenta las atrapadas limpias en 30 segundos.'},
+  {id:'w',n:'Blocajes en W seguidos',u:'seguidos',up:true,how:'A 3 m de la pared, lanzamientos fuertes a la cara. Cuenta los seguidos sin que se te escape el balón. Máximo 30.'},
+  {id:'agil',n:'Test 5-10-5',u:'s',up:false,how:'Tres conos en línea separados 5 m. Desde el del centro: 5 m a un lado, 10 m al otro y 5 m de vuelta al centro. Cronometra con el móvil. Mejor de 2.'},
+  {id:'plancha',n:'Plancha lateral',u:'s',up:true,how:'Por tu lado más débil y con el cuerpo recto. Para el cronómetro cuando cae la cadera.'},
+  {id:'saque',n:'Precisión de saque',u:'de 10',up:true,how:'10 saques largos a una zona de unos 10 × 10 m situada a 35–40 m. Cuenta los que caen dentro.'}
+];
+
+var TIPS=[
+  {t:'Un portero de élite recorre unos 4–6 km por partido y pasa casi todo el tiempo a baja intensidad. Lo que decide son entre 2 y 10 paradas: entrena calidad, no kilómetros.',s:'White y cols., revisión de 2018'},
+  {t:'La mayoría de tus sprints en partido son de 0 a 5 metros. Trabaja salidas cortas y cambios de dirección laterales.',s:'Science for Sport'},
+  {t:'Un programa de 12 semanas de fuerza y técnica de estirada aumentó la potencia del impulso y, según sus autores, añade unos 42 cm de cobertura en un penalti.',s:'Estudio sobre la estirada del portero'},
+  {t:'El aductor de Copenhague en pretemporada y una vez por semana en temporada redujo un 41 % los problemas de ingle en equipos semiprofesionales.',s:'Harøy y cols., 2019'},
+  {t:'Los programas que incluyen el nórdico de isquiotibiales reducen hasta un 51 % las lesiones de isquios.',s:'Van Dyk y cols., 2019'},
+  {t:'El calentamiento FIFA 11+ redujo las lesiones alrededor de un 30 %.',s:'Revisión sistemática, 2017'},
+  {t:'En porteros de Primera División, la carga baja según se acerca el partido y es la más baja el día antes.',s:'Casamichana y cols., 2023'},
+  {t:'Fallar un día no rompe el hábito. En un estudio, automatizar un hábito llevó una mediana de 66 días; lo que importa es volver al día siguiente.',s:'Lally y cols., 2010'},
+  {t:'Joan Garcia combina gimnasio y prevención con entrenamiento neurovisual: seguir objetos, cambiar el foco de cerca a lejos y atrapar pelotas de tenis.',s:'Diario ARA'},
+  {t:'Ter Stegen basa su físico en explosividad y movilidad: saltos, sprints, zancadas y planchas.',s:'Freeletics'},
+  {t:'Graba 2–3 repeticiones con el móvil y revísalas. Verte es lo más parecido a tener un entrenador de porteros.',s:'Prime Focus Goalkeeping'},
+  {t:'Ponte objetivos que se puedan contar: blocar 10 de 10 en W, o bajar dos décimas en el 5-10-5.',s:'Prime Focus Goalkeeping'},
+  {t:'En los centros, bate con la pierna del lado del balón, sube la rodilla libre y bloca en el punto más alto. Si no puedes asegurarlo, despeja con los dos puños.',s:'Keepersport'},
+  {t:'En el 1 contra 1: si el delantero está a menos de un cuerpo, ve a sus pies. Si está algo más lejos y va a tirar, bloquea abriendo la pierna del lado grande.',s:'Sesión de 1 contra 1, Session Planner'},
+  {t:'En las caídas, las dos manos van al balón a la vez y caes sobre el costado y el hombro, con el cuerpo empujando hacia el balón.',s:'Progresión de caídas, Session Planner'}
+];
+
+function phaseOf(P,w){
+  var total=P.weeks||8;
+  if(w<0) return {id:'base',n:'Antes del plan',vol:1,bonus:0,w:w,total:total};
+  if(w>=total) return {id:'man',n:'Mantenimiento',vol:1,bonus:1,w:w,total:total,after:true};
+  var pos=w%4,block=Math.floor(w/4);
+  if(pos===3) return {id:'desc',n:w===total-1?'Descarga y test':'Descarga',vol:0.6,bonus:block>0?1:0,w:w,total:total};
+  var ids=total===4?['base']:(total===8?['base','des']:['base','des','esp']);
+  var id=ids[Math.min(block,ids.length-1)];
+  var names={base:total===4?'Construcción':'Base',des:'Desarrollo',esp:'Específico'};
+  var vol=[0.9,1,1.1][pos]*(id==='des'?1.1:(id==='esp'?0.95:1));
+  return {id:id,n:names[id],vol:vol,bonus:id==='base'?0:1,w:w,total:total};
+}
+var PHASE_TXT={base:'Técnica limpia y fuerza general.',des:'Más volumen, potencia y caídas de pie.',esp:'Situaciones de partido, velocidad y calidad.',desc:'Un 40 % menos de volumen para asimilar el trabajo y hacer el test.',man:'Plan terminado: mantén el ritmo o empieza un plan nuevo.'};
+
+function matchFor(P,S,w){var o=S.weekMatch&&S.weekMatch[w];if(o==='none')return null;if(o!=null&&o!=='')return +o;return P.match==null?null:+P.match;}
+function isTeam(P,d){return P.who==='club'&&(P.teamDays||[]).indexOf(d)>=0;}
+function typeFor(P,S,k){
+  var d=dayIdx(parseKey(k)),w=weekIndex(P,k),m=matchFor(P,S,w);
+  var avail=P.days.indexOf(d)>=0,team=isTeam(P,d);
+  if(m!=null&&d===m) return 'partido';
+  if(!avail&&!team) return 'descanso';
+  if(m!=null){
+    var to=(m-d+7)%7,after=(d-m+7)%7;
+    if(to===1) return 'activacion';
+    if(team) return 'equipo';
+    if(after===1){var ov=S.day&&S.day[k];return (ov&&ov.played===false)?'tecnica':'recuperacion';}
+    if(to===2) return 'reaccion';
+    if(to===3) return 'tecnica';
+    if(to===4) return 'fuerza';
+    return 'base';
+  }
+  if(team) return 'equipo';
+  var own=P.days.filter(function(x){return !isTeam(P,x);}).slice().sort();
+  var rot=ROT[Math.max(1,Math.min(own.length,7))];
+  var i=own.indexOf(d);
+  return rot[i]||'base';
+}
+function defaultLoc(P,type){var pr=PREF[type]||PREF.base,ls=P.locs&&P.locs.length?P.locs:['casa'];for(var i=0;i<pr.length;i++){if(ls.indexOf(pr[i])>=0)return pr[i];}return ls[0];}
+function resources(P,loc,mode){
+  var r={};(P.gear||[]).forEach(function(g){r[g]=1;});
+  if(r.balones) r.balon=1;
+  if(loc==='campo'){r.porteria=1;r.cesped=1;r.espacio=1;}
+  if(loc==='parque'){r.cesped=1;r.espacio=1;r.barra=1;}
+  if(loc==='gimnasio'){r.pesas=1;r.medicinal=1;r.banda=1;r.esterilla=1;r.cajon=1;r.barra=1;r.pared=1;r.gym=1;r.ancla=1;r.espacio=1;}
+  if(loc==='casa'){r.pared=1;r.mesa=1;r.ancla=1;}
+  if(loc==='pared'){r.pared=1;r.espacio=1;}
+  if(mode==='pareja'){r.compa=1;}
+  if(r.cesped||r.esterilla) r.blando=1;
+  if(r.pared||r.rebounder||r.compa) r.rebote=1;
+  return r;
+}
+function has(r,need){for(var i=0;i<need.length;i++){var alts=need[i].split('|'),ok=false;for(var j=0;j<alts.length;j++){if(r[alts[j]])ok=true;}if(!ok)return false;}return true;}
+function eligible(e,ctx,maxInt){
+  if(e.loc!=='any'&&e.loc.indexOf(ctx.loc)<0) return false;
+  if(!has(ctx.res,e.need)) return false;
+  if(ctx.mode==='solo'&&e.mode==='pareja') return false;
+  if(e.lvl>ctx.level+ctx.ph.bonus) return false;
+  for(var i=0;i<e.avoid.length;i++){if(ctx.inj.indexOf(e.avoid[i])>=0)return false;}
+  if(maxInt&&e.int>maxInt) return false;
+  return true;
+}
+function fmtSec(s){if(s>=60){var m=Math.floor(s/60),r=s%60;return r?m+' min '+r+' s':m+' min';}return s+' s';}
+function fixed(e){return e.cat==='pp'||e.cat==='men'||e.fix;}
+function doseFor(e,ctx,f){
+  var d=e.d,L=Math.max(0,Math.min(3,ctx.level));f=f||1;
+  var sec=d.sec||0,sets;
+  if(fixed(e)){sets=d.s[L];}
+  else if(d.s[L]===1&&sec){sets=1;sec=Math.max(30,Math.round(sec*ctx.ph.vol*f/30)*30);}
+  else sets=Math.max(1,Math.round(d.s[L]*ctx.ph.vol*f));
+  var reps=Array.isArray(d.r)?d.r[L]:d.r,txt;
+  if(sec){txt=(sets>1?sets+' × ':'')+fmtSec(sec)+(d.u?' '+d.u:'');}
+  else{txt=(sets>1||reps?sets+' × ':'')+(reps||'')+(d.u?' '+d.u:'');}
+  return {sets:sets,reps:reps,sec:sec,rest:d.rest||0,txt:txt.trim()};
+}
+function dur(e,ctx){return e.t*(e.cat==='pp'?1:ctx.ph.vol);}
+function pick(arr,ctx){
+  var tot=0,ws=arr.map(function(e){var w=1;if(ctx.goalCats.indexOf(e.cat)>=0)w+=2;if(ctx.mode==='pareja'&&e.mode==='pareja')w+=3;if(e.anim)w+=0.3;tot+=w;return w;});
+  var r=ctx.rng()*tot;for(var i=0;i<arr.length;i++){r-=ws[i];if(r<=0)return arr[i];}return arr[arr.length-1];
+}
+function B(n,f,cats,o){o=o||{};return {n:n,f:f,cats:cats,force:o.force||[],forceOne:!!o.forceOne,maxInt:o.maxInt||0,max:o.max||4};}
+var PP_IDS=['pp-mov','pp-manos','pp-desp','pp-caidas','pp-todas','pp-aereo','pp-tiros','pp-cabeza'];
+function recipe(ctx){
+  var t=ctx.type,g=ctx.goalCats,r=ctx.res;
+  if(t==='activacion') return [B('Calentamiento',.3,['cal'],{maxInt:2,max:3}),B('Reacción',.25,['rea'],{maxInt:2,max:3}),B('Manos',.3,['man'],{maxInt:2,max:3}),B('Cabeza',.15,['men'],{max:1})];
+  if(t==='reaccion'){var dis=g.indexOf('dis')>=0;return [B('Calentamiento',.2,['cal'],{max:2}),B('Pies rápidos',.25,['pie'],{max:2}),B('Reacción',.25,['rea'],{max:3}),B(dis?'Juego de pies':'Manos y saques',.2,dis?['dis']:['man','dis'],{max:2}),B('Vuelta a la calma',.1,['mov'],{maxInt:1,max:1})];}
+  if(t==='tecnica'){
+    var main=[];if(r.blando)main.push('cai');
+    ['aer','uno'].forEach(function(c){if(g.indexOf(c)>=0)main.push(c);});
+    if(main.filter(function(c){return c!=='cai';}).length===0) main.push(ctx.ph.w%2?'uno':'aer');
+    if(g.indexOf('rea')>=0) main.push('rea');
+    if(!r.blando) main.push('man');
+    return [B('Calentamiento',.18,['cal'],{max:2}),B('Manos',.2,['man'],{max:2}),B('Bloque principal',.47,main,{max:4}),B('Vuelta a la calma',.15,['mov','men'],{maxInt:1,max:2})];
+  }
+  if(t==='fuerza'){
+    var bl=[B('Calentamiento',.15,['cal','mov'],{max:2}),B('Potencia',.25,['pot'],{max:2}),B('Fuerza',.4,['fue'],{max:4}),B('Prevención',.2,['pre'],{force:['pre-copen','pre-nordico'],max:3})];
+    if(ctx.mins>=60) bl.splice(2,0,B('Técnica breve',.12,['man'],{max:1}));
+    return bl;
+  }
+  if(t==='base') return [B('Calentamiento',.2,['cal'],{max:2}),B('Manos',.25,['man'],{max:2}),B('Pies y saques',.3,['pie','dis'],{max:3}),B('Prevención',.15,['pre'],{force:['pre-hombro','pre-ytw','pre-dedos'],forceOne:true,max:2}),B('Vuelta a la calma',.1,['mov'],{maxInt:1,max:1})];
+  if(t==='recuperacion') return [B('Movilidad',.6,['mov'],{maxInt:1,max:4}),B('Manos suaves',.25,['man'],{maxInt:1,max:1}),B('Cabeza',.15,['men'],{max:1})];
+  if(t==='equipo') return [B('Activación de portero',.7,['cal','man'],{maxInt:2,max:3}),B('Prevención',.3,['pre'],{force:['pre-copen'],max:2})];
+  if(t==='descanso') return [B('Opcional',1,['mov'],{maxInt:1,max:2})];
+  if(t==='partido') return [B('Calentamiento de partido',1,['pp'],{force:PP_IDS,max:8})];
+  return [];
+}
+function fill(b,ctx){
+  var budget=Math.max(3,ctx.mins*b.f);
+  var pool=EX.filter(function(e){return b.cats.indexOf(e.cat)>=0&&eligible(e,ctx,b.maxInt);});
+  var out=[],used=0;
+  function add(e){out.push(e);ctx.used[e.id]=1;used+=dur(e,ctx);}
+  for(var i=0;i<b.force.length;i++){
+    var fe=null;for(var j=0;j<pool.length;j++){if(pool[j].id===b.force[i])fe=pool[j];}
+    if(fe&&!ctx.used[fe.id]){add(fe);if(b.forceOne)break;}
+  }
+  b.cats.forEach(function(c){
+    if(used>=budget*0.85||out.length>=b.max)return;
+    if(out.some(function(e){return e.cat===c;}))return;
+    var cc=pool.filter(function(e){return e.cat===c&&!ctx.used[e.id];});
+    if(cc.length)add(pick(cc,ctx));
+  });
+  var cand=pool.filter(function(e){return !ctx.used[e.id];});
+  while(used<budget*0.85&&cand.length&&out.length<b.max){var e=pick(cand,ctx);add(e);cand=cand.filter(function(x){return x!==e;});}
+  var scal=0,fix=0;out.forEach(function(e){if(fixed(e))fix+=dur(e,ctx);else scal+=dur(e,ctx);});
+  var f=1;if(scal>0&&used<budget*0.8)f=Math.max(1,Math.min(1.7,(budget-fix)/scal));
+  return {n:b.n,items:out.map(function(e){return {e:e,d:doseFor(e,ctx,f)};}),mins:Math.round(fix+scal*f)};
+}
+function sessionMins(P,type,o){
+  if(o&&o.mins) return o.mins;
+  var base=P.mins||45;
+  if(type==='equipo') return 20;
+  if(type==='recuperacion') return Math.min(base,30);
+  if(type==='activacion') return Math.min(base,35);
+  if(type==='descanso') return 10;
+  if(type==='partido') return 25;
+  return base;
+}
+function buildSession(P,S,k){
+  var type=typeFor(P,S,k),o=(S.day&&S.day[k])||{},w=weekIndex(P,k),ph=phaseOf(P,w);
+  var mins=sessionMins(P,type,o);
+  var loc=o.loc||defaultLoc(P,type),mode=o.mode||'solo';
+  if(P.locs&&P.locs.length&&P.locs.indexOf(loc)<0) loc=defaultLoc(P,type);
+  var res=resources(P,loc,mode);
+  var goalCats=(P.goals||[]).map(function(g){return GOALS[g]?GOALS[g].cat:null;}).filter(Boolean);
+  var ctx={type:type,mins:mins,loc:loc,mode:mode,res:res,ph:ph,level:+P.level||0,inj:P.injuries||[],goalCats:goalCats,used:{},
+    rng:rng(hash([k,type,loc,mode,mins,P.level,(P.goals||[]).join('.'),(P.injuries||[]).join('.'),(P.gear||[]).join('.')].join('|')))};
+  var blocks=recipe(ctx).map(function(b){return fill(b,ctx);}).filter(function(b){return b.items.length;});
+  var est=0;blocks.forEach(function(b){est+=b.mins;});
+  var notes=[];
+  if(type==='tecnica'&&!res.blando) notes.push('Hoy no hay caídas: hacen falta césped o una esterilla. Si puedes, cambia el lugar a campo o parque.');
+  if(!res.balon&&type!=='descanso'&&type!=='recuperacion') notes.push('Sin balón la sesión se centra en pies, físico y técnica en sombra. Con un balón el plan mejora mucho.');
+  if(ctx.inj.length) notes.push('Has marcado una molestia: hemos quitado los ejercicios que la cargan. Si algo duele más de 3 sobre 10, para.');
+  if(ph.id==='desc') notes.push('Semana de descarga: menos series para asimilar y llegar fresco al test.');
+  if(type==='recuperacion') notes.push('¿No jugaste el último partido? Márcalo y la sesión pasa a técnica intensa, como hacen los porteros que no juegan.');
+  return {k:k,type:type,mins:mins,loc:loc,mode:mode,ph:ph,w:w,blocks:blocks,est:Math.round(est),notes:notes};
+}
+function partnerDays(P,S,weekStart){
+  var n=+P.partner||0;if(!n)return [];
+  var pri=['tecnica','reaccion','base','fuerza'],out=[];
+  pri.forEach(function(t){for(var i=0;i<7&&out.length<n;i++){var k=addDays(weekStart,i);if(typeFor(P,S,k)===t&&out.indexOf(k)<0)out.push(k);}});
+  return out;
+}
+function weekSummary(P,S,weekStart){
+  var planned=0,done=0,mins=0,load=0;
+  for(var i=0;i<7;i++){
+    var k=addDays(weekStart,i);if(P.created&&k<P.created)continue;
+    var t=typeFor(P,S,k),lg=S.log&&S.log[k];
+    if(t!=='descanso'&&t!=='partido')planned++;
+    if(lg){if(t!=='descanso'&&t!=='partido')done++;mins+=lg.mins||0;load+=(lg.mins||0)*(lg.rpe||0);}
+  }
+  return {planned:planned,done:Math.min(done,planned),mins:mins,load:load};
+}
+return {DAYS:DAYS,DSH:DSH,keyOf:keyOf,parseKey:parseKey,dayIdx:dayIdx,addDays:addDays,mondayKey:mondayKey,daysBetween:daysBetween,weekIndex:weekIndex,
+  LOCS:LOCS,LOCSH:LOCSH,GEAR:GEAR,GOALS:GOALS,INJ:INJ,LEVELS:LEVELS,CATS:CATS,TYPES:TYPES,EX:EX,EXI:EXI,TESTS:TESTS,TIPS:TIPS,PHASE_TXT:PHASE_TXT,
+  phaseOf:phaseOf,matchFor:matchFor,typeFor:typeFor,defaultLoc:defaultLoc,resources:resources,buildSession:buildSession,partnerDays:partnerDays,weekSummary:weekSummary,fmtSec:fmtSec,sessionMins:sessionMins};
+})();
+</script>
+
+<script id="anim">
+var ANIM=(function(){
+'use strict';
+var NS='http://www.w3.org/2000/svg',LEN={tor:32,nk:10,ua:18,fa:19,th:27,sh:27},DEG=Math.PI/180;
+function lerp(a,b,u){return a+(b-a)*u;}
+function L2(a,b,u){return [lerp(a[0],b[0],u),lerp(a[1],b[1],u)];}
+function P(b,o){var r={},x;for(x in b)r[x]=b[x];if(o)for(x in o)r[x]=o[x];return r;}
+function k(t,po,x){var r={t:t,po:po};if(x)for(var y in x)r[y]=x[y];return r;}
+function ik(a,t,l1,l2,s){var dx=t[0]-a[0],dy=t[1]-a[1],d=Math.hypot(dx,dy);if(d<0.001){dx=0.001;d=0.001;}var mx=l1+l2-0.05,e=[t[0],t[1]];if(d>mx){e=[a[0]+dx/d*mx,a[1]+dy/d*mx];d=mx;}var dd=Math.max(d,Math.abs(l1-l2)+0.05);var c=(l1*l1+dd*dd-l2*l2)/(2*l1*dd);var ang=Math.atan2(dy,dx)+s*Math.acos(Math.max(-1,Math.min(1,c)));return [[a[0]+l1*Math.cos(ang),a[1]+l1*Math.sin(ang)],e];}
+function defToe(cfg,key){if(cfg.view==='front')return key==='toeA'?[-3,2]:[3,2];return [7*(cfg.f||1),2];}
+function solve(po,cfg){var front=cfg.view==='front',f=cfg.f||1;var t=(po.t||0)*DEG,p=po.p,st=Math.sin(t),ct=Math.cos(t);var neck=[p[0]+LEN.tor*st,p[1]-LEN.tor*ct];var ht=t+(po.hd||0)*DEG;var head=[neck[0]+LEN.nk*Math.sin(ht),neck[1]-LEN.nk*Math.cos(ht)];var sh=[neck[0]-2*st,neck[1]+2*ct];var sa,sb,hpa,hpb;
+  if(front){sa=[sh[0]-8*ct,sh[1]-8*st];sb=[sh[0]+8*ct,sh[1]+8*st];hpa=[p[0]-5*ct,p[1]-5*st];hpb=[p[0]+5*ct,p[1]+5*st];}else{sa=sh;sb=sh;hpa=p;hpb=p;}
+  var es=po.es||(front?[1,-1]:(f>0?[1,1]:[-1,-1]));var ks=po.ks||(front?[1,-1]:(f>0?[-1,-1]:[1,1]));
+  function limb(root,end,mid,l1,l2,s){return mid?[mid,end]:ik(root,end,l1,l2,s);}
+  var A=limb(sa,po.ha,po.ela,LEN.ua,LEN.fa,es[0]),B=limb(sb,po.hb,po.elb,LEN.ua,LEN.fa,es[1]),C=limb(hpa,po.fa,po.kna,LEN.th,LEN.sh,ks[0]),D=limb(hpb,po.fb,po.knb,LEN.th,LEN.sh,ks[1]);
+  var ta=po.toeA||defToe(cfg,'toeA'),tb=po.toeB||defToe(cfg,'toeB');
+  return {p:p,neck:neck,head:head,sa:sa,sb:sb,hpa:hpa,hpb:hpb,ea:A[0],ha:A[1],eb:B[0],hb:B[1],ka:C[0],fa:C[1],kb:D[0],fb:D[1],ta:[C[1][0]+ta[0],C[1][1]+ta[1]],tb:[D[1][0]+tb[0],D[1][1]+tb[1]]};}
+var PKEYS=['p','ha','hb','fa','fb','ela','elb','kna','knb'];
+function mix(A,B,u,cfg){var o={t:lerp(A.t||0,B.t||0,u),hd:lerp(A.hd||0,B.hd||0,u),es:B.es||A.es,ks:B.ks||A.ks};for(var i=0;i<PKEYS.length;i++){var key=PKEYS[i];if(A[key]&&B[key])o[key]=L2(A[key],B[key],u);}o.toeA=L2(A.toeA||defToe(cfg,'toeA'),B.toeA||defToe(cfg,'toeA'),u);o.toeB=L2(A.toeB||defToe(cfg,'toeB'),B.toeB||defToe(cfg,'toeB'),u);return o;}
+var JOV={ela:'ea',elb:'eb',kna:'ka',knb:'kb'};
+function refPt(r,J){return r==='H'?[(J.ha[0]+J.hb[0])/2,(J.ha[1]+J.hb[1])/2]:(r==='Ha'?J.ha:J.hb);}
+function resolveP(v,J,dr){if(typeof v[0]==='string'){var c=refPt(v[0],J);return [c[0]+(v[1]||0),c[1]+(v[2]||0),dr];}return [v[0],v[1],v[2]!=null?v[2]:dr];}
+function frameAt(c,u){var kf=c.kf,i=0;while(i<kf.length-2&&u>kf[i+1].t)i++;var A=kf[i],B=kf[i+1],span=B.t-A.t,s=span>0?(u-A.t)/span:0;s=Math.max(0,Math.min(1,s));var se=B.e==='l'?s:(B.e==='in'?s*s:s*s*(3-2*s));var po=mix(A.po,B.po,se,c.cfg);var J=solve(po,c.cfg);
+  for(var key in JOV){var ia=!!A.po[key],ib=!!B.po[key];if(ia!==ib){var jn=JOV[key];J[jn]=L2(A.J[jn],B.J[jn],se);}}
+  var pr={},names=['ball','tb','tb2'];for(var n=0;n<3;n++){var name=names[n],va=A[name],vb=B[name];if(!va&&!vb)continue;var dr=name==='ball'?6:3.5,pos;
+    if(va&&vb&&typeof va[0]==='string'&&va[0]===vb[0]){var c0=refPt(va[0],J);pos=[c0[0]+lerp(va[1]||0,vb[1]||0,se),c0[1]+lerp(va[2]||0,vb[2]||0,se),dr];}
+    else{var pa=resolveP(va||vb,A.J,dr),pb=resolveP(vb||va,B.J,dr);pos=[lerp(pa[0],pb[0],se),lerp(pa[1],pb[1],se),lerp(pa[2],pb[2],se)];}pr[name]=pos;}
+  var lo=lerp(A.lo||0,B.lo||0,se);var txt=(B.lo>0&&B.lbl)?B.lbl:(A.lbl||B.lbl||'');return {J:J,pr:pr,lo:lo,txt:txt};}
+
+var B_SIDE={p:[100,92],t:0,ha:[103,96],hb:[98,96],fa:[101,146],fb:[97,146]};
+var FST={p:[100,92],t:0,ha:[88,97],hb:[112,97],ela:[85,79],elb:[115,79],fa:[96,146],fb:[104,146]};
+var KF_MARCH=[k(0,FST),k(.25,P(FST,{p:[100,91],kna:[94,111],fa:[95,129],ha:[92,88],ela:[86,76],hb:[113,99],elb:[115,80]})),k(.5,FST),k(.75,P(FST,{p:[100,91],knb:[106,111],fb:[105,129],hb:[108,88],elb:[114,76],ha:[87,99],ela:[85,80]})),k(1,FST)];
+var CR1={p:[74,139],t:-55,hd:15,ha:[34,147],hb:[37,147],fa:[128,139],fb:[110,146],toeA:[1,-7]};var CR2=P(CR1,{p:[86,139],fa:[140,139]});
+var KF_CALF=[k(0,CR1,{tb:[124,144]}),k(.5,CR2,{tb:[124,144]}),k(1,CR1,{tb:[124,144]})];
+var LS0={p:[100,92],t:0,ha:[90,66],hb:[110,66],ela:[85,72],elb:[115,72],fa:[96,146],fb:[104,146]};
+var KF_SWING=[k(0,LS0),k(.25,P(LS0,{p:[102,92],t:-3,fa:[67,128]})),k(.5,P(LS0,{fa:[96,144]})),k(.75,P(LS0,{p:[98,92],t:3,fa:[118,136]})),k(1,LS0)];
+var KW0={p:[114,96],t:8,hd:4,ha:[150,70],hb:[149,74],fa:[134,146],fb:[84,141],toeB:[6,6]};var KW1=P(KW0,{p:[126,110],t:10,ha:[150,77],hb:[149,80]});
+var KF_KNEE=[k(0,KW0),k(.4,KW1),k(.6,KW1),k(1,KW0)];
+var LR0={p:[100,118],t:70,hd:20,ha:[130,146],hb:[126,146],fa:[138,146],fb:[64,143],toeB:[6,5]};var LRm=P(LR0,{hb:[148,118],hd:0});var LR1=P(LR0,{t:66,hd:-55,hb:[128,71]});
+var KF_LUNGE=[k(0,LR0),k(.2,LRm),k(.38,LR1),k(.62,LR1),k(.8,LRm),k(1,LR0)];
+function SQ(c,ax,bx,ay,by){ay=ay||146;by=by||146;return {p:[c,104],t:0,ha:[c-6,88],hb:[c+6,88],ela:[c-16,86],elb:[c+16,86],fa:[ax,ay],fb:[bx,by],kna:[ax-2,125],knb:[bx+2,125]};}
+var KF_BANDWALK=[k(0,SQ(82,69,95)),k(.125,SQ(88,69,107,146,142)),k(.25,SQ(94,81,107)),k(.375,SQ(100,81,119,146,142)),k(.5,SQ(106,93,119)),k(.625,SQ(100,81,119,142,146)),k(.75,SQ(94,81,107)),k(.875,SQ(88,69,107,142,146)),k(1,SQ(82,69,95))];
+var BR0={p:[90,142],t:-90,hd:0,ha:[100,147],hb:[98,147],fa:[120,146],fb:[117,146],es:[-1,-1]};var BR1={p:[90,123],t:-122,hd:32,ha:[100,147],hb:[98,147],fa:[120,146],fb:[117,146],es:[-1,-1]};
+var KF_BRIDGE=[k(0,BR0),k(.32,BR1),k(.58,BR1),k(.9,BR0),k(1,BR0)];
+var ER0=P(FST,{ela:[89,78],elb:[111,78],ha:[95,84],hb:[105,84]});var ER1=P(FST,{ela:[89,78],elb:[111,78],ha:[72,82],hb:[128,82]});
+var KF_EXT=[k(0,ER0),k(.35,ER1),k(.55,ER1),k(.9,ER0),k(1,ER0)];
+var SQ0=P(B_SIDE,{ha:[101,97],hb:[98,97]});var SQ1={p:[88,114],t:32,hd:-10,ha:[104,124],hb:[101,124],fa:[101,146],fb:[97,146]};var SQ2=P(SQ0,{p:[100,88],fa:[101,142],fb:[97,142],toeA:[7,5],toeB:[7,5],ha:[101,93],hb:[98,93]});
+var KF_SPEED=[k(0,SQ0),k(.42,SQ1),k(.5,SQ1),k(.6,SQ0,{e:'l'}),k(.66,SQ2),k(.76,SQ0),k(1,SQ0)];
+var READY={p:[96,96],t:6,hd:0,fa:[106,146],fb:[88,146],ha:[110,75],hb:[108,76]};var PUSH={p:[99,96],t:10,hd:0,fa:[106,146],fb:[88,146],ha:[130,64],hb:[128,65]};
+var KF_CHEST=[k(0,READY,{ball:['H',6,0]}),k(.16,PUSH,{ball:['H',6,0]}),k(.22,PUSH,{ball:[143,62],e:'l'}),k(.34,P(READY,{ha:[118,70],hb:[116,71]}),{ball:[175,61],e:'l'}),k(.46,P(PUSH,{p:[97,96],t:8}),{ball:['H',6,-1],e:'l'}),k(.58,READY,{ball:['H',6,0]}),k(1,READY,{ball:['H',6,0]})];
+var T1={p:[128,96],t:8,hd:-6,fa:[134,146],fb:[122,146],ha:[144,84],hb:[146,92]};
+var KF_T1=[k(0,T1,{tb:['Ha',2,-2]}),k(.14,P(T1,{ha:[152,72]}),{tb:['Ha',2,-2]}),k(.2,P(T1,{ha:[150,74]}),{tb:[160,68],e:'l'}),k(.34,P(T1,{ha:[148,78]}),{tb:[177,63],e:'l'}),k(.52,P(T1,{ha:[152,75]}),{tb:['Ha',2,-2],e:'l'}),k(.64,T1,{tb:['Ha',2,-2]}),k(1,T1,{tb:['Ha',2,-2]})];
+var TB0={p:[100,100],t:0,hd:0,fa:[89,146],fb:[111,146],kna:[88,123],knb:[112,123],ha:[86,90],hb:[114,90],ela:[82,80],elb:[118,80]};
+var KF_TX=[k(0,TB0,{tb:['Ha',0,-3]}),k(.1,P(TB0,{ha:[90,78],ela:[83,79]}),{tb:['Ha',0,-3]}),k(.14,P(TB0,{ha:[89,80],ela:[83,79]}),{tb:[92,73,3.2],e:'l'}),k(.3,TB0,{tb:[104,64,1.8],e:'l'}),k(.46,P(TB0,{hb:[115,83],elb:[119,78]}),{tb:['Hb',0,-3],e:'l'}),k(.54,TB0,{tb:['Hb',0,-3]}),k(.6,P(TB0,{hb:[110,78],elb:[117,79]}),{tb:['Hb',0,-3]}),k(.64,P(TB0,{hb:[111,80],elb:[117,79]}),{tb:[108,73,3.2],e:'l'}),k(.8,TB0,{tb:[96,64,1.8],e:'l'}),k(.96,P(TB0,{ha:[85,83],ela:[81,78]}),{tb:['Ha',0,-3],e:'l'}),k(1,TB0,{tb:['Ha',0,-3]})];
+var KF_T2=[k(0,TB0,{tb:['Ha',0,-3],tb2:['Hb',0,-3]}),k(.12,P(TB0,{ha:[89,78],hb:[111,78],ela:[83,79],elb:[117,79]}),{tb:['Ha',0,-3],tb2:['Hb',0,-3]}),k(.16,P(TB0,{ha:[88,80],hb:[112,80],ela:[83,79],elb:[117,79]}),{tb:[88,73,3.2],tb2:[112,73,3.2],e:'l'}),k(.34,TB0,{tb:[80,62,1.8],tb2:[120,62,1.8],e:'l'}),k(.52,P(TB0,{ha:[85,83],hb:[115,83],ela:[81,78],elb:[119,78]}),{tb:['Ha',0,-3],tb2:['Hb',0,-3],e:'l'}),k(.62,TB0,{tb:['Ha',0,-3],tb2:['Hb',0,-3]}),k(1,TB0,{tb:['Ha',0,-3],tb2:['Hb',0,-3]})];
+function FBc(x,o){return P({p:[x,100],t:0,hd:0,fa:[x-11,146],fb:[x+11,146],kna:[x-12,123],knb:[x+12,123],ha:[x-14,90],hb:[x+14,90],ela:[x-18,80],elb:[x+18,80]},o);}
+function genCorner(){var s=Math.random()<.5?-1:1,dx=s*(12+Math.random()*14),ty=74+Math.random()*16;var c=100+dx*.55,tx=100+dx,key=s<0?'Ha':'Hb',reach;
+  if(s<0)reach={ha:[tx,ty+3],ela:[(c-8+tx)/2,(70+ty+3)/2+5]};else reach={hb:[tx,ty+3],elb:[(c+8+tx)/2,(70+ty+3)/2+5]};
+  var mx=100+dx*.25,mid;if(s<0)mid=FBc(mx,{fa:[100+dx*.6-11,142],kna:[100+dx*.6-12,121]});else mid=FBc(mx,{fb:[100+dx*.6+11,142],knb:[100+dx*.6+12,121]});
+  return {dur:2.4,kf:[k(0,FBc(100),{tb:['Ha',0,-3]}),k(.1,FBc(100,{ha:[92,78],ela:[84,78]}),{tb:['Ha',0,-3]}),k(.14,FBc(100,{ha:[91,80],ela:[84,78]}),{tb:[95,72,3],e:'l'}),k(.3,FBc(100),{tb:[100,58,1.6],e:'l'}),k(.38,FBc(100),{tb:[100+dx*.3,66,2.2],e:'l'}),k(.46,mid,{tb:[100+dx*.7,ty-6,3],e:'l'}),k(.54,FBc(c,reach),{tb:[key,0,-3],e:'l'}),k(.7,FBc(c,reach),{tb:[key,0,-3]}),k(.86,FBc(100),{tb:[key,0,-3]}),k(.94,FBc(100),{tb:['Ha',0,-3]}),k(1,FBc(100),{tb:['Ha',0,-3]})]};}
+var GKB={p:[98,102],t:15,hd:-8,fa:[106,146],fb:[100,146],ha:[123,93],hb:[119,95]};var SETP=P(GKB,{p:[98,99],fa:[106,143],fb:[100,143]});
+var SW={p:[98,100],t:8,hd:-12,fa:[106,146],fb:[100,146],ha:[118,58],hb:[116,59]};var SC={p:[97,101],t:24,hd:10,fa:[106,146],fb:[100,146],ha:[116,96],hb:[114,97]};
+var PALA={p:[92,110],t:76,hd:-30,fa:[104,146],fb:[101,146],ha:[117,139],hb:[115,140]};var SP=P(PALA,{fb:[102,146]});
+var KF_SHADOW=[k(0,GKB),k(.06,SETP),k(.12,GKB),k(.24,SW,{lbl:'W',lo:1}),k(.34,SW,{lbl:'W',lo:1}),k(.42,GKB,{lo:0}),k(.54,SC,{lbl:'CESTA',lo:1}),k(.64,SC,{lbl:'CESTA',lo:1}),k(.72,GKB,{lo:0}),k(.84,SP,{lbl:'PALA',lo:1}),k(.93,SP,{lbl:'PALA',lo:1}),k(1,GKB,{lo:0})];
+var CATCHW={p:[96,96],t:6,hd:-10,fa:[106,146],fb:[88,146],ha:[117,56],hb:[115,57]};var ABSORB=P(CATCHW,{hd:-4,ha:[111,61],hb:[109,62]});
+var KF_W=[k(0,READY,{ball:['H',6,0]}),k(.16,PUSH,{ball:['H',6,0]}),k(.22,PUSH,{ball:[143,62],e:'l'}),k(.36,P(READY,{ha:[114,72],hb:[112,73]}),{ball:[175,56],e:'l'}),k(.45,CATCHW,{ball:[146,55.5],e:'l'}),k(.52,CATCHW,{ball:['H',6,-0.5],e:'l',lbl:'W',lo:1}),k(.6,ABSORB,{ball:['H',6,0],lbl:'W',lo:1}),k(.74,READY,{ball:['H',6,0],lbl:'W',lo:1}),k(.86,READY,{ball:['H',6,0],lo:0}),k(1,READY,{ball:['H',6,0]})];
+var WIND={p:[96,97],t:14,hd:6,fa:[106,146],fb:[88,146],ha:[104,99],hb:[102,100]};var REL={p:[97,96],t:10,hd:0,fa:[106,146],fb:[88,146],ha:[128,82],hb:[126,83]};
+var LOWREADY=P(READY,{ha:[114,90],hb:[112,91],t:12});var BASKET={p:[97,100],t:24,hd:14,fa:[106,146],fb:[88,146],ha:[115,95],hb:[113,96]};
+var KF_C=[k(0,READY,{ball:['H',6,0]}),k(.12,WIND,{ball:['H',6,2]}),k(.22,REL,{ball:['H',6,-2]}),k(.27,REL,{ball:[141,84],e:'l'}),k(.40,LOWREADY,{ball:[175,99],e:'l'}),k(.48,BASKET,{ball:[150,95],e:'l'}),k(.56,BASKET,{ball:['H',-5,-6],e:'l',lbl:'CESTA',lo:1}),k(.68,BASKET,{ball:['H',-5,-6],lbl:'CESTA',lo:1}),k(.8,READY,{ball:['H',6,0],lo:0}),k(1,READY,{ball:['H',6,0]})];
+var STANDK={p:[96,92],t:3,hd:8,fa:[104,146],fb:[90,146],ha:[99,97],hb:[95,97]};var WINDK={p:[95,92],t:2,hd:10,fa:[82,136],fb:[90,146],ha:[108,88],hb:[88,94]};var KICK={p:[98,92],t:4,hd:12,fa:[112,140],fb:[90,146],ha:[104,92],hb:[92,96]};
+var RECOV={p:[96,96],t:12,hd:6,fa:[106,146],fb:[102,146],ha:[118,104],hb:[116,105]};var GATHER={p:[94,104],t:48,hd:-10,fa:[104,146],fb:[101,146],ha:[116,112],hb:[114,113]};
+var KF_P=[k(0,READY,{ball:['H',6,0]}),k(.08,STANDK,{ball:[116,141.5],e:'in'}),k(.16,WINDK,{ball:[116,141.5]}),k(.24,KICK,{ball:[116,141.5]}),k(.28,RECOV,{ball:[127,141.5],e:'l'}),k(.42,RECOV,{ball:[175,141.5],e:'l'}),k(.52,PALA,{ball:[146.5,141.5],e:'l'}),k(.62,PALA,{ball:['H',2,2],e:'l',lbl:'PALA',lo:1}),k(.72,GATHER,{ball:['H',-2,-4],lbl:'PALA',lo:1}),k(.84,READY,{ball:['H',6,0],lo:0}),k(1,READY,{ball:['H',6,0]})];
+function FBl(x,o){return P({p:[x,101],t:0,hd:0,fa:[x-11,146],fb:[x+11,146],kna:[x-12,123],knb:[x+12,123],ha:[x-7,84],hb:[x+7,84],ela:[x-16,84],elb:[x+16,84]},o);}
+function genLateral(){var s=Math.random()<.5?-1:1,c1=100+26*s,cm=100+13*s;function lift(x,lead){return lead==='b'?{fb:[x+11,142],knb:[x+12,121]}:{fa:[x-11,142],kna:[x-12,121]};}var lead=s>0?'b':'a',trail=s>0?'a':'b';
+  return {dur:3.2,kf:[k(0,FBl(100),{ball:['H',0,0]}),k(.12,FBl(100,{ha:[96,74],hb:[104,74],ela:[89,77],elb:[111,77]}),{ball:['H',0,-2]}),k(.16,FBl(100,{ha:[95,76],hb:[105,76],ela:[89,77],elb:[111,77]}),{ball:[100,70,5],e:'l'}),k(.3,FBl(100,{ha:[94,86],hb:[106,86]}),{ball:[100+12*s,56,3.2],e:'l'}),k(.4,FBl(cm,lift(cm,lead)),{ball:[100+19*s,66,4.4],e:'l'}),k(.5,FBl(c1,{ha:[c1-7,80],hb:[c1+7,80],ela:[c1-17,82],elb:[c1+17,82]}),{ball:['H',0,-1],e:'l'}),k(.6,FBl(c1),{ball:['H',0,0]}),k(.75,FBl(cm,lift(cm,trail)),{ball:['H',0,0]}),k(.88,FBl(100),{ball:['H',0,0]}),k(1,FBl(100),{ball:['H',0,0]})]};}
+function genMix(){var o=[[KF_W,2.6],[KF_C,2.8],[KF_P,3.8]][Math.floor(Math.random()*3)];return {kf:o[0],dur:o[1]};}
+var LU0={p:[130,142],t:-90,hd:0,fa:[136,90],fb:[134,91],toeA:[-6,1],toeB:[-6,1],ha:[114,135],hb:[112,136],ela:[107,146],elb:[105,146]};var LU1=P(LU0,{ha:[114,131],hb:[112,132]});
+var KF_LEGSUP=[k(0,LU0,{lbl:'INSPIRA',lo:1}),k(.4,LU1,{lbl:'INSPIRA',lo:1}),k(.41,LU1,{lbl:'SUELTA',lo:1}),k(1,LU0,{lbl:'SUELTA',lo:1})];
+var VZ0={p:[100,136],t:0,hd:0,ha:[80,132],hb:[120,132],ela:[84,120],elb:[116,120],kna:[77,137],knb:[123,137],fa:[110,144],fb:[90,144],toeA:[3,1],toeB:[-3,1]};var VZ1=P(VZ0,{p:[100,135],hd:3});
+var KF_VIS=[k(0,VZ0,{lbl:'1 · ALTO',lo:1}),k(.3,VZ1,{lbl:'1 · ALTO',lo:1}),k(.33,VZ1,{lbl:'2 · RASO',lo:1}),k(.63,VZ0,{lbl:'2 · RASO',lo:1}),k(.66,VZ0,{lbl:'3 · SALIDA',lo:1}),k(1,VZ0,{lbl:'3 · SALIDA',lo:1})];
+var SIDEWALL={view:'side',f:1,scene:'wall',wallX:182};
+var ANIMS={
+  march:{view:'front',scene:'floor',dur:1.4,kf:KF_MARCH,still:.25},calf:{view:'side',f:1,scene:'floor',dur:3.2,kf:KF_CALF,still:.5},
+  legswing:{view:'front',scene:'backwall',dur:2,kf:KF_SWING,still:.25},kneewall:{view:'side',f:1,scene:'wall',wallX:152,dur:2.6,kf:KF_KNEE,still:.5},
+  lungerot:{view:'side',f:1,scene:'floor',dur:3.6,kf:KF_LUNGE,still:.5},bandwalk:{view:'front',scene:'floor',band:'knees',dur:3.2,kf:KF_BANDWALK,still:.125},
+  bridge:{view:'side',f:1,scene:'floor',band:'knee1',dur:3.2,kf:KF_BRIDGE,still:.45},extrot:{view:'front',scene:'floor',band:'hands',dur:2.6,kf:KF_EXT,still:.45},
+  speedsquat:{view:'side',f:1,scene:'floor',db:true,dur:3.2,kf:KF_SPEED,still:.46},chestpass:P(SIDEWALL,{dur:2.4,kf:KF_CHEST,still:.28}),
+  tennis1:P(SIDEWALL,{dur:1.6,kf:KF_T1,still:.3}),tennisx:{view:'front',scene:'backwall',dur:2.2,kf:KF_TX,still:.3},tennis2:{view:'front',scene:'backwall',dur:2,kf:KF_T2,still:.34},
+  corner:{view:'front',scene:'corner',gen:genCorner,still:.5},shadow:{view:'side',f:1,scene:'floor',dur:4.8,kf:KF_SHADOW,still:.3},
+  catchW:P(SIDEWALL,{dur:2.6,kf:KF_W,still:.55}),catchC:P(SIDEWALL,{dur:2.8,kf:KF_C,still:.6}),scoop:P(SIDEWALL,{dur:3.8,kf:KF_P,still:.65}),
+  lateral:{view:'front',scene:'backwall',gen:genLateral,still:.55},mix:P(SIDEWALL,{gen:genMix,still:.55}),
+  legsup:{view:'side',f:1,scene:'wall',wallX:141,dur:10,kf:KF_LEGSUP,still:.2},visual:{view:'front',scene:'floor',dur:6,kf:KF_VIS,still:.1}
+};
+function sceneMarkup(cfg){var s=cfg.scene||'floor';
+  if(s==='wall'){var x=cfg.wallX||182;return '<rect class="wall" x="'+x+'" y="12" width="'+(200-x)+'" height="137"/><line class="edge" x1="'+x+'" y1="12" x2="'+x+'" y2="149"/><line class="floor" x1="6" y1="149" x2="'+x+'" y2="149"/>';}
+  if(s==='backwall')return '<rect class="wall" x="4" y="8" width="192" height="106" rx="2"/><line class="edge" x1="4" y1="114" x2="196" y2="114"/><line class="floor" x1="6" y1="149" x2="194" y2="149"/>';
+  if(s==='corner')return '<path class="wall" d="M4 6 L100 18 L100 108 L4 122 Z"/><path class="wall2" d="M100 18 L196 6 L196 122 L100 108 Z"/><line class="edge" x1="100" y1="18" x2="100" y2="108"/><path class="edge" d="M4 122 L100 108 L196 122"/><line class="floor" x1="6" y1="149" x2="194" y2="149"/>';
+  return '<line class="floor" x1="6" y1="149" x2="194" y2="149"/>';}
+function el(parent,tag,attrs){var e=document.createElementNS(NS,tag);if(attrs)for(var a in attrs)e.setAttribute(a,attrs[a]);parent.appendChild(e);return e;}
+function buildSVG(svg,cfg){var front=cfg.view==='front',E={};var scene=el(svg,'g',{'class':'scene'});scene.innerHTML=sceneMarkup(cfg);var fig=el(svg,'g');
+  function limbs(g){return {ua:el(g,'line'),fa:el(g,'line'),th:el(g,'line'),sh:el(g,'line'),ft:el(g,'line'),gl:el(g,'circle',{r:3.2,'class':'glove'})};}
+  var farG=el(fig,'g',{'class':front?'limbs':'far'});E.b=limbs(farG);
+  function ballG(){var g=el(fig,'g',{'class':'ball'});var c=el(g,'circle',{'class':'bc',r:6});var p=el(g,'circle',{'class':'bp',r:2.2});g.style.display='none';return {g:g,c:c,p:p};}
+  if(!front)E.ball=ballG();var bodyG=el(fig,'g');E.tor=el(bodyG,'line');E.nk=el(bodyG,'line');if(front){E.shl=el(bodyG,'line');E.hpl=el(bodyG,'line');}E.head=el(bodyG,'circle',{r:7,'class':'head'});
+  E.a=limbs(el(fig,'g'));
+  if(cfg.band==='knees'||cfg.band==='hands')E.band=el(fig,'line',{'class':'band'});if(cfg.band==='knee1')E.band=el(fig,'circle',{'class':'band',r:4.6});
+  if(cfg.db){E.db=[0,1].map(function(){var g=el(fig,'g',{'class':'db'});return {l:el(g,'line'),c1:el(g,'circle',{r:3}),c2:el(g,'circle',{r:3})};});}
+  if(front)E.ball=ballG();E.tb=el(fig,'circle',{'class':'tbl',r:3.5});E.tb.style.display='none';E.tb2=el(fig,'circle',{'class':'tbl',r:3.5});E.tb2.style.display='none';
+  E.lbl=el(svg,'text',{'class':'lbl',x:194,y:26,'text-anchor':'end'});svg.setAttribute('class','fig');return E;}
+function f1(n){return Math.round(n*10)/10;}
+function ln(e,a,b){e.setAttribute('x1',f1(a[0]));e.setAttribute('y1',f1(a[1]));e.setAttribute('x2',f1(b[0]));e.setAttribute('y2',f1(b[1]));}
+function ci(e,a,r){e.setAttribute('cx',f1(a[0]));e.setAttribute('cy',f1(a[1]));if(r!=null)e.setAttribute('r',f1(r));}
+function draw(c,u){var F=frameAt(c,u),J=F.J,E=c.E,cfg=c.cfg;
+  function side(L,s,e,h,hp,kn,ft,to){ln(L.ua,s,e);ln(L.fa,e,h);ln(L.th,hp,kn);ln(L.sh,kn,ft);ln(L.ft,ft,to);ci(L.gl,h);}
+  side(E.b,J.sb,J.eb,J.hb,J.hpb,J.kb,J.fb,J.tb);side(E.a,J.sa,J.ea,J.ha,J.hpa,J.ka,J.fa,J.ta);
+  ln(E.tor,J.p,J.neck);ln(E.nk,J.neck,J.head);ci(E.head,J.head);if(E.shl){ln(E.shl,J.sa,J.sb);ln(E.hpl,J.hpa,J.hpb);}
+  if(E.band){if(cfg.band==='knees')ln(E.band,J.ka,J.kb);else if(cfg.band==='hands')ln(E.band,J.ha,J.hb);else ci(E.band,J.ka);}
+  if(E.db){[J.ha,J.hb].forEach(function(h,i){var d=E.db[i];ln(d.l,[h[0]-6,h[1]],[h[0]+6,h[1]]);ci(d.c1,[h[0]-6,h[1]]);ci(d.c2,[h[0]+6,h[1]]);});}
+  var b=F.pr.ball;if(b){E.ball.g.style.display='';ci(E.ball.c,b,b[2]);ci(E.ball.p,[b[0]+b[2]*.15,b[1]-b[2]*.15],b[2]*.36);}else E.ball.g.style.display='none';
+  ['tb','tb2'].forEach(function(n){var v=F.pr[n],e=E[n];if(v){e.style.display='';ci(e,v,v[2]);}else e.style.display='none';});
+  E.lbl.textContent=F.txt;E.lbl.setAttribute('opacity',f1(F.lo));}
+function setKF(c,kf){c.kf=kf;for(var i=0;i<kf.length;i++){kf[i].J=solve(kf[i].po,c.cfg);}}
+var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var list=[];
+function mount(root){
+  list=list.filter(function(c){return document.body.contains(c.svg);});
+  Array.prototype.forEach.call(root.querySelectorAll('svg[data-anim]'),function(svg){
+    if(svg._c)return;var cfg=ANIMS[svg.getAttribute('data-anim')];if(!cfg)return;
+    var c={svg:svg,cfg:cfg,E:buildSVG(svg,cfg),dur:cfg.dur||2,start:performance.now(),loop:-1};
+    if(cfg.gen){var g=cfg.gen();setKF(c,g.kf);c.dur=g.dur;}else setKF(c,cfg.kf);
+    draw(c,cfg.still||0);svg._c=c;list.push(c);
+  });
+}
+function tick(now){
+  if(!reduce){for(var i=0;i<list.length;i++){var c=list[i];var e=(now-c.start)/1000,n=Math.floor(e/c.dur);
+    if(n!==c.loop){c.loop=n;if(c.cfg.gen&&n>0){var g=c.cfg.gen();setKF(c,g.kf);c.dur=g.dur;c.start=now;c.loop=0;e=0;}}
+    draw(c,((e%c.dur)+c.dur)%c.dur/c.dur);}}
+  requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
+return {mount:mount,has:function(key){return !!ANIMS[key];}};
+})();
+</script>
+
+<script id="ui">
+(function(){
+'use strict';
+var C=CORE;
+var KEY='portero-diario-v1';
+function blank(){return {v:1,profile:null,log:{},day:{},sets:{},weekMatch:{},tests:{},updatedAt:0};}
+function loadLocal(){try{var r=localStorage.getItem(KEY);if(r){var o=JSON.parse(r);if(o&&typeof o==='object'){var b=blank();for(var x in o)b[x]=o[x];return b;}}}catch(e){}return blank();}
+var S=loadLocal();
+var U={view:'hoy',date:null,ob:null,sheet:null,guided:null,finish:null,lib:{cat:'all',mode:'all',loc:'all',q:''},planWeek:null,confirmDel:false,confirmNew:false,toast:null};
+function today(){return C.keyOf(new Date());}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function ytUrl(q){return 'https://www.youtube.com/results?search_query='+encodeURIComponent(q);}
+function fmtDate(k){var d=C.parseKey(k);return C.DAYS[C.dayIdx(d)]+' '+d.getDate()+' de '+['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'][d.getMonth()];}
+
+/* ---------- Guardado: navegador siempre; cuenta de Claude si está disponible ---------- */
+var R={db:null,ref:null,ready:false,busy:false,pending:false,ro:false,status:'local',t:0};
+function prune(){
+  var lim=C.addDays(today(),-21);Object.keys(S.sets||{}).forEach(function(k){if(k<lim)delete S.sets[k];});
+  var lim2=C.addDays(today(),-90);Object.keys(S.day||{}).forEach(function(k){if(k<lim2)delete S.day[k];});
+  var ks=Object.keys(S.log||{}).sort();if(ks.length>400){ks.slice(0,ks.length-400).forEach(function(k){delete S.log[k];});}
+}
+function save(){S.updatedAt=Date.now();prune();try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}queueRemote();if(typeof gQueue==='function')gQueue();}
+function queueRemote(){if(!R.ready||R.ro)return;clearTimeout(R.t);R.t=setTimeout(pushRemote,1200);}
+function pushRemote(){
+  if(!R.ready||R.ro)return;if(R.busy){R.pending=true;return;}
+  R.busy=true;var body={s:JSON.parse(JSON.stringify(S)),updatedAt:S.updatedAt||Date.now()};
+  R.ref.set(body).then(function(){R.status='cuenta';},function(e){if(e&&(e.code==='invalid_argument'||e.code==='not_granted'||e.code==='revoked'))R.ro=true;R.status='local';})
+   .then(function(){R.busy=false;if(R.pending){R.pending=false;pushRemote();}});
+}
+(function initRemote(){
+  try{
+    if(!window.claude||typeof window.claude.use!=='function')return;
+    Promise.all([window.claude.use('db'),window.claude.use('user')]).then(function(r){
+      var db=r[0],user=r[1];if(!db||!user)return null;
+      return user.id().then(function(uid){
+        if(!uid)return null;R.db=db;R.ref=db.doc('data/users/'+uid+'/estado');
+        return R.ref.get().then(function(snap){
+          R.ready=true;R.status='cuenta';
+          var d=snap.exists?snap.data():null;
+          if(d&&d.s&&typeof d.s==='object'&&(d.updatedAt||0)>(S.updatedAt||0)){
+            var b=blank();for(var x in d.s)b[x]=d.s[x];S=b;try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}render();
+          }else if(S.profile){pushRemote();}
+        });
+      });
+    }).catch(function(){R.ready=false;R.status='local';});
+  }catch(e){}
+})();
+
+/* ---------- Google Sheets (versión publicada fuera de Claude) ---------- */
+var IN_CLAUDE=!!(window.claude&&typeof window.claude.use==='function');
+var GKEY='portero-diario-google';
+var G={url:'',key:'',status:'',busy:false,pending:false,t:0};
+try{var gs=JSON.parse(localStorage.getItem(GKEY)||'null');if(gs){G.url=gs.url||'';G.key=gs.key||'';}}catch(e){}
+function gOn(){return !IN_CLAUDE&&!!(G.url&&G.key);}
+function gCall(body){
+  return fetch(G.url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body)})
+    .then(function(r){return r.json();});
+}
+function gPull(){
+  if(!gOn())return Promise.resolve(false);
+  G.status='conectando';
+  return gCall({accion:'leer',clave:G.key}).then(function(d){
+    if(!d||!d.ok){G.status='error:'+((d&&d.error)||'sin respuesta');return false;}
+    G.status='ok';
+    var e=d.estado;
+    if(e&&typeof e==='object'&&(e.updatedAt||0)>(S.updatedAt||0)){var b=blank();for(var x in e)b[x]=e[x];S=b;try{localStorage.setItem(KEY,JSON.stringify(S));}catch(err){}render();}
+    else if(S.profile){gPush();}
+    return true;
+  }).catch(function(){G.status='error:No se pudo conectar con la dirección del script';return false;});
+}
+function gPush(){
+  if(!gOn())return;if(G.busy){G.pending=true;return;}
+  G.busy=true;
+  gCall({accion:'guardar',clave:G.key,estado:S}).then(function(d){G.status=d&&d.ok?'ok':'error:'+((d&&d.error)||'sin respuesta');},function(){G.status='error:No se pudo guardar';})
+    .then(function(){G.busy=false;if(G.pending){G.pending=false;gPush();}});
+}
+function gQueue(){if(!gOn())return;clearTimeout(G.t);G.t=setTimeout(gPush,1500);}
+if(gOn())gPull();
+
+/* ---------- Utilidades de estado ---------- */
+function P(){return S.profile;}
+function dayO(k){S.day[k]=S.day[k]||{};return S.day[k];}
+function setsDone(k,id){return (S.sets[k]&&S.sets[k][id])||0;}
+function setSets(k,id,n){S.sets[k]=S.sets[k]||{};S.sets[k][id]=n;save();}
+function curWeek(){return C.weekIndex(P(),today());}
+function weekStartOf(w){return C.addDays(P().start,w*7);}
+function toast(msg){U.toast=msg;renderOver();clearTimeout(toast.t);toast.t=setTimeout(function(){U.toast=null;renderOver();},2600);}
+function greeting(){var h=new Date().getHours();return h<14?'Buenos días':(h<21?'Buenas tardes':'Buenas noches');}
+function typeDot(t){return '<span class="dot" style="--c:var(--t-'+t+')"></span>';}
+function intens(n){var s='<span class="intens" aria-label="Intensidad '+n+' de 3">';for(var i=1;i<=3;i++)s+='<i class="'+(i<=n?'on':'')+'"></i>';return s+'</span>';}
+var ICON={
+  hoy:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/></svg>',
+  plan:'<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>',
+  ejercicios:'<svg viewBox="0 0 24 24"><path d="M9 6h12M9 12h12M9 18h12"/><circle cx="4.5" cy="6" r="1.2"/><circle cx="4.5" cy="12" r="1.2"/><circle cx="4.5" cy="18" r="1.2"/></svg>',
+  progreso:'<svg viewBox="0 0 24 24"><path d="M4 20V11M10 20V5M16 20v-7M21 20H3"/></svg>',
+  perfil:'<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>'
+};
+
+/* ---------- Test inicial ---------- */
+var Q=[
+  {id:'name',type:'text',t:'¿Cómo te llamas?',s:'Para saludarte cada día. Puedes dejarlo en blanco.'},
+  {id:'who',type:'one',t:'¿Con quién entrenas casi siempre?',opts:[['solo','Solo, por mi cuenta','Sin entrenador de porteros ni compañeros fijos'],['pareja','A veces con alguien','Un amigo, otro portero o alguien que te tire'],['club','Con mi equipo','Entreno en un club, pero sin entrenador de porteros']]},
+  {id:'partner',type:'one',t:'Sé sincero: ¿cuántos días a la semana tienes de verdad a alguien que te tire?',s:'El plan está hecho para que avances aunque la respuesta sea ninguno.',opts:[[0,'Ninguno','Casi siempre entreno solo'],[1,'Un día','Una sesión con compañero'],[2,'Dos o más','Varias sesiones acompañado']]},
+  {id:'days',type:'days',t:'¿Qué días puedes entrenar por tu cuenta?',s:'Elige los que de verdad vas a cumplir. Mejor 3 días fijos que 6 a medias.',min:1},
+  {id:'teamDays',type:'days',t:'¿Qué días entrenas con tu equipo?',s:'Esos días te daremos un complemento corto de portero.',min:0,when:function(a){return a.who==='club';}},
+  {id:'time',type:'one',t:'¿A qué hora sueles entrenar?',opts:[['manana','Por la mañana'],['mediodia','A mediodía'],['tarde','Por la tarde'],['noche','Por la noche']]},
+  {id:'mins',type:'one',t:'¿Cuánto tiempo tienes por sesión?',opts:[[20,'20 minutos'],[30,'30 minutos'],[45,'45 minutos'],[60,'1 hora'],[90,'1 hora y media']]},
+  {id:'match',type:'one',t:'¿Qué día juegas los partidos?',s:'Con eso ordenamos la semana: lo más duro lejos del partido y lo más suave el día antes.',opts:[[6,'Domingo'],[5,'Sábado'],[4,'Viernes'],[2,'Entre semana, miércoles'],['none','Ahora no compito','Pretemporada, vacaciones o lesión']]},
+  {id:'locs',type:'many',t:'¿Dónde puedes entrenar?',s:'Marca todos los sitios a los que puedes ir algún día. Cada día podrás cambiar el lugar.',min:1,opts:[['campo','Campo con portería'],['parque','Parque o zona de césped'],['gimnasio','Gimnasio'],['pared','Pared o frontón'],['casa','Casa o sala']]},
+  {id:'gear',type:'many',t:'¿Qué material tienes?',s:'El plan solo usará lo que marques. Los guantes los damos por hechos.',min:0,opts:[['balon','Un balón'],['balones','Varios balones'],['tenis','Pelotas de tenis'],['conos','Conos o marcas'],['banda','Banda elástica'],['pesas','Mancuernas o kettlebell'],['escalera','Escalera de agilidad'],['vallas','Vallas pequeñas'],['medicinal','Balón medicinal'],['rebounder','Red de rebote'],['esterilla','Esterilla']]},
+  {id:'level',type:'one',t:'¿En qué nivel juegas?',opts:[[0,'Empezando','Menos de dos años de portero'],[1,'Amateur o regional','Compito, pero sin estructura profesional'],[2,'Semiprofesional','Categorías nacionales o similar'],[3,'Alto nivel','Profesional o cantera de élite']]},
+  {id:'goals',type:'many',t:'¿Qué quieres mejorar primero?',s:'Elige hasta tres.',min:1,max:3,opts:[['manos','Blocaje y manos'],['caidas','Estiradas y caídas'],['aereo','Juego aéreo y centros'],['uno','1 contra 1'],['pies','Juego de pies y saques'],['reflejos','Reflejos y reacción'],['potencia','Potencia y salto'],['cabeza','Confianza y cabeza']]},
+  {id:'injuries',type:'many',t:'¿Tienes alguna molestia ahora mismo?',s:'Quitaremos los ejercicios que la cargan. Si el dolor es fuerte o no mejora, consulta a un profesional.',min:1,none:'ninguna',opts:[['ninguna','Ninguna'],['hombro','Hombro'],['muneca','Muñeca o dedos'],['espalda','Espalda'],['cadera','Cadera o ingle'],['rodilla','Rodilla'],['tobillo','Tobillo']]},
+  {id:'weeks',type:'one',t:'¿Cuánto quieres que dure tu plan?',s:'Cada 4 semanas hay una semana de descarga y un test para ver cuánto has mejorado.',opts:[[4,'4 semanas','Un bloque para arrancar'],[8,'8 semanas','Base y desarrollo'],[12,'12 semanas','Base, desarrollo y específico']]}
+];
+function visQ(a){return Q.filter(function(q){return !q.when||q.when(a);});}
+function startOb(editing){
+  var a={};
+  if(editing&&P()){var p=P();a={name:p.name,who:p.who,partner:p.partner,days:p.days.slice(),teamDays:(p.teamDays||[]).slice(),time:p.time,mins:p.mins,match:p.match==null?'none':p.match,locs:p.locs.slice(),gear:p.gear.slice(),level:p.level,goals:p.goals.slice(),injuries:p.injuries.length?p.injuries.slice():['ninguna'],weeks:p.weeks};}
+  else a={name:'',days:[],teamDays:[],locs:[],gear:[],goals:[],injuries:[]};
+  U.ob={step:editing?0:-1,a:a,editing:!!editing,stage:editing?'q':'intro'};render();
+}
+function qValid(q,a){var v=a[q.id];
+  if(q.type==='text')return true;
+  if(q.type==='one')return v!==undefined&&v!==null&&v!=='';
+  if(q.type==='days'||q.type==='many'){v=v||[];return v.length>=(q.min||0)&&(!q.max||v.length<=q.max);}
+  return true;}
+function obHTML(){
+  var o=U.ob,a=o.a,qs=visQ(a);
+  if(o.stage==='intro'){
+    return '<div class="ob"><div class="ob-in pad"><div></div><div class="ob-body">'+
+      '<p class="eyebrow" style="color:var(--gold)">Para porteros sin entrenador de porteros</p>'+
+      '<h2 style="font-size:clamp(52px,15vw,78px)">Portero<br>Diario</h2>'+
+      '<p class="s" style="font-size:17px;color:var(--lav)">Un test de dos minutos y tendrás un plan para cada día, aunque entrenes solo. Porque el trabajo de verdad es el que haces a diario.</p>'+
+      '<ul class="intro-list"><li><b>1</b><span>Te preguntamos con quién, dónde, cuándo y con qué material entrenas.</span></li><li><b>2</b><span>Montamos tu semana alrededor del partido, como en un equipo profesional.</span></li><li><b>3</b><span>Cada día abres la app y tienes tu sesión con temporizador, series y vídeos.</span></li></ul>'+
+      '</div><div class="ob-act" style="grid-template-columns:1fr"><button class="btn full" data-a="ob-next">Empezar el test</button></div></div></div>';
+  }
+  if(o.stage==='gen'){
+    var lines=['Ordenando la semana alrededor del partido','Eligiendo ejercicios para tu material y tus sitios','Ajustando series a tu nivel','Repartiendo fases y semanas de descarga','Preparando tus tests de progreso'];
+    return '<div class="ob"><div class="ob-in pad"><div></div><div class="ob-body"><p class="eyebrow" style="color:var(--gold)">Un momento</p><h2>Creando tu plan</h2><ul class="gen" id="genlist">'+lines.map(function(l){return '<li>'+l+'</li>';}).join('')+'</ul></div><div></div></div></div>';
+  }
+  if(o.stage==='done') return resultHTML();
+  var q=qs[o.step],n=qs.length,bar='';
+  for(var i=0;i<n;i++)bar+='<i class="'+(i<o.step?'on':(i===o.step?'cur':''))+'"></i>';
+  var body='';
+  if(q.type==='text'){body='<input type="text" id="ob-name" maxlength="30" placeholder="Tu nombre" value="'+esc(a.name||'')+'" autocomplete="given-name">';}
+  else if(q.type==='days'){var v=a[q.id]||[];body='<div class="days">'+C.DSH.map(function(d,i){var on=v.indexOf(i)>=0;var dis=(q.id==='teamDays'&&false);return '<button class="dayb'+(on?' on':'')+'" data-a="ob-day" data-v="'+i+'" aria-pressed="'+on+'">'+d+'<small>'+C.DAYS[i].slice(0,3)+'</small></button>';}).join('')+'</div>';
+    if(q.id==='days'&&a.match!=null&&a.match!=='none'&&v.indexOf(+a.match)>=0) body+='<p class="note info">El día de partido no cuenta como entreno: ese día tendrás tu calentamiento de portero.</p>';}
+  else{var multi=q.type==='many';var vals=a[q.id];
+    body='<div class="opts">'+q.opts.map(function(op){var on=multi?(vals||[]).indexOf(op[0])>=0:String(vals)===String(op[0]);
+      return '<button class="opt'+(multi?' multi':'')+(on?' on':'')+'" data-a="ob-opt" data-v="'+esc(op[0])+'" aria-pressed="'+on+'"><span><b>'+esc(op[1])+'</b>'+(op[2]?'<small>'+esc(op[2])+'</small>':'')+'</span><span class="ck"></span></button>';}).join('')+'</div>';
+    if(q.max&&(vals||[]).length>=q.max) body+='<p class="note info">Ya tienes '+q.max+'. Quita uno para cambiarlo.</p>';}
+  var valid=qValid(q,a);
+  return '<div class="ob"><div class="ob-in pad"><div class="ob-bar" aria-hidden="true">'+bar+'</div>'+
+    '<div class="ob-body"><p class="eyebrow">Pregunta '+(o.step+1)+' de '+n+'</p><h2>'+esc(q.t)+'</h2>'+(q.s?'<p class="s">'+esc(q.s)+'</p>':'')+body+'</div>'+
+    '<div class="ob-act"><button class="btn ghost" data-a="ob-back">'+(o.step===0&&o.editing?'Cancelar':'Atrás')+'</button><button class="btn" data-a="ob-next" '+(valid?'':'disabled')+'>'+(o.step===n-1?'Crear mi plan':'Siguiente')+'</button></div></div></div>';
+}
+function buildProfile(a){
+  var old=P(),t=today();
+  var who=a.who,teamDays=who==='club'?(a.teamDays||[]).slice():[];
+  var match=a.match==='none'||a.match==null?null:+a.match;
+  teamDays=teamDays.filter(function(d){return d!==match;});
+  return {name:String(a.name||'').trim().slice(0,30),who:who,partner:+a.partner||0,days:(a.days||[]).slice().sort(),teamDays:teamDays.sort(),time:a.time,mins:+a.mins||45,match:match,
+    locs:(a.locs||[]).slice(),gear:(a.gear||[]).slice(),level:+a.level||0,goals:(a.goals||[]).slice(0,3),injuries:(a.injuries||[]).filter(function(x){return x!=='ninguna';}),weeks:+a.weeks||8,
+    start:(U.ob.editing&&old)?old.start:C.mondayKey(t),created:(U.ob.editing&&old)?old.created:t};
+}
+function resultHTML(){
+  var p=P(),ws=C.mondayKey(today()),rows='';
+  for(var i=0;i<7;i++){var k=C.addDays(ws,i),t=C.typeFor(p,S,k),m=t==='descanso'?'—':C.sessionMins(p,t,null)+' min';
+    rows+='<div class="pl"><span class="d">'+C.DSH[i]+'</span><span><b>'+typeDot(t)+' '+esc(C.TYPES[t].n)+'</b><small>'+esc(C.TYPES[t].s)+'</small></span><span class="m">'+m+'</span></div>';}
+  var warn=[];
+  if(p.gear.indexOf('balon')<0&&p.gear.indexOf('balones')<0) warn.push('No has marcado balón. El plan funciona, pero con uno mejora mucho.');
+  if(p.locs.indexOf('campo')<0&&p.locs.indexOf('parque')<0&&p.gear.indexOf('esterilla')<0) warn.push('Sin césped ni esterilla no hay caídas. Cuando vayas a un campo, cambia el lugar del día y aparecerán.');
+  if(p.days.length>=6) warn.push('Has elegido muchos días. Respeta los de recuperación: ahí es donde mejoras.');
+  if(p.partner>0) warn.push('Marcamos en el plan los días ideales para quedar con alguien que te tire.');
+  return '<div class="ob"><div class="ob-in pad"><div></div><div class="ob-body">'+
+    '<p class="eyebrow" style="color:var(--gold)">Listo'+(p.name?', '+esc(p.name):'')+'</p><h2>Tu semana tipo</h2>'+
+    '<p class="s">'+esc(p.weeks+' semanas en fases, ')+(p.match==null?'sin partido semanal':'con partido el '+C.DAYS[p.match].toLowerCase())+'. Cada día puedes cambiar el lugar, el tiempo y si estás solo o acompañado.</p>'+
+    '<div class="plan-list">'+rows+'</div>'+warn.map(function(w){return '<p class="note info">'+esc(w)+'</p>';}).join('')+
+    '</div><div class="ob-act" style="grid-template-columns:1fr"><button class="btn gold full" data-a="ob-finish">Ver mi sesión de hoy</button></div></div></div>';
+}
+
+/* ---------- Vistas ---------- */
+function topHTML(){var d=new Date();var sd=C.DAYS[C.dayIdx(d)].slice(0,3)+' '+d.getDate()+' '+['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'][d.getMonth()];
+  return '<header class="top"><div class="top-in pad"><span class="mark"><i aria-hidden="true"></i>Portero Diario</span><span class="mono">'+esc(sd)+'</span></div></header>';}
+function tabsHTML(){var t=[['hoy','Hoy'],['plan','Plan'],['ejercicios','Ejercicios'],['progreso','Progreso'],['perfil','Perfil']];
+  return '<nav class="tabs" aria-label="Secciones"><div class="tabs-in">'+t.map(function(x){var on=U.view===x[0]||(U.view==='sesion'&&x[0]==='hoy');return '<button class="tab'+(on?' on':'')+'" data-a="tab" data-v="'+x[0]+'" '+(on?'aria-current="page"':'')+'>'+ICON[x[0]]+'<span>'+x[1]+'</span></button>';}).join('')+'</div></nav>';}
+function dayControls(k,s){
+  var p=P(),o=S.day[k]||{},locs=p.locs.length?p.locs:['casa'];
+  var h='<div class="ctrl"><span>Hoy estoy</span><div class="chips">'+[['solo','Solo'],['pareja','Con alguien que me tira']].map(function(m){return '<button class="chip'+(s.mode===m[0]?' on':'')+'" data-a="d-mode" data-k="'+k+'" data-v="'+m[0]+'">'+m[1]+'</button>';}).join('')+'</div></div>';
+  h+='<div class="ctrl"><span>Lugar</span><div class="chips">'+locs.map(function(l){return '<button class="chip'+(s.loc===l?' on':'')+'" data-a="d-loc" data-k="'+k+'" data-v="'+l+'">'+esc(C.LOCSH[l])+'</button>';}).join('')+'</div></div>';
+  h+='<div class="ctrl"><span>Tiempo</span><div class="chips">'+[20,30,45,60,90].map(function(m){return '<button class="chip'+(s.mins===m?' on':'')+'" data-a="d-mins" data-k="'+k+'" data-v="'+m+'">'+m+' min</button>';}).join('')+'</div></div>';
+  if(s.type==='recuperacion'||(o.played===false)){var pl=o.played===false;
+    h+='<div class="ctrl"><span>¿Jugaste el último partido?</span><div class="chips"><button class="chip'+(!pl?' on':'')+'" data-a="d-played" data-k="'+k+'" data-v="1">Sí, jugué</button><button class="chip'+(pl?' on':'')+'" data-a="d-played" data-k="'+k+'" data-v="0">No jugué</button></div></div>';}
+  return h;
+}
+function hoyHTML(){
+  var p=P(),k=today(),s=C.buildSession(p,S,k),ty=C.TYPES[s.type],ph=s.ph,w=s.w,lg=S.log[k];
+  var ws=C.mondayKey(k),pd=C.partnerDays(p,S,ws);
+  var h='<section class="hero"><div class="pad"><p class="hello">'+greeting()+(p.name?', '+esc(p.name):'')+'.</p><h1 class="disp">'+(lg?'Hecho por hoy':(s.type==='descanso'?'Hoy descansas':(s.type==='partido'?'Día de partido':'A por el día')))+'</h1>'+
+    '<div class="phase"><span class="pill">'+(ph.after?'Plan terminado':'Semana '+(w+1)+' de '+ph.total)+'</span><span class="pill gold">'+esc(ph.n)+'</span></div></div></section>';
+  h+='<div class="pad"><section class="sec"><div class="today">';
+  h+='<div class="ttype">'+typeDot(s.type)+'<span class="eyebrow">Tu sesión de hoy</span></div><h3>'+esc(ty.n)+'</h3><p class="sub">'+esc(ty.why)+'</p>';
+  h+='<div class="facts"><span class="fact"><b>'+s.est+'</b> min</span><span class="fact">'+esc(C.LOCSH[s.loc])+'</span><span class="fact">'+(s.mode==='pareja'?'Con compañero':'Solo')+'</span>'+(ty.int?'<span class="fact">Intensidad '+intens(ty.int)+'</span>':'')+'</div>';
+  if(pd.indexOf(k)>=0&&s.mode==='solo') h+='<p class="note info">Hoy es buen día para quedar con alguien que te tire. Si lo consigues, cambia a «Con alguien que me tira».</p>';
+  if(lg) h+='<div class="done-badge">✓ Sesión guardada · '+(lg.mins||0)+' min · esfuerzo '+(lg.rpe||'—')+'/10</div>';
+  h+='<button class="btn '+(lg?'ghost':'')+' full" data-a="open-ses" data-k="'+k+'">'+(lg?'Ver la sesión':(s.type==='descanso'?'Ver la movilidad opcional':'Empezar la sesión'))+'</button>';
+  if(!lg&&s.type!=='descanso') h+=dayControls(k,s);
+  h+='</div></section>';
+  // semana
+  h+='<section class="sec"><div class="sec-h"><h2>Esta semana</h2><span class="muted" style="font-size:13px">Toca un día</span></div><div class="week">';
+  for(var i=0;i<7;i++){var dk=C.addDays(ws,i),t=C.typeFor(p,S,dk),done=!!S.log[dk];
+    h+='<button class="wd'+(dk===k?' today-d':'')+(done?' done':'')+'" data-a="open-ses" data-k="'+dk+'" aria-label="'+esc(fmtDate(dk)+': '+C.TYPES[t].n+(done?', hecha':''))+'"><span class="l">'+C.DSH[i]+'</span><span class="n">'+C.parseKey(dk).getDate()+'</span>'+typeDot(t)+'<span class="s">'+(done?'Hecho':esc(shortType(t)))+'</span></button>';}
+  h+='</div></section>';
+  var sm=C.weekSummary(p,S,ws),streak=weeksStreak(),tot=totals();
+  h+='<section class="sec"><div class="stats"><div class="stat"><b>'+sm.done+'/'+sm.planned+'</b><span>sesiones esta semana</span></div><div class="stat"><b>'+sm.mins+'</b><span>minutos esta semana</span></div><div class="stat"><b>'+streak+'</b><span>semanas seguidas cumpliendo</span></div></div></section>';
+  var due=testDue();if(due) h+='<section class="sec"><div class="card"><div class="ttype"><span class="dot" style="--c:var(--gold)"></span><b>Toca test de progreso</b></div><p class="muted" style="font-size:14.5px">'+esc(due)+'</p><button class="btn small ghost" data-a="tab" data-v="progreso">Ir a los tests</button></div></section>';
+  if(P()&&curWeek()>=P().weeks) h+='<section class="sec"><div class="card"><b>Has terminado tu plan de '+P().weeks+' semanas</b><p class="muted" style="font-size:14.5px">Haz el test final y empieza un plan nuevo para subir de fase. Mientras tanto, seguimos con sesiones de mantenimiento.</p><button class="btn small" data-a="tab" data-v="perfil">Empezar un plan nuevo</button></div></section>';
+  var tip=C.TIPS[(Math.floor(C.daysBetween('2026-01-01',k))%C.TIPS.length+C.TIPS.length)%C.TIPS.length];
+  h+='<section class="sec"><div class="tip"><span class="eyebrow" style="color:var(--gold)">Dato del día</span><p>'+esc(tip.t)+'</p><span class="src">'+esc(tip.s)+'</span></div></section>';
+  if(tot.n===0) h+='<section class="sec"><p class="muted" style="font-size:14px">Tus sesiones, tu carga y tus tests aparecerán en Progreso en cuanto termines la primera.</p></section>';
+  return h+'</div>';
+}
+function shortType(t){return {fuerza:'Fuerza',tecnica:'Técnica',reaccion:'Reacción',activacion:'Activa',recuperacion:'Recup.',base:'Base',equipo:'Equipo',partido:'Partido',descanso:'Libre'}[t]||t;}
+function weeksStreak(){var p=P(),w=curWeek(),n=0;
+  var cur=C.weekSummary(p,S,weekStartOf(w));if(cur.planned&&cur.done/cur.planned>=0.8)n++;
+  for(var i=w-1;i>=0;i--){var s=C.weekSummary(p,S,weekStartOf(i));if(!s.planned)continue;if(s.done/s.planned>=0.8)n++;else break;}
+  return n;}
+function totals(){var n=0,m=0,l=0;Object.keys(S.log).forEach(function(k){var g=S.log[k];n++;m+=g.mins||0;l+=(g.mins||0)*(g.rpe||0);});return {n:n,m:m,l:l};}
+function testDue(){var p=P(),w=curWeek();if(w<0)return '';
+  var ws=weekStartOf(w),we=C.addDays(ws,6),any=false;
+  Object.keys(S.tests).forEach(function(id){(S.tests[id]||[]).forEach(function(r){if(r.d>=ws&&r.d<=we)any=true;});});
+  if(any)return '';
+  if(w===0)return 'Esta semana haz los tests de inicio: así sabrás cuánto mejoras.';
+  if(w%4===3)return 'Semana de descarga: es el momento de medir tu progreso.';
+  return '';}
+
+function sesHTML(){
+  var p=P(),k=U.date||today(),s=C.buildSession(p,S,k),ty=C.TYPES[s.type],lg=S.log[k],isToday=k===today();
+  var h='<div class="pad"><button class="back" data-a="tab" data-v="hoy">← Volver</button>';
+  h+='<div class="ttype">'+typeDot(s.type)+'<span class="eyebrow">'+esc(fmtDate(k))+(isToday?' · hoy':'')+'</span></div>';
+  h+='<h1 class="disp" style="font-size:44px;margin-top:6px">'+esc(ty.n)+'</h1><p class="muted" style="margin-top:6px">'+esc(ty.why)+'</p>';
+  h+='<div class="facts" style="margin-top:12px"><span class="fact"><b>'+s.est+'</b> min</span><span class="fact">'+esc(C.LOCSH[s.loc])+'</span><span class="fact">'+(s.mode==='pareja'?'Con compañero':'Solo')+'</span><span class="fact">'+esc(s.ph.n)+'</span></div>';
+  if(lg) h+='<div class="done-badge" style="margin-top:12px">✓ Guardada · '+(lg.mins||0)+' min · esfuerzo '+(lg.rpe||'—')+'/10'+(lg.note?' · «'+esc(lg.note)+'»':'')+'</div>';
+  if(!lg&&s.type!=='partido') h+='<div class="card" style="margin-top:12px">'+dayControls(k,s)+'</div>';
+  s.notes.forEach(function(n){h+='<p class="note" style="margin-top:10px">'+esc(n)+'</p>';});
+  var flat=[];
+  s.blocks.forEach(function(b){
+    h+='<section class="block"><div class="block-h"><h3>'+esc(b.n)+'</h3><span>≈ '+b.mins+' min</span></div>';
+    b.items.forEach(function(it){flat.push(it);h+=itemHTML(k,it,flat.length-1);});
+    h+='</section>';
+  });
+  if(!flat.length) h+='<p class="note">No encontramos ejercicios para este lugar con tu material. Prueba otro lugar o añade material en tu perfil.</p>';
+  if(flat.length) h+='<div class="sticky-act"><div class="g-nav"><button class="btn ghost" data-a="finish" data-k="'+k+'">'+(lg?'Editar registro':'Terminar')+'</button><button class="btn" data-a="guided" data-k="'+k+'">Modo guiado</button></div></div>';
+  return h+'</div>';
+}
+function itemHTML(k,it,idx){
+  var e=it.e,d=it.d,done=setsDone(k,e.id),ok=done>=d.sets;
+  var h='<article class="item'+(ok?' ok':'')+'" id="it-'+e.id+'"><button class="item-top" data-a="sheet" data-v="'+e.id+'" data-k="'+k+'"><span><h4>'+esc(e.n)+'</h4><span class="dose">'+esc(d.txt)+(d.rest&&!d.sec?' · descanso '+C.fmtSec(d.rest):'')+'</span></span><span class="more">Cómo</span></button>';
+  h+='<div class="sets" role="group" aria-label="Series">';
+  for(var i=0;i<d.sets;i++)h+='<button class="set" data-a="set" data-k="'+k+'" data-v="'+e.id+'" data-i="'+i+'" aria-pressed="'+(i<done)+'" aria-label="Serie '+(i+1)+'">'+(i+1)+'</button>';
+  if(d.sec)h+=timerBtn(k,e.id,d);
+  else if(d.rest)h+='<button class="tbtn rest" data-a="rest" data-k="'+k+'" data-v="'+e.id+'" data-s="'+d.rest+'" id="rb-'+e.id+'">Descanso '+C.fmtSec(d.rest)+'</button>';
+  h+='</div></article>';
+  return h;
+}
+function timerBtn(k,id,d){var done=setsDone(k,id);var run=T&&T.id===id&&T.k===k;
+  return '<button class="tbtn'+(run?' run':'')+'" data-a="timer" data-k="'+k+'" data-v="'+id+'" id="tb-'+id+'">'+(run?'❚❚ '+mm(T.rem):(done>=d.sets?'✓ Repetir':'▶ Serie '+(done+1)+' · '+mm(d.sec)))+'</button>';}
+function mm(s){s=Math.max(0,Math.ceil(s));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
+
+function planHTML(){
+  var p=P(),cw=curWeek(),w=U.planWeek==null?Math.max(0,cw):U.planWeek,total=p.weeks;
+  var h='<div class="pad"><section class="sec"><div class="sec-h"><h2>Tu plan</h2><span class="muted mono" style="font-size:12px">'+total+' semanas</span></div>';
+  h+='<div class="phases" aria-label="Fases del plan">';
+  for(var i=0;i<total;i++){var ph=C.phaseOf(p,i);h+='<i class="ph-'+ph.id+(i===cw?' cur':'')+'" title="'+esc('Semana '+(i+1)+': '+ph.n)+'">'+(i+1)+'</i>';}
+  h+='</div><div class="legend"><span><i class="ph-base"></i>Base</span>'+(total>4?'<span><i class="ph-des"></i>Desarrollo</span>':'')+(total>8?'<span><i class="ph-esp"></i>Específico</span>':'')+'<span><i class="ph-desc"></i>Descarga y test</span></div></section>';
+  var ph=C.phaseOf(p,w),ws=weekStartOf(w),pd=C.partnerDays(p,S,ws);
+  h+='<section class="sec"><div class="wnav"><button data-a="pw" data-v="-1" aria-label="Semana anterior">‹</button><div style="text-align:center"><b>Semana '+(w+1)+'</b><div class="muted" style="font-size:13px">'+esc(ph.n)+' · '+esc(C.PHASE_TXT[ph.id]||'')+'</div></div><button data-a="pw" data-v="1" aria-label="Semana siguiente">›</button></div>';
+  h+='<div class="plan-list">';
+  for(var j=0;j<7;j++){var k=C.addDays(ws,j),t=C.typeFor(p,S,k),done=!!S.log[k],mins=t==='descanso'?'—':(C.buildSession(p,S,k).est+' min');
+    h+='<button class="pl" style="text-align:left;cursor:pointer;width:100%" data-a="open-ses" data-k="'+k+'"><span class="d">'+C.DSH[j]+'</span><span><b>'+typeDot(t)+' '+esc(C.TYPES[t].n)+'</b><small>'+esc(fmtDate(k))+(pd.indexOf(k)>=0?' · ideal con compañero':'')+(done?' · hecha ✓':'')+'</small></span><span class="m">'+mins+'</span></button>';}
+  h+='</div>';
+  var m=C.matchFor(p,S,w),ov=S.weekMatch[w];
+  h+='<div class="card"><b>¿Cuándo es el partido esta semana?</b><p class="muted" style="font-size:14px">Si cambia, la semana se reordena sola.</p><div class="chips">'+
+    C.DSH.map(function(d,i){return '<button class="chip'+(ov!=null&&ov!=='none'&&+ov===i?' on':'')+'" data-a="wm" data-v="'+i+'">'+d+'</button>';}).join('')+
+    '<button class="chip'+(ov==='none'?' on':'')+'" data-a="wm" data-v="none">Sin partido</button><button class="chip'+(ov==null?' on':'')+'" data-a="wm" data-v="def">Como siempre</button></div>'+
+    '<p class="muted" style="font-size:13px">Ahora: '+(m==null?'sin partido':esc(C.DAYS[m]))+'</p></div></section>';
+  h+='<section class="sec"><div class="sec-h"><h2>Por qué cada día</h2></div><div class="card why">';
+  ['fuerza','tecnica','reaccion','activacion','recuperacion','base','equipo'].forEach(function(t){h+='<div>'+typeDot(t)+'<span><b>'+esc(C.TYPES[t].n)+'.</b> <span class="muted">'+esc(C.TYPES[t].why)+'</span></span></div>';});
+  h+='<p class="muted" style="font-size:13px">En porteros de Primera División la carga baja a medida que se acerca el partido y es mínima el día antes. Tu semana sigue esa lógica.</p></div></section>';
+  return h+'</div>';
+}
+
+function libHTML(){
+  var f=U.lib,cats=['all'].concat(Object.keys(C.CATS));
+  var h='<div class="pad"><section class="sec"><div class="sec-h"><h2>Ejercicios</h2><span class="count" id="libcount"></span></div>';
+  h+='<input type="search" id="libq" placeholder="Buscar: blocaje, caída, saque…" value="'+esc(f.q)+'" aria-label="Buscar ejercicios">';
+  h+='<div class="chips">'+cats.map(function(c){return '<button class="chip'+(f.cat===c?' on':'')+'" data-a="lf-cat" data-v="'+c+'">'+(c==='all'?'Todos':esc(C.CATS[c]))+'</button>';}).join('')+'</div>';
+  h+='<div class="chips">'+[['all','Solo o acompañado'],['solo','Para hacer solo'],['pareja','Con compañero']].map(function(m){return '<button class="chip'+(f.mode===m[0]?' on':'')+'" data-a="lf-mode" data-v="'+m[0]+'">'+m[1]+'</button>';}).join('')+'</div>';
+  h+='<div class="chips">'+[['all','Cualquier lugar']].concat(Object.keys(C.LOCSH).map(function(l){return [l,C.LOCSH[l]];})).map(function(m){return '<button class="chip'+(f.loc===m[0]?' on':'')+'" data-a="lf-loc" data-v="'+m[0]+'">'+esc(m[1])+'</button>';}).join('')+'</div>';
+  h+='<div class="lib-list" id="liblist"></div></section></div>';
+  return h;
+}
+function libList(){
+  var f=U.lib,q=f.q.trim().toLowerCase();
+  var norm=function(s){return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');};
+  var qq=norm(q);
+  var arr=C.EX.filter(function(e){
+    if(f.cat!=='all'&&e.cat!==f.cat)return false;
+    if(f.mode==='solo'&&e.mode==='pareja')return false;
+    if(f.mode==='pareja'&&e.mode==='solo')return false;
+    if(f.loc!=='all'&&e.loc!=='any'&&e.loc.indexOf(f.loc)<0)return false;
+    if(qq&&norm(e.n+' '+C.CATS[e.cat]+' '+(e.how||[]).join(' ')).indexOf(qq)<0)return false;
+    return true;});
+  var el=document.getElementById('liblist');if(!el)return;
+  el.innerHTML=arr.map(function(e){return '<button class="lib" data-a="sheet" data-v="'+e.id+'"><b>'+esc(e.n)+'</b><span class="tags"><span class="tag cat">'+esc(C.CATS[e.cat])+'</span>'+(e.mode==='pareja'?'<span class="tag pair">Con compañero</span>':'<span class="tag">Solo</span>')+locTag(e)+needTag(e)+'</span></button>';}).join('')||'<p class="muted">No hay ejercicios con esos filtros.</p>';
+  var c=document.getElementById('libcount');if(c)c.textContent=arr.length+' ejercicios';
+}
+var NEEDN={balon:'Balón',tenis:'Tenis',conos:'Conos',banda:'Banda',pesas:'Pesas',escalera:'Escalera',vallas:'Vallas',medicinal:'Medicinal',rebounder:'Red',esterilla:'Esterilla',pared:'Pared',rebote:'Pared o red',cesped:'Césped',blando:'Césped o esterilla',porteria:'Portería',barra:'Barra',mesa:'Mesa',gym:'Gimnasio',cajon:'Cajón',compa:'Compañero',ancla:'Sujeción',espacio:'Espacio'};
+function needTag(e){return e.need.map(function(n){return '<span class="tag">'+esc(n.split('|').map(function(x){return NEEDN[x]||x;}).join(' o '))+'</span>';}).join('');}
+function locTag(e){return e.loc==='any'?'':'<span class="tag">'+esc(e.loc.map(function(l){return C.LOCSH[l];}).join(', '))+'</span>';}
+
+function progHTML(){
+  var p=P(),tot=totals(),cw=curWeek();
+  var h='<div class="pad"><section class="sec"><div class="sec-h"><h2>Progreso</h2></div>';
+  h+='<div class="stats"><div class="stat"><b>'+tot.n+'</b><span>sesiones hechas</span></div><div class="stat"><b>'+tot.m+'</b><span>minutos en total</span></div><div class="stat"><b>'+weeksStreak()+'</b><span>semanas seguidas cumpliendo</span></div></div>';
+  h+='<p class="muted" style="font-size:13.5px">Cumplir es hacer al menos el 80 % de las sesiones de la semana. Fallar un día no rompe el hábito: lo que cuenta es volver al siguiente.</p></section>';
+  // gráfico de 8 semanas
+  var weeks=[],maxv=0;for(var i=Math.max(0,cw-7);i<=Math.max(0,cw);i++){var s=C.weekSummary(p,S,weekStartOf(i));weeks.push({w:i,m:s.mins,l:s.load,pl:s.planned,d:s.done});if(s.mins>maxv)maxv=s.mins;}
+  var top=Math.max(60,Math.ceil(maxv/60)*60),W=340,H=150,x0=34,y0=120,bw=(W-x0-8)/Math.max(weeks.length,1);
+  var svg='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Minutos entrenados por semana">';
+  [0,0.5,1].forEach(function(f){var y=y0-f*96;svg+='<line x1="'+x0+'" y1="'+y+'" x2="'+(W-6)+'" y2="'+y+'" style="stroke:var(--line);stroke-width:1"/><text x="'+(x0-6)+'" y="'+(y+3)+'" text-anchor="end">'+Math.round(top*f)+'</text>';});
+  weeks.forEach(function(wk,j){var hh=wk.m/top*96,x=x0+j*bw+bw*0.18,ww=bw*0.64;
+    svg+='<rect x="'+x.toFixed(1)+'" y="'+(y0-hh).toFixed(1)+'" width="'+ww.toFixed(1)+'" height="'+Math.max(0,hh).toFixed(1)+'" rx="3" style="fill:'+(wk.w===cw?'var(--gold)':'var(--purple-hi)')+'"/>';
+    svg+='<text x="'+(x+ww/2).toFixed(1)+'" y="'+(y0+14)+'" text-anchor="middle">S'+(wk.w+1)+'</text><text x="'+(x+ww/2).toFixed(1)+'" y="'+(y0+26)+'" text-anchor="middle">'+wk.d+'/'+wk.pl+'</text>';});
+  svg+='</svg>';
+  h+='<section class="sec"><div class="card chart"><b>Minutos por semana</b>'+svg+'<p class="muted" style="font-size:13px">Debajo de cada barra, sesiones hechas sobre previstas. Barra dorada: semana actual.</p></div></section>';
+  // tests
+  h+='<section class="sec"><div class="sec-h"><h2>Tests</h2><span class="muted" style="font-size:13px">Al empezar y cada 4 semanas</span></div><div class="tests">';
+  C.TESTS.forEach(function(t){var arr=(S.tests[t.id]||[]).slice().sort(function(a,b){return a.d<b.d?-1:1;});var last=arr.length?arr[arr.length-1]:null;
+    var best=null;arr.forEach(function(r){if(best==null||(t.up?r.v>best:r.v<best))best=r.v;});
+    h+='<div class="test"><div class="test-h"><b>'+esc(t.n)+'</b><span class="mono muted" style="font-size:12px">'+esc(t.u)+'</span></div>';
+    h+='<div class="test-v"><span>Última <strong>'+(last?fmtNum(last.v):'—')+'</strong></span><span class="best">Mejor <strong>'+(best!=null?fmtNum(best):'—')+'</strong></span><span>'+arr.length+' registros</span></div>';
+    if(arr.length>1)h+=spark(arr,t.up);
+    h+='<details><summary class="muted" style="font-size:13.5px;cursor:pointer">Cómo se hace</summary><p style="font-size:14px;margin-top:6px">'+esc(t.how)+'</p></details>';
+    h+='<div class="test-in"><input type="number" inputmode="decimal" step="any" id="tv-'+t.id+'" placeholder="Tu resultado" aria-label="Resultado de '+esc(t.n)+'"><button class="btn small" data-a="test-save" data-v="'+t.id+'">Guardar</button></div></div>';});
+  h+='</div></section>';
+  // historial
+  var ks=Object.keys(S.log).sort().reverse().slice(0,20);
+  h+='<section class="sec"><div class="sec-h"><h2>Historial</h2></div><div class="hist">'+(ks.length?ks.map(function(k){var g=S.log[k];return '<button class="hrow" style="text-align:left;cursor:pointer;width:100%" data-a="open-ses" data-k="'+k+'"><span class="mono">'+esc(k.slice(5).split('-').reverse().join('/'))+'</span><span>'+typeDot(g.type||'base')+' '+esc((C.TYPES[g.type]||{n:'Sesión'}).n)+(g.feel?' · <span class="muted">'+esc(g.feel)+'</span>':'')+'</span><span class="mono">'+(g.mins||0)+'′ · '+(g.rpe||'—')+'</span></button>';}).join(''):'<p class="muted">Aún no hay sesiones guardadas.</p>')+'</div></section>';
+  return h+'</div>';
+}
+function fmtNum(v){return (Math.round(v*100)/100).toString().replace('.',',');}
+function spark(arr,up){var vs=arr.map(function(r){return r.v;}),mn=Math.min.apply(null,vs),mx=Math.max.apply(null,vs),W=300,H=28;if(mx===mn){mx=mn+1;}
+  var pts=vs.map(function(v,i){var x=4+i*(W-8)/(vs.length-1),y=H-4-(v-mn)/(mx-mn)*(H-8);return x.toFixed(1)+','+y.toFixed(1);});
+  var lx=pts[pts.length-1].split(',');
+  return '<svg class="spark" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" aria-hidden="true"><polyline points="'+pts.join(' ')+'" style="fill:none;stroke:var(--purple-hi);stroke-width:2"/><circle cx="'+lx[0]+'" cy="'+lx[1]+'" r="3.5" style="fill:var(--gold)"/></svg>';}
+
+function perfilHTML(){
+  var p=P();
+  var h='<div class="pad"><section class="sec"><div class="sec-h"><h2>Tu perfil</h2></div><div class="card"><div class="kv">';
+  var rows=[['Nombre',p.name||'—'],['Entrenas',{solo:'Solo, por tu cuenta',pareja:'A veces con alguien',club:'Con tu equipo'}[p.who]],['Con quien te tire',['Ningún día','Un día por semana','Dos o más días'][p.partner]||'—'],
+    ['Días',p.days.map(function(d){return C.DAYS[d];}).join(', ')],['Equipo',p.teamDays.length?p.teamDays.map(function(d){return C.DAYS[d];}).join(', '):'—'],['Hora',{manana:'Mañana',mediodia:'Mediodía',tarde:'Tarde',noche:'Noche'}[p.time]||'—'],['Tiempo',p.mins+' min por sesión'],
+    ['Partido',p.match==null?'Sin partido semanal':C.DAYS[p.match]],['Lugares',p.locs.map(function(l){return C.LOCS[l];}).join(', ')],['Material',p.gear.length?p.gear.map(function(g){return C.GEAR[g];}).join(', '):'Ninguno'],
+    ['Nivel',C.LEVELS[p.level]],['Objetivos',p.goals.map(function(g){return C.GOALS[g].n;}).join(', ')],['Molestias',p.injuries.length?p.injuries.map(function(i){return C.INJ[i];}).join(', '):'Ninguna'],['Plan',p.weeks+' semanas desde el '+fmtDate(p.start).toLowerCase()]];
+  rows.forEach(function(r){h+='<div><span>'+esc(r[0])+'</span><b style="font-weight:600">'+esc(r[1])+'</b></div>';});
+  h+='</div><button class="btn full" data-a="redo">Repetir el test</button><p class="muted" style="font-size:13px">Tus sesiones y tests se conservan. El plan se recalcula con tus nuevas respuestas.</p></div></section>';
+  h+='<section class="sec"><div class="card"><b>Empezar un plan nuevo</b><p class="muted" style="font-size:14px">La semana 1 vuelve a ser esta semana. No se borra tu historial.</p>'+
+    (U.confirmNew?'<div class="row"><button class="btn small gold" data-a="newplan-yes">Sí, empezar hoy</button><button class="btn small ghost" data-a="newplan-no">Cancelar</button></div>':'<button class="btn small ghost" data-a="newplan">Empezar plan nuevo</button>')+'</div></section>';
+  if(!IN_CLAUDE){
+    var gst=G.status==='ok'?'Conectado: cada cambio se guarda también en tu hoja de Google.':(G.status==='conectando'?'Conectando…':(G.status.indexOf('error:')===0?G.status.slice(6):'Sin conectar. Tus datos se guardan solo en este navegador.'));
+    h+='<section class="sec"><div class="card"><b>Guardar en Google Sheets</b><p class="muted" style="font-size:14px">Pega la dirección de tu Apps Script y tu clave para tener tus datos en Google y en cualquier dispositivo. Los pasos están en el README del proyecto.</p>'+
+      '<label class="ctrl"><span>Dirección del script</span><input type="text" id="g-url" inputmode="url" autocomplete="off" placeholder="https://script.google.com/macros/s/…/exec" value="'+esc(G.url)+'"></label>'+
+      '<label class="ctrl"><span>Clave</span><input type="text" id="g-key" autocomplete="off" placeholder="La misma que pusiste en el script" value="'+esc(G.key)+'"></label>'+
+      '<p class="'+(G.status.indexOf('error:')===0?'note':'muted')+'" style="font-size:14px">'+esc(gst)+'</p>'+
+      '<div class="row"><button class="btn small" data-a="g-save">Conectar</button>'+(G.url?'<button class="btn small ghost" data-a="g-off">Desconectar</button>':'')+'</div></div></section>';
+  }
+  h+='<section class="sec"><div class="card"><b>Dónde se guardan tus datos</b><p class="muted" style="font-size:14px">'+(gOn()&&G.status==='ok'?'En este navegador y en tu hoja de Google: puedes abrir la app en otro dispositivo con la misma dirección y clave.':R.status==='cuenta'?'En tu cuenta de Claude y en este navegador: puedes abrir la app en otro dispositivo con la misma cuenta y seguir donde lo dejaste. Nadie más ve tus datos.':'En este navegador. Si lo borras o cambias de dispositivo, empezarás de cero.')+'</p>'+
+    (U.confirmDel?'<div class="row"><button class="btn small danger" data-a="del-yes">Borrar todo</button><button class="btn small ghost" data-a="del-no">Cancelar</button></div>':'<button class="btn small danger" data-a="del">Borrar mis datos</button>')+'</div></section>';
+  h+='<section class="sec"><div class="sec-h"><h2>La ciencia</h2></div><div class="ev">'+EVID.map(function(e){return '<article><h4>'+esc(e[0])+'</h4><p>'+esc(e[1])+'</p></article>';}).join('')+'</div>';
+  h+='<details class="acc"><summary>Fuentes</summary><ul class="srcs">'+SRC.map(function(s){return '<li><a href="'+s[1]+'" target="_blank" rel="noopener">'+esc(s[0])+'</a></li>';}).join('')+'</ul></details>';
+  h+='<p class="muted" style="font-size:13px">Esta app no sustituye a un entrenador ni a un profesional sanitario. Si algo duele de verdad, para y consulta.</p></section>';
+  return h+'</div>';
+}
+var EVID=[
+  ['Calidad antes que kilómetros','Un portero de élite recorre unos 4–6 km por partido y pasa casi todo el tiempo a baja intensidad. Lo decisivo son entre 2 y 10 paradas explosivas. Por eso tus sesiones son cortas, intensas y técnicas.'],
+  ['Tus movimientos clave','Sprints de 0 a 5 m, desplazamientos laterales, estiradas y saltos a una pierna. De ahí salen el trabajo a una pierna, la pliometría lateral y vertical y la batida con rodilla arriba.'],
+  ['La semana alrededor del partido','En porteros de Primera División la carga externa baja a medida que se acerca el partido y es la más baja el día antes. Los días de más carga están lejos del partido.'],
+  ['Potencia que alarga la estirada','Un programa de 12 semanas basado en la biomecánica de la estirada aumentó la velocidad lateral y la potencia del impulso. Sus autores lo traducen en unos 42 cm más de cobertura en un penalti.'],
+  ['Prevención que funciona','Aductor de Copenhague: 41 % menos problemas de ingle. Nórdico de isquiotibiales: hasta un 51 % menos lesiones de isquios. FIFA 11+: alrededor de un 30 % menos lesiones.'],
+  ['El hábito se construye a diario','Automatizar un hábito llevó una mediana de 66 días en un estudio, con mucha variación entre personas. Saltarse un día no lo rompió.'],
+  ['Lo que hacen los profesionales','Joan Garcia suma al gimnasio un trabajo neurovisual con pelotas de tenis y cambios de foco. Ter Stegen centra su físico en explosividad y movilidad con peso corporal.'],
+  ['Entrenar sin entrenador','Repeticiones de calidad, objetivos medibles, vídeo para revisarte y una rutina fija de días y horas. Es la base de cualquier guía de entrenamiento en solitario.']
+];
+var SRC=[
+  ['White y cols. (2018). Demandas del portero en partido y tests: revisión','https://rune.une.edu.au/web/handle/1959.11/31823'],
+  ['Casamichana y cols. (2023). Carga de porteros profesionales por día de la semana','https://pmc.ncbi.nlm.nih.gov/articles/PMC10955749'],
+  ['Science for Sport. Cinco habilidades de movimiento del portero','https://www.scienceforsport.com/goalkeeper-training-5-key-movement-skills-and-how-to-train-them/'],
+  ['Programa de fuerza y técnica para la estirada del portero','https://lida.sport-iat.de/ta/Record/4084406?lng=en'],
+  ['Harøy y cols. (2019). Programa de aductores y problemas de ingle','https://bjsm.bmj.com/content/53/3/150'],
+  ['Van Dyk y cols. (2019). Nórdico de isquiotibiales: metaanálisis','https://bjsm.bmj.com/content/53/21/1362'],
+  ['Revisión sistemática del FIFA 11+ (2017)','https://doaj.org/article/00aad083476b47949ba9852a60d5eecc'],
+  ['Lally y cols. (2010). Cuánto se tarda en crear un hábito','https://www.thebehavioralscientist.com/articles/how-long-to-form-a-habit'],
+  ['ARA. Los secretos de los reflejos de Joan Garcia','https://en.ara.cat/sports/the-secrets-of-feline-reflections-by-joan-garcia_1_5720834.amp.html'],
+  ['Freeletics. El programa de Marc-André ter Stegen','https://www.freeletics.com/en/blog/posts/training-journey-football-fit-marc-andre-ter-stegen/'],
+  ['Prime Focus Goalkeeping. Guía de entrenamiento en solitario','https://www.primefocusgoalkeeping.com/single-post/solo-goalkeeping-a-comprehensive-guide-on-how-to-master-goalkeeper-training-on-your-own'],
+  ['Keepersport. Técnica para atrapar centros','https://www.keepersport.net/keeperzone/keepertraining/catching-crosses-with-confidence-technique-timing-and-drills-for-the-modern-goalkeeper.html'],
+  ['Session Planner. Bloqueo o ir a los pies en el 1 contra 1','https://www.sportsessionplanner.com/s/KimKh/Block-vs-Smother.html'],
+  ['Session Planner. Progresión de caídas','https://www.sportsessionplanner.com/s/LsfY/Goalkeeping---Diving-Technique.html'],
+  ['iCoachFootball. Ejercicios de juego de pies del portero','https://www.icoachfootball.net/?p=5982']
+];
+
+/* ---------- Superposiciones ---------- */
+function sheetHTML(){
+  var sh=U.sheet;if(!sh)return '';var e=C.EXI[sh.id];if(!e)return '';
+  var dose='';if(sh.k&&P()){var s=C.buildSession(P(),S,sh.k);s.blocks.forEach(function(b){b.items.forEach(function(it){if(it.e.id===e.id)dose=it.d.txt+(it.d.rest&&!it.d.sec?' · descanso '+C.fmtSec(it.d.rest):'');});});}
+  var h='<div class="over" data-a="sheet-close"><div class="sheet" role="dialog" aria-modal="true" aria-label="'+esc(e.n)+'" data-stop="1"><span class="grab"></span>';
+  h+='<div class="tags"><span class="tag cat">'+esc(C.CATS[e.cat])+'</span>'+(e.mode==='pareja'?'<span class="tag pair">Con compañero</span>':'<span class="tag">Solo</span>')+locTag(e)+needTag(e)+'</div>';
+  h+='<h2>'+esc(e.n)+'</h2>'+(dose?'<p class="g-dose">'+esc(dose)+'</p>':'');
+  if(e.anim&&ANIM.has(e.anim))h+='<div class="anim"><svg viewBox="0 0 200 160" data-anim="'+e.anim+'" role="img" aria-label="Animación: '+esc(e.n)+'"></svg></div>';
+  if(e.how&&e.how.length)h+='<h3>Cómo se hace</h3><ol>'+e.how.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ol>';
+  if(e.cues.length)h+='<h3>Claves</h3><ul>'+e.cues.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>';
+  if(e.err.length)h+='<h3>Errores típicos</h3><ul>'+e.err.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>';
+  if(e.pair)h+='<h3>Con compañero</h3><p style="font-size:15px">'+esc(e.pair)+'</p>';
+  h+='<a class="yt" href="'+ytUrl(e.yt||e.n)+'" target="_blank" rel="noopener">Ver vídeos en YouTube ↗</a>';
+  h+='<button class="btn ghost full" data-a="sheet-close">Cerrar</button></div></div>';
+  return h;
+}
+function guidedHTML(){
+  var g=U.guided;if(!g)return '';var s=C.buildSession(P(),S,g.k),flat=[];s.blocks.forEach(function(b){b.items.forEach(function(it){flat.push({b:b.n,it:it});});});
+  if(!flat.length)return '';if(g.i>=flat.length)g.i=flat.length-1;var cur=flat[g.i],e=cur.it.e,d=cur.it.d,done=setsDone(g.k,e.id);
+  var h='<div class="full-over" role="dialog" aria-modal="true" aria-label="Modo guiado"><div class="full-in pad">';
+  h+='<div class="g-top"><span class="eyebrow">'+esc(cur.b)+' · '+(g.i+1)+' de '+flat.length+'</span><button class="btn small ghost" data-a="g-exit">Salir</button></div><div class="g-prog"><i style="width:'+((g.i+1)/flat.length*100).toFixed(1)+'%"></i></div>';
+  h+='<h2 class="g-name">'+esc(e.n)+'</h2><p class="g-dose">'+esc(d.txt)+(d.rest&&!d.sec?' · descanso '+C.fmtSec(d.rest):'')+'</p>';
+  if(e.anim&&ANIM.has(e.anim))h+='<div class="anim"><svg viewBox="0 0 200 160" data-anim="'+e.anim+'" role="img" aria-label="Animación: '+esc(e.n)+'"></svg></div>';
+  if(e.how&&e.how.length)h+='<ol style="margin:0;padding-left:20px;display:grid;gap:6px;font-size:15.5px">'+e.how.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ol>';
+  if(e.cues[0])h+='<p class="note info">'+esc(e.cues[0])+'</p>';
+  var run=T&&T.k===g.k&&T.id===e.id;
+  if(d.sec||run)h+='<div class="g-timer" id="gtimer">'+mm(run?T.rem:d.sec)+'</div>';
+  h+='<div class="sets" style="justify-content:center">';for(var i=0;i<d.sets;i++)h+='<button class="set" data-a="set" data-k="'+g.k+'" data-v="'+e.id+'" data-i="'+i+'" aria-pressed="'+(i<done)+'" aria-label="Serie '+(i+1)+'">'+(i+1)+'</button>';h+='</div>';
+  if(d.sec)h+='<button class="btn full'+(run?' ghost':'')+'" data-a="timer" data-k="'+g.k+'" data-v="'+e.id+'" id="gtb">'+(run?'Pausar':(done>=d.sets?'Repetir serie':'Empezar serie '+(done+1)))+'</button>';
+  else h+='<div class="g-nav"><button class="btn ghost" data-a="rest" data-k="'+g.k+'" data-v="'+e.id+'" data-s="'+(d.rest||45)+'">Descanso '+C.fmtSec(d.rest||45)+'</button><button class="btn" data-a="set-next" data-k="'+g.k+'" data-v="'+e.id+'">'+(done>=d.sets?'Hecho ✓':'Serie '+(done+1)+' hecha')+'</button></div>';
+  h+='<div class="g-nav" style="margin-top:auto"><button class="btn ghost" data-a="g-prev" '+(g.i===0?'disabled':'')+'>Anterior</button>'+(g.i<flat.length-1?'<button class="btn" data-a="g-next">Siguiente</button>':'<button class="btn gold" data-a="finish" data-k="'+g.k+'">Terminar sesión</button>')+'</div>';
+  h+='<a class="yt" href="'+ytUrl(e.yt||e.n)+'" target="_blank" rel="noopener">Ver vídeos en YouTube ↗</a></div></div>';
+  return h;
+}
+var FEELS=['Genial','Bien','Normal','Cansado','Con molestias'];
+var RPEL={1:'Muy fácil',2:'Muy fácil',3:'Fácil',4:'Fácil',5:'Moderado',6:'Algo duro',7:'Duro',8:'Muy duro',9:'Casi máximo',10:'Máximo'};
+function finishHTML(){
+  var f=U.finish;if(!f)return '';var s=C.buildSession(P(),S,f.k);
+  var h='<div class="over"><div class="sheet" role="dialog" aria-modal="true" aria-label="Guardar sesión" data-stop="1"><span class="grab"></span><p class="eyebrow" style="color:var(--gold)">'+esc(fmtDate(f.k))+'</p><h2>¿Cómo ha ido?</h2>';
+  h+='<h3>Esfuerzo de 1 a 10</h3><div class="rpe">';for(var i=1;i<=10;i++)h+='<button class="'+(f.rpe===i?'on':'')+'" data-a="f-rpe" data-v="'+i+'" aria-pressed="'+(f.rpe===i)+'">'+i+'</button>';h+='</div><p class="muted" style="font-size:13.5px">'+(f.rpe?esc(RPEL[f.rpe]):'Elige cuánto te ha costado la sesión en conjunto.')+'</p>';
+  h+='<h3>Sensación</h3><div class="chips" style="flex-wrap:wrap">'+FEELS.map(function(x){return '<button class="chip'+(f.feel===x?' on':'')+'" data-a="f-feel" data-v="'+esc(x)+'">'+esc(x)+'</button>';}).join('')+'</div>';
+  if(f.feel==='Con molestias')h+='<p class="note">Si el dolor dura varios días o es fuerte, para y consulta a un profesional. Puedes marcar la molestia en tu perfil para que el plan la tenga en cuenta.</p>';
+  h+='<h3>Minutos</h3><div class="chips">'+[s.est,20,30,45,60,90].filter(function(v,i,a){return a.indexOf(v)===i;}).map(function(m){return '<button class="chip'+(f.mins===m?' on':'')+'" data-a="f-mins" data-v="'+m+'">'+m+' min</button>';}).join('')+'</div>';
+  h+='<h3>Nota</h3><textarea id="f-note" maxlength="200" placeholder="Objetivo cumplido, corrección para mañana…">'+esc(f.note||'')+'</textarea>';
+  h+='<button class="btn gold full" data-a="f-save" '+(f.rpe?'':'disabled')+'>Guardar sesión</button><button class="btn ghost full" data-a="f-cancel">Volver</button>'+(S.log[f.k]?'<button class="btn small danger" data-a="f-del">Quitar el registro de este día</button>':'')+'</div></div>';
+  return h;
+}
+
+/* ---------- Temporizador ---------- */
+var T=null,ac=null,wl=null;
+function beep(fq,d,v){try{if(!ac){var A=window.AudioContext||window.webkitAudioContext;if(!A)return;ac=new A();}if(ac.state==='suspended')ac.resume();var o=ac.createOscillator(),g=ac.createGain(),t=ac.currentTime;o.type='sine';o.frequency.value=fq;g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(v||0.25,t+0.01);g.gain.exponentialRampToValueAtTime(0.0001,t+d);o.connect(g);g.connect(ac.destination);o.start(t);o.stop(t+d+0.05);}catch(e){}}
+function awake(on){try{if(on&&navigator.wakeLock&&!wl){navigator.wakeLock.request('screen').then(function(l){wl=l;}).catch(function(){});}if(!on&&wl){wl.release().catch(function(){});wl=null;}}catch(e){}}
+function stopTimer(){if(!T)return;clearInterval(T.iv);T=null;awake(false);}
+function startTimer(k,id,sec,kind){
+  stopTimer();beep(660,0.06,0.05);var end=performance.now()+sec*1000,last=-1;
+  T={k:k,id:id,kind:kind,rem:sec,iv:0};awake(true);
+  function upd(){if(!T)return;var rem=(end-performance.now())/1000;T.rem=rem;var s=Math.ceil(rem);
+    if(s!==last){last=s;if(s<=3&&s>=1)beep(520,0.12);paintTimer();}
+    if(rem<=0){beep(880,0.35);setTimeout(function(){beep(880,0.45);},420);try{if(navigator.vibrate)navigator.vibrate([200,100,200]);}catch(e){}
+      var kk=T.k,ii=T.id,kd=T.kind;stopTimer();
+      if(kd==='work'){var it=findItem(kk,ii);if(it){var n=Math.min(setsDone(kk,ii)+1,it.d.sets);setSets(kk,ii,n);}}
+      render();if(kd==='rest')toast('A por la siguiente serie');}}
+  upd();T.iv=setInterval(upd,200);render();
+}
+function paintTimer(){if(!T)return;var b=document.getElementById(T.kind==='work'?'tb-'+T.id:'rb-'+T.id);if(b){b.textContent=(T.kind==='work'?'❚❚ ':'Descanso ')+mm(T.rem);b.classList.add('run');}
+  var gt=document.getElementById('gtimer');if(gt)gt.textContent=mm(T.rem);}
+function findItem(k,id){var s=C.buildSession(P(),S,k),r=null;s.blocks.forEach(function(b){b.items.forEach(function(it){if(it.e.id===id)r=it;});});return r;}
+
+/* ---------- Render ---------- */
+function render(){
+  var app=document.getElementById('app');
+  if(!P()||U.ob){if(!U.ob)startOb(false);app.innerHTML='';renderOver();return;}
+  var v=U.view,body='';
+  if(v==='hoy')body=hoyHTML();else if(v==='sesion')body=sesHTML();else if(v==='plan')body=planHTML();else if(v==='ejercicios')body=libHTML();else if(v==='progreso')body=progHTML();else body=perfilHTML();
+  app.innerHTML='<div class="shell">'+topHTML()+'<main id="main">'+body+'</main></div>'+tabsHTML();
+  if(v==='ejercicios')libList();
+  renderOver();
+}
+function renderOver(){
+  var o=document.getElementById('over'),h='';
+  if(!P()||U.ob){h=U.ob?obHTML():'';}
+  else{h=guidedHTML()+sheetHTML()+finishHTML();}
+  if(U.toast)h+='<div class="toast" role="status">'+esc(U.toast)+'</div>';
+  o.innerHTML=h;ANIM.mount(o);
+  if(U.ob&&U.ob.stage==='gen')animGen();
+}
+function animGen(){var lis=document.querySelectorAll('#genlist li'),i=0;var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  (function step(){if(!U.ob||U.ob.stage!=='gen')return;if(i<lis.length){lis[i].classList.add('on');i++;setTimeout(step,reduce?60:380);}else setTimeout(function(){if(U.ob){U.ob.stage='done';renderOver();}},reduce?100:450);})();}
+
+/* ---------- Eventos ---------- */
+document.addEventListener('click',function(ev){
+  var t=ev.target.closest('[data-a]');if(!t)return;
+  var a=t.getAttribute('data-a'),v=t.getAttribute('data-v'),k=t.getAttribute('data-k');
+  if(a==='sheet-close'&&t.classList.contains('over')&&ev.target.closest('[data-stop]'))return;
+  switch(a){
+    case 'ob-next':obNext();break;
+    case 'ob-back':obBack();break;
+    case 'ob-opt':obOpt(v);break;
+    case 'ob-day':obDay(+v);break;
+    case 'ob-finish':U.ob=null;U.view='hoy';render();window.scrollTo(0,0);break;
+    case 'tab':U.view=v;U.sheet=null;if(v==='plan')U.planWeek=null;render();window.scrollTo(0,0);break;
+    case 'open-ses':U.date=k;U.view='sesion';render();window.scrollTo(0,0);break;
+    case 'd-mode':dayO(k).mode=v;save();render();break;
+    case 'd-loc':dayO(k).loc=v;save();render();break;
+    case 'd-mins':dayO(k).mins=+v;save();render();break;
+    case 'd-played':dayO(k).played=v==='1';if(v==='1')delete dayO(k).played;save();render();break;
+    case 'sheet':U.sheet={id:v,k:k};renderOver();break;
+    case 'sheet-close':U.sheet=null;renderOver();break;
+    case 'set':{var i=+t.getAttribute('data-i'),cur=setsDone(k,v);setSets(k,v,i<cur?i:i+1);render();break;}
+    case 'set-next':{var it=findItem(k,v);if(it){var n=setsDone(k,v);if(n<it.d.sets){setSets(k,v,n+1);if(n+1<it.d.sets&&it.d.rest)startTimer(k,v,it.d.rest,'rest');}}render();break;}
+    case 'timer':{if(T&&T.k===k&&T.id===v){stopTimer();render();break;}var it2=findItem(k,v);if(!it2)break;if(setsDone(k,v)>=it2.d.sets)setSets(k,v,0);startTimer(k,v,it2.d.sec,'work');break;}
+    case 'rest':{if(T&&T.k===k&&T.id===v&&T.kind==='rest'){stopTimer();render();break;}startTimer(k,v,+t.getAttribute('data-s')||45,'rest');break;}
+    case 'guided':U.guided={k:k,i:firstPending(k)};renderOver();break;
+    case 'g-exit':U.guided=null;render();break;
+    case 'g-prev':if(U.guided){U.guided.i=Math.max(0,U.guided.i-1);stopTimer();renderOver();var fo=document.querySelector('.full-over');if(fo)fo.scrollTop=0;}break;
+    case 'g-next':if(U.guided){U.guided.i++;stopTimer();renderOver();var fo2=document.querySelector('.full-over');if(fo2)fo2.scrollTop=0;}break;
+    case 'finish':{var lg=S.log[k]||{};var s=C.buildSession(P(),S,k);U.finish={k:k,rpe:lg.rpe||0,feel:lg.feel||'',mins:lg.mins||s.est,note:lg.note||''};renderOver();break;}
+    case 'f-rpe':U.finish.note=noteVal();U.finish.rpe=+v;renderOver();break;
+    case 'f-feel':U.finish.note=noteVal();U.finish.feel=v;renderOver();break;
+    case 'f-mins':U.finish.note=noteVal();U.finish.mins=+v;renderOver();break;
+    case 'f-cancel':U.finish=null;renderOver();break;
+    case 'f-save':{var f=U.finish,s2=C.buildSession(P(),S,f.k);S.log[f.k]={type:s2.type,mins:f.mins,rpe:f.rpe,feel:f.feel,note:noteVal().slice(0,200),loc:s2.loc,mode:s2.mode};save();U.finish=null;U.guided=null;stopTimer();render();toast(f.k===today()?'Sesión guardada. Mañana, más.':'Sesión guardada');break;}
+    case 'f-del':delete S.log[U.finish.k];save();U.finish=null;render();break;
+    case 'pw':{var cw=Math.max(0,curWeek()),w=(U.planWeek==null?cw:U.planWeek)+(+v);U.planWeek=Math.max(0,Math.min(P().weeks+1,w));render();break;}
+    case 'wm':{var w2=U.planWeek==null?Math.max(0,curWeek()):U.planWeek;if(v==='def')delete S.weekMatch[w2];else S.weekMatch[w2]=v==='none'?'none':+v;save();render();break;}
+    case 'lf-cat':U.lib.cat=v;render();break;
+    case 'lf-mode':U.lib.mode=v;render();break;
+    case 'lf-loc':U.lib.loc=v;render();break;
+    case 'test-save':{var inp=document.getElementById('tv-'+v),val=parseFloat(String(inp&&inp.value||'').replace(',','.'));if(!isFinite(val)){toast('Escribe un número');break;}S.tests[v]=S.tests[v]||[];S.tests[v].push({d:today(),v:val});save();render();toast('Resultado guardado');break;}
+    case 'redo':startOb(true);break;
+    case 'newplan':U.confirmNew=true;render();break;
+    case 'newplan-no':U.confirmNew=false;render();break;
+    case 'newplan-yes':P().start=C.mondayKey(today());P().created=today();S.weekMatch={};U.confirmNew=false;save();U.view='hoy';render();toast('Plan nuevo en marcha');break;
+    case 'g-save':{var gu=(document.getElementById('g-url')||{}).value||'',gk=(document.getElementById('g-key')||{}).value||'';gu=gu.trim();gk=gk.trim();
+      if(!/^https:\/\/script\.google\.com\/macros\/s\/[^\s]+\/exec$/.test(gu)){toast('La dirección debe acabar en /exec');break;}
+      if(gk.length<6){toast('Usa una clave de al menos 6 caracteres');break;}
+      G.url=gu;G.key=gk;try{localStorage.setItem(GKEY,JSON.stringify({url:gu,key:gk}));}catch(e){}
+      G.status='conectando';render();gPull().then(function(ok){render();toast(ok?'Conectado con Google Sheets':'No se pudo conectar');});break;}
+    case 'g-off':G.url='';G.key='';G.status='';try{localStorage.removeItem(GKEY);}catch(e){}render();break;
+    case 'del':U.confirmDel=true;render();break;
+    case 'del-no':U.confirmDel=false;render();break;
+    case 'del-yes':stopTimer();S=blank();save();U.confirmDel=false;U.view='hoy';U.ob=null;render();break;
+  }
+});
+document.addEventListener('input',function(ev){
+  if(ev.target.id==='libq'){U.lib.q=ev.target.value;libList();}
+  if(ev.target.id==='ob-name'&&U.ob){U.ob.a.name=ev.target.value;}
+});
+document.addEventListener('keydown',function(ev){if(ev.key==='Escape'){if(U.sheet){U.sheet=null;renderOver();}else if(U.finish){U.finish=null;renderOver();}}if(ev.key==='Enter'&&ev.target.id==='ob-name'){obNext();}});
+function noteVal(){var n=document.getElementById('f-note');return n?n.value:(U.finish&&U.finish.note)||'';}
+function firstPending(k){var s=C.buildSession(P(),S,k),i=0,r=0,found=false;s.blocks.forEach(function(b){b.items.forEach(function(it){if(!found&&setsDone(k,it.e.id)<it.d.sets){r=i;found=true;}i++;});});return r;}
+function obNext(){var o=U.ob;if(o.stage==='intro'){o.stage='q';o.step=0;renderOver();return;}
+  var qs=visQ(o.a),q=qs[o.step];if(q&&q.type==='text'){var inp=document.getElementById('ob-name');if(inp)o.a.name=inp.value;}
+  if(q&&!qValid(q,o.a))return;
+  if(o.step<qs.length-1){o.step++;renderOver();var ob=document.querySelector('.ob');if(ob)ob.scrollTop=0;return;}
+  S.profile=buildProfile(o.a);save();
+  if(o.editing){U.ob=null;U.view='hoy';render();toast('Plan actualizado');return;}
+  o.stage='gen';render();}
+function obBack(){var o=U.ob;if(o.step===0){if(o.editing){U.ob=null;render();return;}o.stage='intro';renderOver();return;}o.step--;renderOver();}
+function obOpt(v){var o=U.ob,q=visQ(o.a)[o.step];
+  var opt=q.opts.filter(function(x){return String(x[0])===v;})[0];if(!opt)return;var val=opt[0];
+  if(q.type==='one'){o.a[q.id]=val;renderOver();return;}
+  var arr=(o.a[q.id]||[]).slice(),i=arr.indexOf(val);
+  if(i>=0)arr.splice(i,1);else{
+    if(q.none&&val===q.none)arr=[val];else{if(q.none){var ni=arr.indexOf(q.none);if(ni>=0)arr.splice(ni,1);}if(q.max&&arr.length>=q.max)return;arr.push(val);}}
+  o.a[q.id]=arr;renderOver();}
+function obDay(d){var o=U.ob,q=visQ(o.a)[o.step],arr=(o.a[q.id]||[]).slice(),i=arr.indexOf(d);if(i>=0)arr.splice(i,1);else arr.push(d);o.a[q.id]=arr.sort();renderOver();}
+
+render();
+})();
+</script>
+<script>
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
+</script>
+</body>
+</html>
