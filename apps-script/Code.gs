@@ -22,7 +22,8 @@ const TIPOS = {
   base: 'Técnica base y prevención',
   equipo: 'Complemento al entreno',
   partido: 'Día de partido',
-  descanso: 'Descanso'
+  descanso: 'Descanso',
+  especial: 'Rutina especial'
 };
 const LUGARES = { campo: 'Campo', parque: 'Parque', gimnasio: 'Gimnasio', pared: 'Pared', casa: 'Casa' };
 const TESTS = {
@@ -144,7 +145,7 @@ function escribirHojas_(estado) {
     const rpe = Number(s.rpe) || 0;
     return [
       fecha,
-      TIPOS[s.type] || s.type || '',
+      s.title || TIPOS[s.type] || s.type || '',
       min,
       rpe,
       min * rpe,

@@ -2,6 +2,8 @@
 
 App web para porteros que entrenan sin entrenador de porteros. Un test inicial de opción múltiple (con quién entrenas, dónde, cuándo, con qué material, tu nivel y tus objetivos) genera un plan por semanas organizado alrededor del día de partido. Cada día tienes tu sesión con series, temporizador, modo guiado y vídeos de referencia, además de una biblioteca de más de 100 ejercicios, tests de progreso e historial.
 
+Para casos puntuales (una prueba o un partido mañana, agujetas o la vuelta tras un parón) tiene una **rutina especial**: un test corto que crea la sesión de hoy y los días hasta la prueba o el partido, con los ejercicios de la categoría **Agujetas y víspera**.
+
 Funciona en el móvil como una app: se instala en la pantalla de inicio y abre sin conexión después de la primera visita.
 
 ## Archivos
