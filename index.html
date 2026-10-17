@@ -351,6 +351,27 @@ details.fold.bad>summary{color:var(--bad)}
 .cta-row small{display:block;color:var(--muted);font-size:13px;line-height:1.35}
 .cta-ic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:rgba(227,107,208,.18);color:var(--t-especial)}
 .cta-ic svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+/* Guía */
+.ggrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.gcard{display:grid;gap:4px;align-content:start;text-align:left;cursor:pointer;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;min-height:128px}
+.gcard b{font-size:16.5px}
+.gcard small{color:var(--muted);font-size:12.5px;line-height:1.35}
+.gic{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:color-mix(in srgb,var(--gc) 18%,transparent);color:var(--gc);margin-bottom:6px}
+.gic svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.dgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.dtable{display:grid;gap:4px}
+.dtable .dh,.dtable .dr{display:grid;grid-template-columns:minmax(0,1.5fr) repeat(4,minmax(0,1fr));gap:4px;align-items:center;font-size:13px}
+.dtable .dh{font-family:var(--f-mono);font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;padding:0 10px}
+.dtable .dr{text-align:left;cursor:pointer;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px}
+.dtable .dr.on{border-color:var(--t-fuerza);background:rgba(236,138,112,.1)}
+.dtable .dr span:first-child{font-weight:700}
+.topr{display:flex;align-items:center;gap:10px}
+.topbtn{width:36px;height:36px;border-radius:50%;border:1px solid var(--line-2);background:var(--surface);display:grid;place-items:center;cursor:pointer;color:var(--lav);padding:0}
+.topbtn svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.topbtn.on{border-color:var(--gold);color:var(--gold)}
+.cta-row.lect{background:var(--surface);border-color:var(--line)}
+.cta-row.lect .cta-ic{background:rgba(203,182,244,.12);color:var(--lav)}
+@media (max-width:360px){.dgrid{grid-template-columns:1fr 1fr}.ggrid{grid-template-columns:1fr}}
 .cta-row.alt{background:linear-gradient(135deg,rgba(98,198,234,.14),rgba(23,15,38,.92) 62%);border-color:rgba(98,198,234,.4)}
 .cta-row.alt .cta-ic{background:rgba(98,198,234,.16);color:var(--t-reaccion)}
 .card ol{margin:0;padding-left:18px;display:grid;gap:6px;font-size:14px}
@@ -394,7 +415,7 @@ var GEAR={balon:'Un balón',balones:'Varios balones',tenis:'Pelotas de tenis',co
 var GOALS={manos:{n:'Blocaje y manos',cat:'man'},caidas:{n:'Estiradas y caídas',cat:'cai'},aereo:{n:'Juego aéreo y centros',cat:'aer'},uno:{n:'1 contra 1',cat:'uno'},pies:{n:'Juego de pies y saques',cat:'dis'},reflejos:{n:'Reflejos y reacción',cat:'rea'},potencia:{n:'Potencia y salto',cat:'pot'},cabeza:{n:'Confianza y cabeza',cat:'men'}};
 var INJ={hombro:'Hombro',muneca:'Muñeca o dedos',espalda:'Espalda',cadera:'Cadera o ingle',rodilla:'Rodilla',tobillo:'Tobillo'};
 var LEVELS=['Empezando','Amateur o regional','Semiprofesional','Alto nivel'];
-var CATS={agu:'Agujetas y víspera',cal:'Calentamiento',mov:'Movilidad y recuperación',man:'Blocaje y manos',cai:'Caídas y estiradas',aer:'Juego aéreo',uno:'1 contra 1',pie:'Desplazamientos',rea:'Reacción',dis:'Juego de pies y saques',pot:'Potencia',fue:'Fuerza',pre:'Prevención',men:'Cabeza',pp:'Día de partido'};
+var CATS={agu:'Agujetas y víspera',cal:'Calentamiento',mov:'Movilidad y recuperación',man:'Blocaje y manos',cai:'Caídas y estiradas',aer:'Juego aéreo',uno:'1 contra 1',pie:'Desplazamientos',rea:'Reacción',coo:'Coordinación',dis:'Juego de pies y saques',pot:'Potencia',fue:'Fuerza',pre:'Prevención',men:'Cabeza',pp:'Día de partido'};
 var TYPES={
   fuerza:{n:'Fuerza y potencia',s:'Piernas, tronco y saltos de calidad',int:3,why:'Lejos del partido hay margen para cargar. Fuerza de piernas y tronco y saltos de calidad: el motor de la estirada.'},
   tecnica:{n:'Técnica intensa',s:'Caídas, juego aéreo y 1 contra 1',int:3,why:'El día de más volumen técnico: caídas, salidas y duelos, con tiempo para recuperar antes del partido.'},
@@ -742,6 +763,43 @@ X('agu-contraste','agu','Ducha de contraste',{int:1,t:8,d:D([4,4,4,4],null,'cicl
   how:['1 minuto de agua caliente y 1 minuto de agua fría sobre las piernas.','4 ciclos, terminando en frío.'],
   cues:['Fue la técnica con más respaldo justo después del esfuerzo.'],err:['Agua demasiado caliente o helada.'],yt:'ducha de contraste recuperación'}),
 
+/* Mente: activación y concentración */
+X('men-palabra','men','Palabras clave y autodiálogo',{int:1,t:2,d:D([1,1,1,1],null,'',0,60),
+  how:['Elige tres palabras cortas para tres momentos: antes del golpeo («ataca»), al blocar («blando») y tras un error («siguiente»).','Dilas en voz baja mientras haces 10 acciones en sombra.'],
+  cues:['Para la técnica, palabras que te digan qué hacer; para la intensidad, palabras que te activen.'],err:['Frases largas o en negativo («no falles»).'],yt:'autodiálogo deportistas palabras clave'}),
+X('men-activa','men','Activación de un minuto',{int:1,t:1,d:D([1,1,1,1],null,'',0,60),
+  how:['20 s de pies rápidos en el sitio.','Tres saltos con los brazos arriba y una palmada a los guantes.','Tu frase en voz alta.'],
+  cues:['Úsala si te notas plano antes de salir al campo.'],err:['Pasarte de vueltas si ya estás nervioso: entonces, respiración lenta.'],yt:'activación precompetitiva deportistas'}),
+X('men-foco','men','Foco amplio y foco estrecho',{int:1,t:2,d:D([1,1,1,1],null,'',0,120),
+  how:['20 s mirando todo el campo: compañeros, rivales y espacios (foco amplio).','10 s mirando solo el balón o un punto (foco estrecho). Alterna cuatro veces.'],
+  cues:['Balón lejos: foco amplio y voz. Balón cerca: foco estrecho en el balón.'],err:['Quedarte mirando al rival en vez del balón.'],yt:'atención foco amplio estrecho deporte'}),
+X('men-quieteye','men','Mirada quieta antes del golpeo',{need:['balon','rebote'],int:1,t:3,d:D([2,2,2,2],'8','',30),anim:'qeye',
+  how:['Contra la pared o con alguien que te tire.','Fija la mirada en el balón justo antes del golpeo, quédate quieto un instante y haz el set.','Bloca y repite.'],
+  cues:['Ojos quietos en el balón, no en la cara del rival.'],err:['Moverte antes del golpeo.'],pair:'Tu compañero golpea a distintas alturas; tú fijas la mirada en el balón antes de cada golpeo.',yt:'quiet eye training goalkeeper'}),
+X('men-penalti','men','Rutina de penalti',{int:1,t:2,d:D([1,1,1,1],null,'',0,120),
+  how:['Antes: respira 4-6 y decide tu plan (elegir lado o esperar).','En la línea: mira la pierna de apoyo, la cadera y el balón, no los ojos del lanzador.','Espera lo más posible y sal en diagonal hacia delante.'],
+  cues:['Los porteros expertos miran sobre todo la pierna de apoyo, la de golpeo y el balón.'],err:['Moverte antes de tiempo y regalar el lado.'],yt:'portero penaltis rutina'}),
+X('men-dormir','men','Visualización antes de dormir',{int:1,t:5,d:D([1,1,1,1],null,'',0,300),
+  how:['Tumbado, cinco respiraciones lentas.','Repasa tu próxima sesión o partido: tres acciones bien hechas con todo detalle y tu reacción tras un error.'],
+  cues:['Imagínalo en primera persona, como si lo vieras con tus ojos.'],err:[],yt:'visualización deportiva antes de dormir'}),
+
+/* Coordinación */
+X('coo-malabar','coo','Malabares con dos pelotas',{need:['tenis'],int:1,t:3,d:D([2,3,3,4],null,'por mano',20,30),
+  how:['Dos pelotas en una mano: lanza una y, cuando baje, lanza la otra y atrapa la primera.','30 s por mano. Si se te caen mucho, empieza con una pelota en cada mano.'],
+  cues:['Lanzamientos a la altura de los ojos, siempre iguales.'],err:['Lanzar muy alto y perder el ritmo.'],yt:'malabares dos pelotas una mano tutorial'}),
+X('coo-palmada','coo','Lanza, palmada y atrapa',{need:['tenis|balon'],int:1,t:2,d:D([2,2,3,3],'10','',20),
+  how:['Lanza la pelota un metro por encima de la cabeza.','Da una palmada, o dos, o toca el suelo, y atrápala antes de que caiga.'],
+  cues:['Ojos en la pelota mientras haces la tarea.'],err:['Lanzar tan alto que pierdes la pelota de vista.'],yt:'ejercicios coordinación pelota palmada'}),
+X('coo-debil','coo','Solo con la mano débil',{need:['tenis','pared'],int:1,t:3,d:D([2,2,3,3],null,'',20,30),
+  how:['A 2 m de la pared: lanza y atrapa solo con tu mano débil.','Después lanza con la buena y atrapa con la débil.'],
+  cues:['La mano débil decide muchas paradas a tu lado malo.'],err:['Ayudarte con la otra mano.'],yt:'coordinación mano no dominante pelota pared'}),
+X('coo-escalera','coo','Escalera y atrape',{need:['escalera'],int:2,t:4,d:D([3,3,4,4],'2','pasadas',30),
+  how:['Una pasada por la escalera y, al salir, set y atrape: el balón de un compañero o una pelota de tenis contra la pared.'],
+  cues:['Pies rápidos, cabeza quieta al salir.'],err:['Mirar al suelo al salir de la escalera.'],yt:'escalera agilidad portero atrape'}),
+X('coo-colores','coo','Pelotas de colores con compañero',{need:['tenis'],mode:'pareja',int:1,t:3,d:D([2,3,3,3],null,'',30,30),
+  how:['Tu compañero tiene dos pelotas de distinto color y dice un color al soltarlas: atrapa solo esa.','Varía alturas y lados.'],
+  cues:['Decide rápido y mano rápida.'],err:['Atrapar las dos por inercia.'],yt:'reaction ball colours goalkeeper drill'}),
+
 /* Día de partido */
 X('pp-mov','pp','Movilidad y activación',{int:1,t:4,d:D([1,1,1,1],null,'',0,240),anim:'march',how:['Tobillos, cadera, hombros y muñecas; activación con banda si la llevas.'],cues:['Sin prisa.'],yt:'calentamiento portero partido'}),
 X('pp-manos','pp','Blocajes suaves a corta distancia',{int:1,t:4,d:D([1,1,1,1],null,'',0,240),anim:'catchW',how:['Con quien te tire, contra una pared o contra la red.','Rasos, medios y altos, de menos a más fuerza.'],cues:['Sensación de manos, no esfuerzo.'],yt:'calentamiento portero blocajes'}),
@@ -776,6 +834,8 @@ var ANIM_MAP={
   'agu-marcha':'march','agu-masaje-manos':'handmassage','agu-pasos-banda':'bandwalk','agu-puente':'bridge','agu-aperturas':'pullapart','agu-arranque':'burst','agu-w-rodillas':'catchWk','agu-cesta-rodillas':'catchCk','agu-tenis-rodillas':'tennis1k',
   'agu-saque':[['roll','Rodado'],['overarm','Por encima del hombro']],'agu-voz':'voice','agu-ensayo':'visual','agu-respira':'breath','agu-pies-suaves':'passwall',
   'agu-rodillo':'roller','agu-espalda':'backball','agu-calor':'heat','agu-frio':'coldbath','agu-contraste':'shower',
+  'men-palabra':'cue','men-activa':'hops','men-foco':'eyes','men-quieteye':'qeye','men-penalti':'dive_shot','men-dormir':'legsup',
+  'coo-malabar':'juggle','coo-palmada':'clap','coo-debil':'tennis1','coo-escalera':'ladder','coo-colores':'ptennis',
   'pp-mov':'march','pp-manos':'catchW','pp-desp':'shuffle','pp-caidas':[['dive_knee','Desde rodillas'],['dive_squat','Desde cuclillas'],['dive_set','De pie']],'pp-todas':'pmix','pp-aereo':'aero','pp-tiros':[['pmix','Tiros'],['longkick','Saques largos']],'pp-cabeza':'visual'
 };
 for(var amid in ANIM_MAP){if(EXI[amid])EXI[amid].anim=ANIM_MAP[amid];}
@@ -997,6 +1057,70 @@ var RUT=[
    why:'La ducha de contraste fue lo que más alivió justo después del esfuerzo. Terminas con piernas en alto para soltar del todo.',
    b:[['Mover',[[RR('agu-marcha',1,null,'',0,120,2)]]],['Agua',[[RR('agu-contraste',4,null,'ciclos',0,120,8,'4 ciclos · 1 min caliente + 1 min fría')]]],['Masaje',[MASS_SHORT]],['Calma',[[RR('mov-piernas',1,null,'',0,120,2)]]]]}
 ];
+RUT.forEach(function(r){r.cat='agu';});
+/* Mente, coordinación y «entrena como» */
+var MEN_EV=[['Rutinas antes de actuar','Una secuencia fija antes de la acción (respirar, palabra, mirada) ayuda a mantener la concentración y la confianza bajo presión.'],
+  ['Autodiálogo','En un metaanálisis de 32 estudios, hablarse con palabras clave mejoró el rendimiento: instrucciones para la técnica, frases que activan para la intensidad.'],
+  ['Respiración lenta','Soltar el aire más despacio de lo que lo coges baja la activación cuando hay nervios.'],
+  ['Mirada quieta','Fijar la vista en el objetivo justo antes de la acción protege el rendimiento con ansiedad; en penaltis, los porteros expertos miran la pierna de apoyo, la de golpeo y el balón.'],
+  ['Penaltis','Colocarte un poco descentrado, sin que se note, hace que el lanzador tire más hacia el lado grande.']];
+var MEN_SRC=[['Hatzigeorgiadis y cols. (2011). Autodiálogo y rendimiento: metaanálisis','https://ir.lib.uth.gr/xmlui/handle/11615/28461'],
+  ['Savelsbergh y cols. (2002). Mirada y anticipación en porteros expertos','https://research.vu.nl/en/publications/anticipation-and-visual-search-behaviour-in-expert-soccer-goalkee/'],
+  ['Masters, van der Kamp y Jackson (2007). Porteros descentrados y dirección del penalti','https://repository.lboro.ac.uk/articles/journal_contribution/Imperceptibly_off-center_goalkeepers_influence_penalty-kick_direction_in_soccer/9617456'],
+  ['Wilson, Wood y Vine (2009). Ansiedad y atención en los penaltis','https://ore.exeter.ac.uk/repository/handle/10036/3053']];
+var COO_EV=[['Pelota pequeña, más precisión','Las pelotas de tenis obligan a afinar ojos y manos más que el balón; por eso las usan muchos porteros de élite.'],
+  ['Trabajo neurovisual','Joan Garcia combina el gimnasio con ejercicios de seguir objetos, cambiar el foco y atrapar pelotas de tenis.'],
+  ['Mano débil','Las paradas a tu lado malo dependen de ella: entrénala aparte.']];
+var COO_SRC=[['ARA. Los secretos de los reflejos de Joan Garcia','https://en.ara.cat/sports/the-secrets-of-feline-reflections-by-joan-garcia_1_5720834.amp.html'],
+  ['Keepersport. Coordinación óculo-manual en el portero','https://www.keepersport.net/keeperzone/keepertraining/hand-eye-coordination-the-underrated-skill-that-determines-whether-a-shot-is-saved-or-a-goal-is-scored.html'],
+  ['Session Planner. Coordinación y reacción para porteros','https://sportsessionplanner.com/s/pZfri/Hand-Eye-Coordination-and-Reaction.html']];
+RUT=RUT.concat([
+  {id:'mente-pre',cat:'men',n:'Activación antes del partido',para:'En el vestuario o antes de calentar',mins:7,
+   why:'Respiras para centrarte, ves en tu cabeza tres acciones, eliges tus palabras y te activas: llegas al calentamiento con la cabeza en el partido.',
+   b:[['Centrarte',[[RR('agu-respira',1,null,'',0,60,1,'1 min')]]],['Imaginar',[[RR('men-visual',1,null,'',0,120,2)]]],['Palabras',[[RR('men-palabra',1,null,'',0,60,1)]]],['Activarte',[[RR('men-activa',1,null,'',0,60,1)],[RR('men-quieteye',1,'8','',0,0,2),RR('men-foco',1,null,'',0,60,1,'1 min')]]]]},
+  {id:'mente-nervios',cat:'men',n:'Calmar los nervios',para:'Cuando notas el corazón a mil',mins:6,
+   why:'Respiración larga para bajar pulsaciones, foco en lo que controlas y una palabra que te devuelva al presente.',
+   b:[['Respirar',[[RR('agu-respira',1,null,'',0,120,2)]]],['Foco',[[RR('men-foco',1,null,'',0,120,2)]]],['Palabras',[[RR('men-palabra',1,null,'',0,60,1)]]],['Reinicio',[[RR('men-reinicio',1,null,'',0,60,1)]]]]},
+  {id:'mente-error',cat:'men',n:'Reinicio tras un error',para:'Ensáyalo para que salga solo en el partido',mins:5,
+   why:'Un error no puede costar dos goles. Ensayar un gesto, una palabra y la mirada a la siguiente acción lo vuelve automático.',
+   b:[['Ensayo',[[RR('men-reinicio',3,null,'',0,60,3,'3 × 1 min')]]],['En acción',[[RR('man-sombra',1,null,'con reinicio entre series',0,60,1,'1 min con reinicio entre series')]]],['Palabras',[[RR('men-palabra',1,null,'',0,60,1)]]]]},
+  {id:'mente-penaltis',cat:'men',n:'Rutina de penaltis',para:'Para tandas o penaltis durante el partido',mins:8,
+   why:'Decide tu plan antes, mira la pierna de apoyo y la cadera, espera y sal hacia delante. La calma también se entrena.',
+   b:[['Respirar',[[RR('agu-respira',1,null,'',0,60,1,'1 min')]]],['Rutina',[[RR('men-penalti',3,null,'',0,60,3,'3 × 1 min')]]],['Mirada',[[RR('men-quieteye',2,'6','',20,0,2),RR('men-foco',1,null,'',0,120,2)]]],['Imaginar',[[RR('men-visual',1,null,'',0,60,1,'1 min: tres penaltis parados')]]]]},
+  {id:'mente-noche',cat:'men',n:'Visualización antes de dormir',para:'La noche antes de un partido o una prueba',mins:10,
+   why:'Bajar pulsaciones y ensayar en tu cabeza: llegas con las acciones ya «vividas» y duermes mejor.',
+   b:[['Soltar',[[RR('mov-piernas',1,null,'',0,180,3)]]],['Respirar',[[RR('agu-respira',1,null,'',0,120,2)]]],['Imaginar',[[RR('men-dormir',1,null,'',0,300,5)]]]]},
+  {id:'coo-tenis',cat:'coo',need:'pelotas de tenis',needG:['tenis'],n:'Pelotas de tenis en 12 minutos',para:'Contra una pared, en casa o en un frontón',mins:12,
+   why:'De lo fácil a lo difícil: una mano, cruzado, dos pelotas, malabares y rebotes impredecibles.',
+   b:[['Entrar en calor',[[RR('cal-tenis',1,null,'',0,120,2)]]],['Una y dos manos',[[RR('rea-t1',4,null,'alternando mano',15,30,2),RR('rea-drop',2,'10','por mano',20,0,2)],[RR('rea-tx',2,null,'',15,30,2),RR('coo-palmada',2,'10','',20,0,2)],[RR('rea-t2',2,null,'',15,30,2)]]],['Malabares',[[RR('coo-malabar',2,null,'por mano',20,30,2)]]],['Imprevisto',[[RR('rea-esq',2,null,'',15,30,2),RR('rea-drop',2,'10','por mano',20,0,2)]]]]},
+  {id:'coo-debil',cat:'coo',need:'pelotas de tenis',needG:['tenis'],n:'Mano débil y cruces',para:'Para igualar tus dos lados',mins:10,
+   why:'Muchas paradas se pierden por el lado malo: aquí la mano débil trabaja sola y cruzada.',
+   b:[['Mano débil',[[RR('coo-debil',3,null,'',20,30,3),RR('rea-drop',3,'10','solo mano débil',20,0,3)]]],['Cruces',[[RR('rea-tx',3,null,'',20,30,3),RR('coo-palmada',2,'10','atrapa con la débil',20,0,2)]]],['Suelta y atrapa',[[RR('rea-drop',2,'10','por mano',20,0,2)]]],['Palmadas',[[RR('coo-palmada',2,'10','',20,0,2)]]]]},
+  {id:'coo-pies',cat:'coo',locs:['campo','parque','pared','gimnasio','casa'],n:'Pies y manos',para:'Escalera, desplazamientos y atrapes',mins:14,
+   why:'La coordinación del portero empieza en los pies: llegar bien colocado y con la cabeza quieta para atrapar.',
+   b:[['Pies',[[RR('pie-escalera',3,'2','pasadas',30,0,4),RR('pie-lateral',3,null,'',30,20,3)]]],['Pies y manos',[[RR('coo-escalera',3,'2','pasadas',30,0,4),RR('man-lateral',2,'5','por lado',30,0,3),RR('man-sombra',3,null,'',20,30,2)]]],['Ojos y manos',[[RR('rea-t1',4,null,'alternando mano',15,30,2),RR('rea-drop',2,'10','por mano',20,0,2)]]],['Equilibrio',[[RR('pre-equil',2,null,'por pierna',20,30,2)]]]]},
+  {id:'coo-sinpared',cat:'coo',need:'pelotas de tenis o un balón',locs:['parque','campo','casa','pared','gimnasio'],n:'Sin pared, en el parque',para:'Solo con pelotas de tenis o un balón',mins:10,
+   why:'Todo lo que se puede hacer con una pelota y tu cuerpo, sin pared ni compañero.',
+   b:[['Entrar en calor',[[RR('cal-tenis',1,null,'',0,120,2),RR('cal-balon',1,null,'',0,120,2)]]],['Reacción',[[RR('rea-drop',2,'10','por mano',20,0,2),RR('coo-palmada',2,'10','',20,0,2)]]],['Tareas',[[RR('coo-palmada',2,'10','',20,0,2)]]],['Malabares',[[RR('coo-malabar',2,null,'por mano',20,30,2),RR('man-bote',2,'8','',30,0,2)]]],['Equilibrio',[[RR('pre-equil',2,null,'por pierna',20,30,2)]]]]},
+  {id:'coo-pareja',cat:'coo',mode:'pareja',need:'pelotas de tenis',needG:['tenis'],n:'Con compañero',para:'Cuando tienes a alguien que te tire',mins:12,
+   why:'Los estímulos de otra persona son más impredecibles: colores, lados y alturas que no eliges tú.',
+   b:[['Calentar',[[RR('rea-pareja',2,null,'',20,30,2)]]],['Colores',[[RR('coo-colores',3,null,'',30,30,3)]]],['Voleas',[[RR('man-volea',2,'10','balones',45,0,4)]]],['Mirada',[[RR('men-quieteye',2,'8','',30,0,3)]]]]},
+  {id:'pro-ederson',cat:'pro',need:'un balón',needG:['balon'],locs:['campo','parque','pared','casa'],pro:'ederson',n:'Entrena como Ederson',para:'Juego de pies y salida de balón',mins:28,
+   why:'Inspirada en su estilo: manejo, pase con las dos piernas, mirar antes de recibir y saques largos precisos.',
+   b:[['Manejo',[[RR('cal-balon',1,null,'',0,180,3)]]],['Pase y control',[[RR('dis-pared',3,null,'',30,60,4),RR('agu-pies-suaves',3,null,'',20,60,4)]]],['Mirar antes',[[RR('dis-mira',2,null,'',30,60,3)]]],['Bajo presión',[[RR('dis-presion',3,null,'',60,90,6),RR('dis-pared',2,null,'a un toque',30,60,3,'2 × 1 min a un toque')]]],['Saques',[[RR('dis-zona',2,'10','golpeos por pierna',0,0,8),RR('dis-mano',2,'6','de cada',0,0,4)]]]]},
+  {id:'pro-alisson',cat:'pro',locs:['campo','parque','gimnasio','pared','casa'],pro:'alisson',n:'Entrena como Alisson',para:'El 1 contra 1',mins:28,
+   why:'Inspirada en su método: atacar el ángulo pronto, quedarse en línea con el balón, dejar que el delantero mueva primero y tapar con el cuerpo.',
+   b:[['Calentar',[[RR('cal-desp',1,null,'',0,180,3),RR('cal-mov',1,null,'',0,180,3)]]],['Formas',[[RR('uno-formas',3,'5','de cada',30,0,4)]]],['Achique',[[RR('uno-achique',4,'1','salida de 5–8 m',45,0,4),RR('pie-lateral',3,null,'',30,20,3)]]],['A los pies',[[RR('uno-pies',3,'4','',45,0,5),RR('man-sombra',3,null,'',20,30,2)]]],['Duelos',[[RR('uno-real',3,'5','duelos',90,0,8),RR('uno-achique',3,'1','salida y frenada',45,0,4)]]],['Cabeza',[[RR('men-reinicio',1,null,'',0,60,1)]]]]},
+  {id:'pro-courtois',cat:'pro',locs:['campo','parque','pared','gimnasio','casa'],pro:'courtois',n:'Entrena como Courtois',para:'Colocación y estiradas',mins:30,
+   why:'Inspirada en su juego: colocarte en la bisectriz para necesitar menos estiradas y, cuando toca, bajar rápido y largo.',
+   b:[['Calentar',[[RR('cal-desp',1,null,'',0,180,3),RR('cal-mov',1,null,'',0,180,3)]]],['Colocación',[[RR('pie-coloca',2,'1','vuelta',30,0,4)]]],['Desplazamientos',[[RR('pie-poste',3,'3','idas y vueltas',45,0,3),RR('pie-lateral',3,null,'',30,20,3)]]],['Estiradas',[[RR('cai-base',3,'4','por lado',45,0,6),RR('cai-rodillas',3,'5','por lado',30,0,4)],[RR('cai-poste',3,'3','por lado',60,0,6),RR('cai-levanta',3,'3','pares',60,0,5),RR('man-desvio',2,'6','por lado',45,0,4)]]],['Arriba',[[RR('cai-alta',3,'4','por lado',60,0,6),RR('man-desvio',2,'6','por lado',45,0,4)]]]]},
+  {id:'pro-dibu',cat:'pro',locs:['pared','campo','casa','parque','gimnasio'],pro:'dibu',n:'Entrena como Dibu Martínez',para:'Reacción, pies y penaltis',mins:26,
+   why:'Inspirada en sus puntos fuertes: reflejos a corta distancia, calma con el balón en los pies y una rutina de penaltis muy trabajada.',
+   b:[['Calentar',[[RR('cal-pared',1,'20','blocajes',0,0,4),RR('cal-tenis',1,null,'',0,120,2)]]],['Reflejos',[[RR('rea-t2',3,null,'',30,30,3)],[RR('rea-esq',3,null,'',30,30,3),RR('rea-drop',2,'10','por mano',20,0,2)],[RR('rea-suelo',3,'5','',45,0,4),RR('man-cerca',2,'8','',60,0,4)]]],['Pies',[[RR('dis-pared',2,null,'',30,60,3),RR('dis-mano',2,'6','de cada',0,0,4)]]],['Penaltis',[[RR('men-penalti',2,null,'',0,60,2,'2 × 1 min')]]]]},
+  {id:'pro-donnarumma',cat:'pro',locs:['campo','parque','gimnasio','pared','casa'],pro:'donnarumma',n:'Entrena como Donnarumma',para:'Juego aéreo y saltos potentes',mins:30,
+   why:'Inspirada en su dominio del área: potencia de salto, batida a una pierna, blocaje en el punto más alto y despeje de puños.',
+   b:[['Calentar',[[RR('cal-desp',1,null,'',0,180,3),RR('cal-mov',1,null,'',0,180,3)]]],['Potencia',[[RR('pot-cmj',3,'4','',60,0,4)],[RR('pot-skater',2,'5','por lado',60,0,3)]]],['Batida',[[RR('aer-batida',3,'5','por pierna',45,0,3)]]],['Balones altos',[[RR('aer-auto',3,'6','',45,0,5),RR('aer-pared',3,'6','',45,0,4),RR('man-w',3,'8','',45,0,4)],[RR('aer-punos',2,'6','',45,0,4),RR('aer-centros',3,'6','por banda',60,0,6)]]],['Estirada alta',[[RR('cai-alta',2,'4','por lado',60,0,5),RR('man-desvio',2,'6','por lado',45,0,4)]]]]}
+]);
 var RUTI={};RUT.forEach(function(r){RUTI[r.id]=r;});
 var MEAS={
   calor:'Calor local 15–20 minutos en la zona (bolsa de agua caliente con una toalla). Fue lo que más alivió el dolor a las 24 y 48 horas.',
@@ -1029,14 +1153,17 @@ var DOMS_SRC=[
   ['Roberts y cols. (2015). Agua fría tras la fuerza y ganancias a largo plazo','https://nih.brage.unit.no/nih-xmlui/handle/11250/2402781']
 ];
 function rutFor(a){if(a.rut&&a.rut!=='auto'&&RUTI[a.rut])return RUTI[a.rut];if(a.sit==='recuperar'&&a.rut==='auto'&&(+a.doms||0)>=3)return RUTI.fuertes;return null;}
-function rutExtras(R0){return [{id:'medidas',t:'Además, hoy',li:R0.meas.map(function(m){return MEAS[m];})},{id:'porque',t:'Lo que dicen los estudios',facts:DOMS_EV},
+function rutExtras(R0){if(R0.cat==='men')return [{id:'porque',t:'Lo que dicen los estudios',facts:MEN_EV},{id:'fuentes',t:'Fuentes',links:MEN_SRC}];
+  if(R0.cat==='coo')return [{id:'porque',t:'Por qué funciona',facts:COO_EV},{id:'fuentes',t:'Fuentes',links:COO_SRC}];
+  if(R0.cat==='pro')return [{id:'aviso',t:'Antes de empezar',li:['Es una sesión inspirada en su estilo, no su entrenamiento real.','Si no tienes el material o el sitio, la app cambia los ejercicios por otros parecidos.','En «Guía» tienes cómo se formó y cómo trabaja ese punto fuerte.']}];
+  return [{id:'medidas',t:'Además, hoy',li:R0.meas.map(function(m){return MEAS[m];})},{id:'porque',t:'Lo que dicen los estudios',facts:DOMS_EV},
   {id:'alerta',t:'Cuándo parar',tone:'bad',li:['Dolor punzante en un punto concreto, hinchazón o moratón.','Dolor que empeora al moverte en lugar de mejorar.','Orina muy oscura.','Eso ya no son agujetas: para y consulta a un profesional.']},{id:'fuentes',t:'Fuentes',links:DOMS_SRC}];}
 function buildRut(P,k,a,R0){
   var loc=a.loc||'casa',mode=a.mode||'solo',res=resources({gear:a.gear||[]},loc,mode),inj=(P&&P.injuries)||[];
   function okE(id){var e=EXI[id];if(!e)return false;if(e.loc!=='any'&&e.loc.indexOf(loc)<0)return false;if(!has(res,e.need))return false;if(mode==='solo'&&e.mode==='pareja')return false;for(var i=0;i<e.avoid.length;i++){if(inj.indexOf(e.avoid[i])>=0)return false;}return true;}
   var est=0,blocks=R0.b.map(function(b){var items=[],m=0;b[1].forEach(function(alts){for(var i=0;i<alts.length;i++){var r=alts[i];if(okE(r[0])){items.push({e:EXI[r[0]],d:mkD(r[1],r[2],r[3],r[4],r[5],r[7])});m+=r[6];break;}}});est+=m;return {n:b[0],items:items,mins:Math.round(m)};}).filter(function(b){return b.items.length;});
-  var notes=[];if(!res.rodillo&&!res.tenis&&R0.b.some(function(b){return /Masaje/.test(b[0]);}))notes.push('Con una pelota de tenis o un rodillo el masaje es más eficaz. Márcalos en «Ajustar» si los tienes.');
-  return {k:k,type:'especial',special:true,rut:R0.id,sp:a,title:R0.n,sub:R0.para,why:R0.why,mins:Math.round(est),loc:loc,mode:mode,ph:{id:'esp',n:'Agujetas',vol:1,bonus:0},w:0,blocks:blocks,est:Math.round(est),notes:notes,extra:rutExtras(R0)};
+  var notes=[];if(R0.cat==='agu'&&!res.rodillo&&!res.tenis&&R0.b.some(function(b){return /Masaje/.test(b[0]);}))notes.push('Con una pelota de tenis o un rodillo el masaje es más eficaz. Márcalos en «Ajustar» si los tienes.');
+  return {k:k,type:'especial',special:true,rut:R0.id,rcat:R0.cat,sp:a,title:R0.n,sub:R0.para,why:R0.why,mins:Math.round(est),loc:loc,mode:mode,ph:{id:'esp',n:{agu:'Agujetas',men:'Mente',coo:'Coordinación',pro:'Entrena como'}[R0.cat]||'Rutina',vol:1,bonus:0},w:0,blocks:blocks,est:Math.round(est),notes:notes,extra:rutExtras(R0)};
 }
 
 /* ---------- Rutina especial: casos puntuales (prueba o partido cerca, agujetas, vuelta tras un parón) ---------- */
@@ -1254,7 +1381,7 @@ function weekSummary(P,S,weekStart){
 return {DAYS:DAYS,DSH:DSH,keyOf:keyOf,parseKey:parseKey,dayIdx:dayIdx,addDays:addDays,mondayKey:mondayKey,daysBetween:daysBetween,weekIndex:weekIndex,
   LOCS:LOCS,LOCSH:LOCSH,GEAR:GEAR,GOALS:GOALS,INJ:INJ,LEVELS:LEVELS,CATS:CATS,TYPES:TYPES,EX:EX,EXI:EXI,TESTS:TESTS,TIPS:TIPS,PHASE_TXT:PHASE_TXT,
   phaseOf:phaseOf,matchFor:matchFor,typeFor:typeFor,defaultLoc:defaultLoc,resources:resources,buildSession:buildSession,partnerDays:partnerDays,weekSummary:weekSummary,fmtSec:fmtSec,sessionMins:sessionMins,
-  spOf:spOf,spTitle:spTitle,spEvent:spEvent,DOMS:DOMS,animsOf:animsOf,RUT:RUT,RUTI:RUTI,MEAS:MEAS,DOMS_EV:DOMS_EV,DOMS_SRC:DOMS_SRC,rutFor:rutFor};
+  spOf:spOf,spTitle:spTitle,spEvent:spEvent,DOMS:DOMS,animsOf:animsOf,RUT:RUT,RUTI:RUTI,MEAS:MEAS,DOMS_EV:DOMS_EV,DOMS_SRC:DOMS_SRC,rutFor:rutFor,MEN_EV:MEN_EV,MEN_SRC:MEN_SRC,COO_EV:COO_EV,COO_SRC:COO_SRC};
 })();
 </script>
 
@@ -1819,6 +1946,27 @@ var ANIMS_C={
 };
 for(var ckey in ANIMS_C)ANIMS[ckey]=ANIMS_C[ckey];
 
+/* ---------- Coordinación y mente ---------- */
+/* Dos pelotas con una mano, lanzamientos alternos */
+var JG=P(STF,{hb:[116,94],elb:[118,78]}),JGu=P(JG,{hb:[116,88]});
+var KF_JUGGLE=[k(0,JGu,{tb:['Hb',0,-3],tb2:[112,62],e:'l'}),k(.12,JG,{tb:[115,64],tb2:['Hb',-1,-3],e:'l'}),k(.25,JG,{tb:[113,40],tb2:['Hb',0,-3],e:'l'}),k(.38,JG,{tb:[112,62],tb2:['Hb',0,-3],e:'in'}),
+  k(.5,JGu,{tb:['Hb',0,-3],tb2:['Hb',0,-3],e:'l'}),k(.62,JG,{tb:['Hb',-1,-3],tb2:[115,64],e:'l'}),k(.75,JG,{tb:['Hb',0,-3],tb2:[113,40],e:'l'}),k(.88,JG,{tb:['Hb',0,-3],tb2:[112,62],e:'in'}),k(1,JGu,{tb:['Hb',0,-3],tb2:[112,62],e:'l'})];
+/* Lanza, palmada y atrapa */
+var CL0=P(STF,{ha:[96,80],hb:[104,80],ela:[86,90],elb:[114,90]}),CLu=P(STF,{ha:[96,62],hb:[104,62],ela:[88,76],elb:[112,76]}),CLa=P(STF,{ha:[80,74],hb:[120,74],ela:[82,88],elb:[118,88]}),CLc=P(STF,{ha:[98,72],hb:[102,72],ela:[86,86],elb:[114,86]});
+var KF_CLAP=[k(0,CL0,{tb:[100,77]}),k(.12,CLu,{tb:[100,58],e:'l'}),k(.22,CLa,{tb:[100,30],e:'l',lbl:'PALMADA',lo:1}),k(.3,CLc,{tb:[100,22],e:'l',lbl:'PALMADA',lo:1}),k(.38,CLa,{tb:[100,30],e:'in',lbl:'PALMADA',lo:1}),k(.5,CL0,{tb:[100,77],e:'in',lo:0}),k(.62,CL0,{tb:[100,77]}),k(1,CL0,{tb:[100,77]})];
+/* Palabras clave */
+var CUEF=FW(100,89,111,{hb:[122,58],elb:[124,76]});
+var KF_CUE=[k(0,SETF,{lbl:'ATACA EL BALÓN',lo:1}),k(.1,CUEF,{lbl:'ATACA EL BALÓN',lo:1}),k(.3,SETF,{lbl:'ATACA EL BALÓN',lo:1}),k(.33,SETF,{lbl:'MANOS BLANDAS',lo:1}),k(.43,CUEF,{lbl:'MANOS BLANDAS',lo:1}),k(.63,SETF,{lbl:'MANOS BLANDAS',lo:1}),k(.66,SETF,{lbl:'SIGUIENTE',lo:1}),k(.76,CUEF,{lbl:'SIGUIENTE',lo:1}),k(.97,SETF,{lbl:'SIGUIENTE',lo:1}),k(1,SETF,{lbl:'ATACA EL BALÓN',lo:1})];
+/* Mirada quieta antes del golpeo */
+var KF_QEYE=pserve('W').map(function(q){var r=P(q,{});if(q.t<.3){r.lbl='MIRA EL BALÓN';r.lo=1;}else if(q.t<.44){r.lbl='SET';r.lo=1;}else if(q.t<.62){r.lbl='W';r.lo=1;}else{r.lbl='';r.lo=0;}return r;});
+var ANIMS_D={
+  juggle:{view:'front',scene:'floor',dur:1.6,kf:KF_JUGGLE,still:.25},
+  clap:{view:'front',scene:'floor',dur:2.2,kf:KF_CLAP,still:.3},
+  cue:{view:'front',scene:'floor',dur:6,kf:KF_CUE,still:.1},
+  qeye:{view:'side',f:1,scene:'floor',deco:MATE_DECO,dur:2.8,kf:KF_QEYE,still:.2}
+};
+for(var dkey in ANIMS_D)ANIMS[dkey]=ANIMS_D[dkey];
+
 function sceneMarkup(cfg){var s=cfg.scene||'floor';
   if(s==='wall'){var x=cfg.wallX||182;return '<rect class="wall" x="'+x+'" y="12" width="'+(200-x)+'" height="137"/><line class="edge" x1="'+x+'" y1="12" x2="'+x+'" y2="149"/><line class="floor" x1="6" y1="149" x2="'+x+'" y2="149"/>';}
   if(s==='backwall')return '<rect class="wall" x="4" y="8" width="192" height="106" rx="2"/><line class="edge" x1="4" y1="114" x2="196" y2="114"/><line class="floor" x1="6" y1="149" x2="194" y2="149"/>';
@@ -1981,7 +2129,12 @@ var ICON={
   perfil:'<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>',
   esp:'<svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>'
 };
-ICON.crear=ICON.plan;ICON.rutina=ICON.esp;ICON.gota='<svg viewBox="0 0 24 24"><path d="M12 3c-3 4-6 7.5-6 11a6 6 0 0 0 12 0c0-3.5-3-7-6-11z"/></svg>';
+ICON.crear=ICON.plan;ICON.rutina=ICON.esp;
+ICON.guia='<svg viewBox="0 0 24 24"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H11v16H5.5C4.7 20 4 19.3 4 18.5zM20 5.5c0-.8-.7-1.5-1.5-1.5H13v16h5.5c.8 0 1.5-.7 1.5-1.5z"/></svg>';ICON.libro=ICON.guia;
+ICON.plato='<svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="7"/><circle cx="12" cy="13" r="3.5"/><path d="M3 4v5M5 4v5M4 9v11M20 4c-1.5 1.5-2 3-2 5h2v11"/></svg>';
+ICON.mente='<svg viewBox="0 0 24 24"><path d="M9 21v-3H7a2 2 0 0 1-2-2v-3l-2-1 2-3a7 7 0 0 1 14 2c0 2.5-1 4-3 5v5"/></svg>';
+ICON.ojo='<svg viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>';
+ICON.estrella='<svg viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg>';ICON.gota='<svg viewBox="0 0 24 24"><path d="M12 3c-3 4-6 7.5-6 11a6 6 0 0 0 12 0c0-3.5-3-7-6-11z"/></svg>';
 function spCTA(sub){return '<button class="cta-row" data-a="sp-start"><span class="cta-ic">'+ICON.esp+'</span><span><b>Rutina especial</b><small>'+esc(sub||'Prueba o partido mañana, agujetas o vuelta tras un parón')+'</small></span><span class="chev" aria-hidden="true">›</span></button>';}
 
 /* ---------- Test inicial ---------- */
@@ -2076,7 +2229,7 @@ var SPQ=[
   {id:'sit',type:'one',t:'¿Qué tienes por delante?',opts:[['prueba','Una prueba con un equipo','Te van a ver entrenar o jugar'],['partido','Un partido'],['recuperar','Nada: quiero quitarme las agujetas'],['paron','Vuelvo después de un parón','Una semana o más sin entrenar']]},
   {id:'when',type:'one',t:'¿Cuándo es?',when:spIsEv,opts:[['hoy','Hoy'],['manana','Mañana'],['pasado','Pasado mañana']]},
   {id:'doms',type:'one',t:'¿Cómo tienes las agujetas?',s:'Camina un minuto y fíjate en la molestia.',opts:[[0,'Nada'],[1,'Leves','Molestan al empezar y se van al moverte'],[2,'Moderadas','Se notan al bajar escaleras o al agacharte'],[3,'Fuertes','Duelen al andar o al sentarte']]},
-  {id:'rut',type:'one',t:'¿Qué rutina quieres?',s:'Todas tienen temporizador y modo guiado.',when:function(a){return a.sit==='recuperar';},opts:[['auto','Elígela por mí','Según tus agujetas, tu tiempo y tu material']].concat(C.RUT.map(function(r){return [r.id,r.n,r.para+' · '+r.mins+' min'];}))},
+  {id:'rut',type:'one',t:'¿Qué rutina quieres?',s:'Todas tienen temporizador y modo guiado.',when:function(a){return a.sit==='recuperar';},opts:[['auto','Elígela por mí','Según tus agujetas, tu tiempo y tu material']].concat(C.RUT.filter(function(r){return r.cat==='agu';}).map(function(r){return [r.id,r.n,r.para+' · '+r.mins+' min'];}))},
   {id:'loc',type:'one',t:'¿Dónde vas a entrenar hoy?',when:spNotToday,opts:[['casa','Casa o sala'],['pared','Pared o frontón'],['parque','Parque o césped'],['campo','Campo con portería'],['gimnasio','Gimnasio']]},
   {id:'gear',type:'many',t:'¿Qué tienes a mano?',s:'Marca lo que tengas hoy.',min:0,when:spNotToday,opts:[['balon','Balón'],['tenis','Pelotas de tenis'],['banda','Banda elástica'],['rodillo','Rodillo de espuma'],['pesas','Pesas ligeras'],['esterilla','Esterilla']]},
   {id:'mode',type:'one',t:function(a){return spNotToday(a)?'¿Estás solo?':'¿Tendrás a alguien que te tire al calentar?';},opts:[['solo','Estoy solo'],['pareja','Tengo a alguien que me tira']]},
@@ -2142,7 +2295,7 @@ function spControls(k,sp){
   if(isRut){
     h+='<div class="ctrl"><span>Lugar</span><div class="chips">'+Object.keys(C.LOCSH).map(function(l){return '<button class="chip'+(sp.loc===l?' on':'')+'" data-a="sp-set" data-f="loc" data-k="'+k+'" data-v="'+l+'">'+esc(C.LOCSH[l])+'</button>';}).join('')+'</div></div>';
     h+='<div class="ctrl"><span>Material</span><div class="chips">'+RGEAR.map(function(m){var on=(sp.gear||[]).indexOf(m[0])>=0;return '<button class="chip'+(on?' on':'')+'" data-a="sp-gear" data-k="'+k+'" data-v="'+m[0]+'" aria-pressed="'+on+'">'+m[1]+'</button>';}).join('')+'</div></div>';
-    return h+'<div class="sp-acts"><button class="btn small ghost" data-a="rut-open">Otra rutina</button><button class="btn small danger" data-a="sp-del" data-k="'+k+'">'+(P()?'Volver a mi plan':'Borrar rutina')+'</button></div>';
+    return h+'<div class="sp-acts"><button class="btn small ghost" data-a="rut-open" data-v="'+(C.RUTI[sp.rut].cat||'agu')+'">Otra rutina</button><button class="btn small danger" data-a="sp-del" data-k="'+k+'">'+(P()?'Volver a mi plan':'Borrar rutina')+'</button></div>';
   }
   h+='<div class="ctrl"><span>Agujetas hoy</span><div class="chips">'+['Nada','Leves','Moderadas','Fuertes'].map(function(x,i){return '<button class="chip'+((+sp.doms||0)===i?' on':'')+'" data-a="sp-set" data-f="doms" data-k="'+k+'" data-v="'+i+'">'+x+'</button>';}).join('')+'</div></div>';
   h+='<div class="ctrl"><span>Hoy estoy</span><div class="chips">'+[['solo','Solo'],['pareja','Con alguien que me tira']].map(function(m){return '<button class="chip'+(sp.mode===m[0]?' on':'')+'" data-a="sp-set" data-f="mode" data-k="'+k+'" data-v="'+m[0]+'">'+m[1]+'</button>';}).join('')+'</div></div>';
@@ -2166,22 +2319,225 @@ function extraHTML(x){
 }
 var RGEAR=[['tenis','Pelota de tenis'],['rodillo','Rodillo'],['banda','Banda'],['balon','Balón']];
 function rutGear(){if(!S.rg){var g=P()?P().gear.map(function(x){return x==='balones'?'balon':x;}):[];S.rg=RGEAR.map(function(r){return r[0];}).filter(function(x){return g.indexOf(x)>=0;});}return S.rg;}
+function rutLocFor(r){var p=P(),ls=p&&p.locs.length?p.locs:null;if(r&&r.locs){if(!ls)return r.locs[0];for(var i=0;i<r.locs.length;i++){if(ls.indexOf(r.locs[i])>=0)return r.locs[i];}}return rutLoc();}
 function rutLoc(){var p=P();if(!p||!p.locs.length)return 'casa';return p.locs.indexOf('casa')>=0?'casa':p.locs[0];}
 function rutCTA(sub){return '<button class="cta-row alt" data-a="rut-open"><span class="cta-ic">'+ICON.gota+'</span><span><b>Rutinas para quitar agujetas</b><small>'+esc(sub||'8 rutinas: exprés, tras saltos, tras el partido, antes de dormir…')+'</small></span><span class="chev" aria-hidden="true">›</span></button>';}
-function rutHTML(){
-  var g=rutGear(),back=U.prevView&&U.prevView!=='agujetas'?U.prevView:'hoy';
-  var h='<div class="pad"><button class="back" '+(!P()&&!hasSp()?'data-a="ob-start"':'data-a="tab" data-v="'+back+'"')+'>← Volver</button>';
-  h+='<p class="eyebrow" style="color:var(--t-reaccion)">Recuperación</p><h1 class="disp" style="font-size:44px;margin-top:6px">Quitar agujetas</h1><p class="muted" style="margin-top:6px">Elige la rutina que encaje con tu caso.</p>';
+/* ---------- Guía: dieta, mente, coordinación, porteros de élite y lecturas ---------- */
+var RCAT={agu:{n:'Quitar agujetas',e:'Recuperación',c:'--t-reaccion',sub:'Elige la rutina que encaje con tu caso.'},
+  men:{n:'Activación mental',e:'Mente',c:'--t-tecnica',sub:'Rutinas cortas para centrarte, calmarte o reiniciar.'},
+  coo:{n:'Coordinación',e:'Ojos y manos',c:'--t-activacion',sub:'Pelotas de tenis, mano débil, pies y manos.'},
+  pro:{n:'Entrena como los mejores',e:'Porteros de élite',c:'--gold',sub:'Sesiones inspiradas en el punto fuerte de cada uno.'}};
+var PROS=[
+  {id:'ederson',n:'Ederson',r:'El juego de pies',path:['Cantera del São Paulo y, desde 2009, del Benfica (Portugal).','Se hizo en Ribeirão y Rio Ave antes de volver al Benfica.','Manchester City de 2017 a 2025; en el Fenerbahçe desde septiembre de 2025.'],
+   how:['Creció jugando fútbol sala: siempre bajo presión, con poco espacio, obligado a decidir rápido y elegir bien el pase.','En la cantera del Benfica jugó a veces de centrocampista.','Pasa con las dos piernas, saca largo con precisión y sale de su línea como un líbero.'],
+   you:['Recibe perfilado y mira antes de que llegue el balón.','Primer toque fuera de los pies, hacia donde quieres jugar.','Pasa a la pierna buena de tu compañero.'],
+   src:[['Goal. El fútbol sala en la formación de Ederson','https://www.goal.com/en-au/news/how-futsal-schooling-helps-ederson-take-risks-man-city-not-changing/blt45cfacab3dc66c46'],['Wikipedia. Ederson','https://en.wikipedia.org/wiki/Ederson_(footballer,_born_1993)']]},
+  {id:'alisson',n:'Alisson Becker',r:'El 1 contra 1',path:['Internacional de Porto Alegre desde los 10 años; debut en 2013.','Roma en 2016 y Liverpool desde 2018.','De niño jugaba de portero en la calle y en fútbol playa; su hermano Muriel, también portero, es su gran referencia.'],
+   how:['Es un portero «de pie delantero»: ataca el ángulo pronto en lugar de esperar.','En el 1 contra 1 se queda en línea con el balón y deja que el delantero haga el primer movimiento; luego tapa con el cuerpo.','Avanza cuando el delantero mira el balón y se queda quieto cuando le mira a él.','Calma: no reacciona con las manos antes de tiempo. Repasa cada partido con su hermano.'],
+   you:['En los duelos, no te tires primero.','Acércate cuando el rival baje la mirada al balón.','Grande y quieto en el momento del disparo.'],
+   src:[['Liverpool FC. Achterberg analiza a Alisson','https://www.liverpoolfc.com/news/first-team/391155-alisson-becker-john-achterberg-feature'],['Sky Sports. Alisson en el 1 contra 1','https://www.skysports.com/football/news/11661/13349960/alisson-becker-why-liverpool-goalkeeper-is-the-best-in-the-world-in-one-against-one-situations-analysed-and-explained'],['Liverpool FC. Entrevista a Alisson','https://www.liverpoolfc.com/news/first-team/322886-alisson-becker-liverpool-exclusive-interview']]},
+  {id:'courtois',n:'Thibaut Courtois',r:'Colocación y estiradas',path:['Empezó de lateral izquierdo en el Bilzen (Bélgica).','En el Genk desde los 7 años, donde se convirtió en portero; debutó en el primer equipo.','Chelsea, Atlético de Madrid cedido y Real Madrid desde 2018.'],
+   how:['Con 2,01 m, su arma es colocarse bien: muchas paradas parecen fáciles porque ya estaba en la bisectriz.','Con su preparador Gianluca Spinelli mejoró los pies y la velocidad para bajar al suelo.','Luis Llopis, preparador de porteros del Real Madrid con Courtois, es coautor de un libro sobre metodología del entrenamiento del portero (lo tienes en Libros).'],
+   you:['Colócate antes del tiro, no durante.','Bajar rápido a los rasos es técnica, no solo altura: caídas desde rodillas y desde base.'],
+   src:[['Wikipedia. Thibaut Courtois','https://en.wikipedia.org/wiki/Thibaut_Courtois'],['Metodología global para el entrenamiento del portero de fútbol (2005)','https://catalogobiblio.unach.cl/vufind/Record/ELB33574']]},
+  {id:'dibu',n:'Emiliano «Dibu» Martínez',r:'Reacción, pies y penaltis',path:['Cantera de Independiente (Argentina) hasta 2010.','A los 17 años se fue a la academia del Arsenal.','Seis cesiones (Oxford, Sheffield Wednesday, Rotherham, Wolves, Getafe y Reading) antes de ser titular en el Arsenal.','Aston Villa de 2020 a 2026, con una Europa League; en el Chelsea desde agosto de 2026.'],
+   how:['Años de cesiones compitiendo en categorías distintas: paciencia y competir cada semana.','Muy buenos reflejos a corta distancia y buen pase.','Especialista en penaltis: prepara cada tanda y es muy difícil marcarle.','Ojo: sus provocaciones para desconcentrar a los lanzadores han sido polémicas y han llevado a hablar de cambiar las reglas. Copia la preparación, no las artimañas.'],
+   you:['Rutina de penaltis siempre igual.','Reflejos con pelotas de tenis y rebotes impredecibles.'],
+   src:[['Wikipedia. Emiliano Martínez','https://en.wikipedia.org/wiki/Emiliano_Mart%C3%ADnez']]},
+  {id:'donnarumma',n:'Gianluigi Donnarumma',r:'Juego aéreo y saltos potentes',path:['Club Napoli de Castellammare di Stabia desde los 4 años.','Milan a los 14; jugaba con categorías mayores y debutó en Serie A con 16 años.','PSG de 2021 a 2025 y Manchester City desde septiembre de 2025.'],
+   how:['1,96 m y brazos larguísimos: cubre mucha portería y llega a balones que parecen imposibles.','Sale decidido a los centros y termina la acción, blocando o con un despeje de puños muy potente.','Base baja y alerta en el golpeo; muy bueno en penaltis.','Empieza más adelantado que la mayoría, lo que le facilita salir. De joven le criticaban el blocaje y el dominio del área: lo mejoró saliendo a por centros.'],
+   you:['Potencia de salto y batida a una pierna.','Decide pronto en los centros y termina la acción.','Cuidado con ir a los pies antes de tiempo, su punto débil.'],
+   src:[['The Coaches’ Voice. Donnarumma analizado','https://learning.coachesvoice.com/cv/gianluigi-donnarumma-analysed/'],['Wikipedia. Gianluigi Donnarumma','https://en.wikipedia.org/wiki/Gianluigi_Donnarumma']]}
+];
+var LECT=[
+  {id:'bisectriz',t:'La bisectriz: dónde ponerte',sub:'Colócate en la línea que une el balón con el centro de la portería.',anim:[['angle','Te mueves con el balón']],
+   secs:[{h:'Qué es',p:'Si unes el balón con los dos postes se forma un triángulo. La bisectriz lo parte por la mitad: va del balón al centro de la portería. Sobre ella dejas el mismo hueco a los dos lados.'},
+     {h:'Cómo ajustarla',li:['Cada vez que el balón se mueve, te mueves tú: pasos cortos, sin cruzar las piernas.','Antes del golpeo, quieto y en set: la colocación se hace antes del tiro, no durante.','Usa referencias (punto de penalti, área pequeña, marcas del césped) para saber dónde está el centro sin mirar atrás.']},
+     {h:'Cuánto salir',li:['Balón lejos y centrado: 1–3 m por delante de la línea, para cubrir la espalda de tu defensa.','Balón dentro del área y centrado: adelántate para cerrar ángulo, sin que te puedan vaselinear.','Balón escorado: más cerca del primer palo, para que el tiro al palo corto sea imposible.','Cuanto más adelantado, más pequeña ve el delantero la portería, pero menos tiempo tienes para reaccionar.']},
+     {h:'Error típico',p:'Quedarte en el centro de la portería con el balón en un lado: dejas el palo corto abierto.'}],
+   ex:['pie-coloca','pie-poste','pie-lateral'],src:[['FIFA Training Centre. Sesión de porteros de la selección española sub-15','https://fifatrainingcentre.com/media/native/practice/U15_Spain_goalkeeper_session.pdf']]},
+  {id:'base',t:'Posición de base y el set',sub:'La postura desde la que salen todas las paradas.',anim:[['shadow','Base, W, cesta y pala'],['cones','Set al llegar']],
+   secs:[{h:'La posición de base',li:['Pies a la anchura de los hombros y peso en la parte delantera del pie.','Rodillas flexionadas y tronco un poco adelantado.','Manos delante, a la altura de la cintura, con las palmas hacia el balón.','Cabeza quieta y mirada en el balón.']},
+     {h:'El set',p:'Es el pequeño rebote que haces justo cuando el rival va a golpear: te deja con los dos pies en el suelo y el cuerpo cargado en el momento del disparo.',li:['Si lo haces pronto, aterrizas antes del golpeo y pierdes la carga.','Si lo haces tarde, el tiro te pilla en el aire.']},
+     {h:'Según la distancia',li:['Tiro lejano: base más alta, para poder subir a la escuadra.','Tiro cercano o raso: base más baja y manos más abajo.']}],
+   ex:['man-sombra','pie-conos','men-quieteye'],src:[['FIFA Training Centre. Sesión de porteros de la selección española sub-15','https://fifatrainingcentre.com/media/native/practice/U15_Spain_goalkeeper_session.pdf']]},
+  {id:'cuerpo',t:'Cómo colocar el cuerpo en cada acción',sub:'Blocajes, caídas, centros y 1 contra 1.',anim:[['kblock','1 contra 1: K'],['dive_set','Caída lateral'],['aero','Balón alto'],['scoop','Balón raso']],
+   secs:[{h:'Blocajes',li:['Arriba: manos en W, pulgares casi juntos, delante de los ojos.','A media altura: cesta, meñiques juntos y tronco sobre el balón.','Raso: pala, con las piernas juntas detrás del balón.']},
+     {h:'Caídas',li:['Paso corto con el pie del lado del balón y empuje lateral.','Mano de abajo detrás del balón y la de arriba encima.','Caes sobre el costado y el hombro, nunca sobre el codo.','Hacia delante, no hacia atrás.']},
+     {h:'Centros',li:['Perfil abierto: hombros hacia el campo para ver balón y área.','Batida con la pierna del lado del balón y la otra rodilla arriba.','Bloca en el punto más alto; si no puedes asegurarlo, dos puños.']},
+     {h:'1 contra 1',li:['Delantero a menos de un cuerpo del balón: ve a sus pies.','Algo más lejos y a punto de tirar: bloqueo en K o en estrella, grande y quieto.','Aguanta de pie todo lo que puedas: el que se tira primero suele perder.']}],
+   ex:['man-w','man-cesta','man-pala','cai-base','aer-auto','uno-formas'],src:[['Session Planner. Bloqueo o ir a los pies en el 1 contra 1','https://www.sportsessionplanner.com/s/KimKh/Block-vs-Smother.html'],['Keepersport. Técnica para atrapar centros','https://www.keepersport.net/keeperzone/keepertraining/catching-crosses-with-confidence-technique-timing-and-drills-for-the-modern-goalkeeper.html'],['Session Planner. Progresión de caídas','https://www.sportsessionplanner.com/s/LsfY/Goalkeeping---Diving-Technique.html']]},
+  {id:'rival',t:'Leer al rival',sub:'Lo que te dice el cuerpo del delantero antes de golpear.',anim:[['qeye','Mira el balón antes del golpeo'],['closedown','Achica y frena']],
+   secs:[{h:'El tirador',li:['El pie de apoyo suele apuntar hacia donde irá el balón.','Tronco echado atrás: suele ir alto. Encima del balón: suele ir raso.','Los ojos engañan; el cuerpo y el balón, mucho menos.']},
+     {h:'El 1 contra 1',li:['Cuando el delantero mira el balón, avanza; cuando te mira a ti, quieto y en set.','Si se le va el balón largo, es tu momento de salir.','Llévalo hacia fuera: un delantero escorado es medio duelo ganado.']},
+     {h:'Los centros',li:['Mira al centrador antes que al balón: su cuerpo te dice si irá al primer o al segundo palo.','Decide pronto y avisa: «¡mía!» o «¡fuera!».']},
+     {h:'Los penaltis',li:['Los porteros expertos miran sobre todo la pierna de apoyo, la de golpeo y el balón.','Aguanta lo más posible antes de moverte.','Colocarte un poco descentrado sin que se note hace que el lanzador tire más al lado grande.','Moverte antes del lanzamiento atrae su atención; hazlo siempre dentro de las reglas.']},
+     {h:'El juego entero',li:['Balón lejos: habla y coloca a tu defensa.','Mira por encima del hombro antes de recibir de un compañero.']}],
+   ex:['men-penalti','men-quieteye','uno-achique','aer-centros','dis-mira'],src:[['Savelsbergh y cols. (2002). Mirada y anticipación en porteros expertos','https://research.vu.nl/en/publications/anticipation-and-visual-search-behaviour-in-expert-soccer-goalkee/'],['Masters, van der Kamp y Jackson (2007). Porteros descentrados y dirección del penalti','https://repository.lboro.ac.uk/articles/journal_contribution/Imperceptibly_off-center_goalkeepers_influence_penalty-kick_direction_in_soccer/9617456'],['Sky Sports. Alisson en el 1 contra 1','https://www.skysports.com/football/news/11661/13349960/alisson-becker-why-liverpool-goalkeeper-is-the-best-in-the-world-in-one-against-one-situations-analysed-and-explained']]},
+  {id:'calent',t:'El calentamiento del portero',sub:'De menos a más, y terminando a ritmo de partido.',anim:[['march','1. Movilidad'],['bandwalk','2. Activación'],['catchW','3. Manos'],['dive_knee','4. Caídas progresivas']],
+   secs:[{p:'Un buen calentamiento sube la temperatura, activa lo que vas a usar y termina con acciones a máxima velocidad. Este es el orden habitual:'},
+     {h:'Paso a paso',li:['Subir temperatura (3–5 min): movilidad articular, carrera suave y desplazamientos.','Activar y movilizar (3–5 min): banda para glúteo y hombros, movilidad dinámica de cadera y tobillo.','Manos (4–5 min): blocajes suaves a corta distancia, de menos a más.','Caídas progresivas (3–4 min): desde rodillas, cuclillas y de pie, a los dos lados.','A ritmo de partido (4–5 min): tiros, balones altos y saques.','Cabeza (1 min): respiración y tu palabra clave.']},
+     {h:'Errores típicos',li:['Empezar con tiros fuertes con las manos frías.','Alargarlo hasta cansarte: el calentamiento prepara, no agota.','Saltarte la prevención: el calentamiento FIFA 11+ redujo las lesiones alrededor de un 30 %.']}],
+   ex:['cal-mov','cal-banda','cal-pared','pp-caidas','cal-fifa'],src:[['Revisión sistemática del FIFA 11+ (2017)','https://doaj.org/article/00aad083476b47949ba9852a60d5eecc']]},
+  {id:'estira',t:'Estiramientos: cuándo y cuáles',sub:'Dinámicos antes, estáticos después.',anim:[['legswing','Antes: dinámicos'],['lungerot','Movilidad']],
+   secs:[{h:'Antes de entrenar o jugar',li:['Movilidad y estiramientos dinámicos: balanceos, zancadas con rotación y círculos.','Si estiras estático antes, que sea corto (menos de 60 s por músculo) y seguido de calentamiento dinámico: así apenas afecta al rendimiento.','Los estiramientos estáticos largos justo antes de saltar o esprintar pueden restarte potencia.']},
+     {h:'Después o en otra sesión',li:['Estático de 30–60 s por músculo para ganar flexibilidad: cadera, aductores, isquios y hombros.','Con el cuerpo caliente y sin dolor.']},
+     {h:'Lo que no hacen',li:['No quitan las agujetas: para eso, masaje y movimiento suave.']}],
+   ex:['mov-balanceo','mov-zancada','mov-cadera','mov-hombro'],src:[['Behm y cols. (2016). Efectos agudos del estiramiento en el rendimiento','https://pure.northampton.ac.uk/en/publications/acute-effects-of-muscle-stretching-on-physical-performance-range-/'],['Herbert y cols. (2011). Estiramientos y agujetas, Cochrane','https://cochranelibrary.com/cdsr/doi/10.1002/14651858.CD004577.pub3/information']]},
+  {id:'academias',t:'Cómo forman porteros las academias',sub:'La Masia, Ajax, Genk, Internacional, Benfica, Milan, Arsenal y Espanyol.',anim:[['passwall','Juego de pies desde pequeños']],
+   secs:[{h:'La Masia (FC Barcelona)',li:['Mismo criterio de entrenamiento y de captación desde los 7 años hasta el primer equipo.','El portero es «un jugador más»: el juego con los pies es su rasgo diferencial.','Mucho 1 contra 1 y juego aéreo, porque sus equipos conceden sobre todo en pérdidas, balones a la espalda y balón parado.']},
+     {h:'Ajax y Frans Hoek',li:['Cruyff quería un portero que jugara como un jugador de campo más; Hoek lo convirtió en método con Van der Sar.','Organizar a la defensa para necesitar menos paradas, reiniciar el juego rápido y buscar siempre a un compañero.','Hoek llama al portero moderno «goalplayer» y trabaja con vídeo individual y de equipo.']},
+     {h:'Genk (Courtois)',li:['Llegó a los 7 años como lateral y allí se hizo portero.','Debutó muy joven en el primer equipo: competir pronto acelera el aprendizaje.']},
+     {h:'Internacional de Porto Alegre (Alisson)',li:['Entró con 10 años y subió todas las categorías.','Fundamentos y calma: es su seña de identidad, más que las paradas espectaculares.']},
+     {h:'Benfica y fútbol sala (Ederson)',li:['Fútbol sala desde niño: presión constante, poco espacio y decisiones rápidas.','En la cantera jugó a veces de centrocampista.']},
+     {h:'Milan (Donnarumma)',li:['Fichó con 14 años y jugaba con categorías mayores que la suya.','Debutó en Serie A con 16 años.']},
+     {h:'Arsenal y cesiones (Dibu Martínez)',li:['Llegó a los 17 desde Independiente y pasó por seis cesiones antes de ser titular.','Competir cada semana en ligas distintas forjó su carácter.']},
+     {h:'Espanyol (Joan Garcia)',li:['Sparring durante meses contra los delanteros del primer equipo.','Revisión de cada acción en vídeo con su preparador.','Mentores veteranos, como Diego López, y mucha paciencia en el banquillo.']},
+     {h:'Lo que tienen en común',li:['Empezar pronto con un mismo criterio.','Mucho balón en los pies.','Competir contra jugadores mejores o mayores.','Vídeo y análisis de cada acción.','Paciencia: casi todos esperaron su oportunidad.']}],
+   ex:['dis-pared','dis-presion','uno-real','men-video'],src:[['FC Barcelona. ADN Barça también en la portería','https://www.fcbarcelona.es/es/noticias/984245/adn-barca-tambien-en-la-porteria'],['These Football Times. Van der Sar y los métodos de Cruyff','https://thesefootballtimes.co/2017/06/29/edwin-van-der-sar-the-master-of-cruyffian-methods-in-goal/'],['Veo. El portero moderno con Frans Hoek','https://academy.veo.co/courses/the-modern-day-goalplayer-with-frans-hoek'],['Goal. El fútbol sala en la formación de Ederson','https://www.goal.com/en-au/news/how-futsal-schooling-helps-ederson-take-risks-man-city-not-changing/blt45cfacab3dc66c46'],['ARA. La radiografía de Joan Garcia en el Espanyol','https://es.ara.cat/deportes/rcd-espanyol/ostracismo-record-radiografia-milagro-joan-garcia_130_5160384.html']]}
+];
+var BOOKS=[
+  ['Metodología global para el entrenamiento del portero de fútbol','Pilar Sainz de Baranda, Luis Llopis y Enrique Ortega · Wanceulen, 2005','Un método completo para planificar el entrenamiento del portero. Llopis ha sido preparador de porteros del Real Madrid con Courtois.','https://catalogobiblio.unach.cl/vufind/Record/ELB33574'],
+  ['La toma de decisión en el portero de fútbol: concepto y 50 tareas para su entrenamiento','Antonio Crespo García · Wanceulen, 2020','Centrado en decidir bien: cuándo salir, blocar o despejar, con tareas para entrenarlo.','https://catalogobiblio.unach.cl/vufind/Record/ELB175947?lng=vi'],
+  ['60 juegos para el entrenamiento integrado del portero de fútbol','Javier López López · Wanceulen, 2007','Juegos para entrenar al portero junto con el resto del equipo.','https://harvester.ues.edu.sv/vufind/Record/ELB33645?lng=en'],
+  ['The Complete Soccer Goalkeeper (en inglés)','Tim Mulqueen y Michael Woitalla · Human Kinetics, 2011','Técnica, táctica, preparación mental y física, con la visión de delanteros sobre los puntos débiles del portero.','https://us.humankinetics.com/products/the-complete-soccer-goalkeeper-pdf'],
+  ['The Soccer Goalkeeper: A Guide for Players and Coaches (en inglés)','Joe Luxbacher y Gene Klein · 1983','Un clásico con los fundamentos técnicos del puesto.','https://libcat.library.tamu.edu/Record/in00000529090'],
+  ['The Outsider: A History of the Goalkeeper (en inglés)','Jonathan Wilson · 2012','La historia del puesto y cómo ha cambiado el papel del portero.',''],
+  ['The Keeper (en inglés)','Tim Howard · 2014','La autobiografía de un portero de élite: presión, constancia y superación.',''],
+  ['A Life Too Short: The Tragedy of Robert Enke (en inglés)','Ronald Reng · 2011','La vida del portero alemán Robert Enke. Un libro duro y necesario sobre la salud mental en el deporte.',''],
+  ['The Inner Game of Tennis (en inglés)','W. Timothy Gallwey · 1974','Aunque es de tenis, es una referencia sobre concentración y cómo dejar de pensar demasiado bajo presión.','']
+];
+/* Dieta según peso, altura, edad, sexo, objetivo y presupuesto */
+var DAYT=[['descanso','Descanso'],['suave','Entreno suave'],['fuerte','Entreno fuerte'],['partido','Víspera o partido']];
+function dietCalc(d){
+  var w=+d.w,h=+d.h,a=+d.a,teen=a<18,bmr=10*w+6.25*h-5*a+(d.sex==='f'?-161:5);
+  var F={descanso:1.4,suave:1.55,fuerte:1.7,partido:1.65},CH={descanso:3,suave:4,fuerte:5,partido:6},out={};
+  var goal=teen&&d.goal==='bajar'?'mantener':d.goal,adj=goal==='ganar'?300:(goal==='bajar'?-300:0),cadj=goal==='ganar'?.5:(goal==='bajar'?-.5:0);
+  DAYT.forEach(function(x){var t=x[0],kcal=bmr*(F[t]+(teen?.1:0))+adj,c=Math.max(2.5,CH[t]+(t==='partido'?0:cadj))*w,p=(goal==='mantener'?1.8:2)*w,f=Math.max(.8*w,(kcal-4*c-4*p)/9);
+    kcal=4*c+4*p+9*f;out[t]={kcal:Math.round(kcal/10)*10,c:Math.round(c),p:Math.round(p),f:Math.round(f)};});
+  out.water=Math.round(w*35/100)/10;out.teen=teen;out.goal=goal;return out;}
+function r10(x){return Math.max(0,Math.round(x/10)*10);}
+function menuFor(d,T){var w=+d.w,b=d.bud||'medio',C=T.c,Pr=T.p,m=[];
+  /* Desayuno: 25 % de hidratos */
+  var cd=C*.25,oat=r10((cd-12-25)/.6*1);oat=Math.max(30,Math.min(130,oat));
+  var des=['Leche o bebida vegetal: 250 ml','Copos de avena: '+oat+' g','1 plátano'];
+  var pd=Pr*.25-8-oat*.13;if(pd>4){if(b==='alto')des.push('Yogur griego natural: 150 g');else des.push(Math.max(1,Math.min(3,Math.round(pd/6)))+' huevos (revueltos o en tortilla)');}
+  m.push(['Desayuno',des]);
+  /* Comida: 35 % */
+  var cc=C*.35,base=r10(cc/.75),prot=r10((Pr*.3-base*.1)/.22);prot=Math.max(100,Math.min(260,prot));
+  var pc={bajo:'Muslo de pollo sin piel o legumbre con huevo',medio:'Pechuga de pollo o pavo',alto:'Salmón, ternera magra o pollo'}[b];
+  m.push(['Comida',['Arroz o pasta: '+Math.max(60,Math.min(220,base))+' g en crudo',pc+': '+prot+' g','Verdura o ensalada al gusto','Aceite de oliva: 1–2 cucharadas','1 pieza de fruta']]);
+  /* Merienda: 15 % */
+  var mer={bajo:['2 yogures naturales','1 pieza de fruta',r10(Math.max(0,C*.15-30)/.5)>0?'Pan: '+r10(Math.max(0,C*.15-30)/.5)+' g con atún o tomate':'Un puñado de cacahuetes'],
+    medio:['Queso fresco batido: 200 g','1 pieza de fruta y un puñado de frutos secos (20 g)',r10(Math.max(0,C*.15-30)/.5)>0?'Pan: '+r10(Math.max(0,C*.15-30)/.5)+' g':'—'],
+    alto:['Yogur griego o kéfir: 200 g','Frutos rojos y un puñado de nueces (20 g)',r10(Math.max(0,C*.15-30)/.5)>0?'Pan integral: '+r10(Math.max(0,C*.15-30)/.5)+' g':'—']}[b].filter(function(x){return x!=='—';});
+  m.push(['Merienda',mer]);
+  /* Cena: 25 % */
+  var cn=C*.25,pat=r10(cn*.7/.17),pan=r10(cn*.3/.5),pr2=Pr*.3;
+  var pcn={bajo:Math.max(2,Math.min(4,Math.round(pr2/12)))+' huevos o 1 lata de atún y 2 huevos',medio:'Merluza u otro pescado blanco: '+r10(pr2/.18)+' g',alto:'Salmón, dorada o lubina: '+r10(pr2/.2)+' g'}[b];
+  m.push(['Cena',['Patata o boniato: '+Math.max(100,Math.min(500,pat))+' g',pan>0?'Pan: '+pan+' g':'',pcn,'Verdura al gusto','Aceite de oliva: 1 cucharada'].filter(Boolean)]);
+  return m;}
+var SHOP={bajo:['Arroz, pasta, avena y pan','Patatas, cebollas, zanahorias y tomates','Legumbres secas o en bote (lentejas, garbanzos)','Huevos (docena o más)','Muslos de pollo, atún en lata','Leche y yogures naturales','Plátanos, manzanas y naranjas de temporada','Verdura congelada (espinacas, judías)','Aceite de oliva y cacahuetes'],
+  medio:['Todo lo anterior','Pechuga de pollo o pavo','Pescado blanco (también congelado)','Queso fresco batido','Frutos secos naturales','Frutas variadas y frutos rojos congelados'],
+  alto:['Todo lo anterior','Salmón, dorada o lubina frescos','Ternera magra','Yogur griego o kéfir','Aceite de oliva virgen extra y nueces','Más variedad de frutas y verduras']};
+var SAVE=['Legumbres, huevos y pollo entero o muslos: la proteína más barata.','Fruta y verdura de temporada, y congelados: igual de nutritivos y más baratos.','Cocina por tandas: arroz, pasta y legumbres para dos o tres días.','Marca blanca en básicos como avena, arroz, pasta, leche y yogur.'];
+var DIET_SRC=[['UEFA Expert Group (2021). Nutrición en el fútbol de élite','https://pubmed.ncbi.nlm.nih.gov/33097528/'],['Anderson y cols. (2018). Gasto energético de un portero profesional','https://researchonline.ljmu.ac.uk/id/eprint/9865/']];
+
+function gBack(to){return '<button class="back" data-a="g-nav" data-v="'+(to||'home')+'">← Guía</button>';}
+function gCard(v,ic,t,s,c){return '<button class="gcard" data-a="g-nav" data-v="'+v+'" style="--gc:var('+c+')"><span class="gic">'+ic+'</span><b>'+esc(t)+'</b><small>'+esc(s)+'</small></button>';}
+function guiaHTML(){
+  var g=U.g||'home';
+  if(g==='dieta')return dietHTML();
+  if(g==='pro')return proHTML();
+  if(g==='lectura')return lectHTML();
+  if(g==='libros')return booksHTML();
+  if(g.indexOf('art:')===0)return artHTML(g.slice(4));
+  if(RCAT[g])return rutHTML(g);
+  var h='<section class="hero"><div class="pad"><p class="hello">Todo lo que rodea al entreno.</p><h1 class="disp">Guía del portero</h1></div></section><div class="pad"><section class="sec"><div class="ggrid">';
+  h+=gCard('dieta',ICON.plato,'Dieta','Según tu peso, altura y presupuesto','--t-fuerza');
+  h+=gCard('men',ICON.mente,'Mente','Activación, nervios, errores y penaltis','--t-tecnica');
+  h+=gCard('coo',ICON.ojo,'Coordinación','Ojos, manos y pies','--t-activacion');
+  h+=gCard('agu',ICON.gota,'Agujetas','8 rutinas para recuperar','--t-reaccion');
+  h+=gCard('pro',ICON.estrella,'Entrena como…','Ederson, Alisson, Courtois, Dibu y Donnarumma','--gold');
+  h+=gCard('lectura',ICON.libro,'Leer el juego','Bisectriz, cuerpo, rival, calentamiento','--t-base');
+  h+='</div>'+'<button class="cta-row" data-a="g-nav" data-v="libros" style="margin-top:4px"><span class="cta-ic">'+ICON.libro+'</span><span><b>Libros para porteros</b><small>Nueve lecturas recomendadas, en español e inglés</small></span><span class="chev" aria-hidden="true">›</span></button></section></div>';
+  return h;}
+function rutHTML(cat){
+  cat=cat||'agu';var RC=RCAT[cat],g=rutGear(),inG=U.view==='guia';
+  var h='<div class="pad">'+(inG?gBack():'<button class="back" '+(!P()&&!hasSp()?'data-a="ob-start"':'data-a="tab" data-v="'+(U.prevView&&U.prevView!=='agujetas'?U.prevView:'hoy')+'"')+'>← Volver</button>');
+  h+='<p class="eyebrow" style="color:var('+RC.c+')">'+esc(RC.e)+'</p><h1 class="disp" style="font-size:44px;margin-top:6px">'+esc(RC.n)+'</h1><p class="muted" style="margin-top:6px">'+esc(RC.sub)+'</p>';
   h+='<div class="ctrl" style="margin-top:14px"><span>Tengo</span><div class="chips">'+RGEAR.map(function(m){var on=g.indexOf(m[0])>=0;return '<button class="chip'+(on?' on':'')+'" data-a="rut-gear" data-v="'+m[0]+'" aria-pressed="'+on+'">'+m[1]+'</button>';}).join('')+'</div></div>';
-  h+='<div style="display:grid;gap:8px;margin-top:12px">'+fold('rut-ev','Qué funciona contra las agujetas','<div class="facts-l">'+C.DOMS_EV.map(function(f){return '<div><b>'+esc(f[0])+'</b><span>'+esc(f[1])+'</span></div>';}).join('')+'</div>')+
-    fold('rut-src','Fuentes','<ul class="srcs">'+C.DOMS_SRC.map(function(x){return '<li><a href="'+x[1]+'" target="_blank" rel="noopener">'+esc(x[0])+'</a></li>';}).join('')+'</ul>')+'</div>';
+  var ev=cat==='men'?C.MEN_EV:(cat==='coo'?C.COO_EV:(cat==='agu'?C.DOMS_EV:null)),src=cat==='men'?C.MEN_SRC:(cat==='coo'?C.COO_SRC:(cat==='agu'?C.DOMS_SRC:null));
+  if(ev)h+='<div style="display:grid;gap:8px;margin-top:12px">'+fold('rut-ev-'+cat,cat==='agu'?'Qué funciona contra las agujetas':'Lo que dicen los estudios','<div class="facts-l">'+ev.map(function(f){return '<div><b>'+esc(f[0])+'</b><span>'+esc(f[1])+'</span></div>';}).join('')+'</div>')+
+    fold('rut-src-'+cat,'Fuentes','<ul class="srcs">'+src.map(function(x){return '<li><a href="'+x[1]+'" target="_blank" rel="noopener">'+esc(x[0])+'</a></li>';}).join('')+'</ul>')+'</div>';
+  if(cat==='pro')h+='<div style="margin-top:12px">'+fold('pro-who','Cómo se formaron y cómo trabajan','<p>Su camino, su punto fuerte y cómo lo entrenan.</p><button class="btn small ghost" data-a="g-nav" data-v="pro" style="justify-self:start">Ver los cinco porteros</button>')+'</div>';
   h+='<section class="sec">';
-  C.RUT.forEach(function(r){var a={sit:'recuperar',rut:r.id,loc:rutLoc(),gear:g,mode:'solo',doms:2},s=C.buildSession(null,{day:{x:{sp:a}}},'x');
+  C.RUT.filter(function(r){return r.cat===cat;}).forEach(function(r){var a={sit:'recuperar',rut:r.id,loc:rutLocFor(r),gear:g,mode:r.mode||'solo',doms:2},s=C.buildSession(null,{day:{x:{sp:a}}},'x');
+    if(!s.blocks.length||(r.needG&&!r.needG.every(function(x){return g.indexOf(x)>=0;}))){h+='<div class="card" style="gap:8px"><div><b style="font-size:17px">'+esc(r.n)+'</b><p class="muted" style="font-size:14px">'+esc(r.para)+'</p></div><p class="note info">Para esta rutina necesitas '+esc(r.need||'más material')+'. Márcalo arriba, en «Tengo».</p></div>';return;}
     var inc='<ol>'+s.blocks.map(function(b){return '<li><b>'+esc(b.n)+':</b> '+b.items.map(function(it){return esc(it.e.n)+' <span class="muted">('+esc(it.d.txt)+')</span>';}).join(', ')+'</li>';}).join('')+'</ol>';
     h+='<div class="card" style="gap:10px"><div><b style="font-size:17px">'+esc(r.n)+'</b><p class="muted" style="font-size:14px">'+esc(r.para)+'</p></div><div class="facts"><span class="fact"><b>'+s.est+'</b> min</span><span class="fact">'+s.blocks.reduce(function(n,b){return n+b.items.length;},0)+' ejercicios</span></div>'+
       fold('rut-'+r.id,'Qué incluye',inc+'<p>'+esc(r.why)+'</p>',{cls:'inl'})+'<button class="btn full" data-a="rut-go" data-v="'+r.id+'">Hacer ahora</button></div>';});
   return h+'</section></div>';
 }
+function srcList(src){return '<ul class="srcs">'+src.map(function(x){return '<li><a href="'+x[1]+'" target="_blank" rel="noopener">'+esc(x[0])+'</a></li>';}).join('')+'</ul>';}
+function proHTML(){
+  var h='<div class="pad">'+gBack()+'<p class="eyebrow" style="color:var(--gold)">Porteros de élite</p><h1 class="disp" style="font-size:44px;margin-top:6px">Entrena como los mejores</h1><p class="muted" style="margin-top:6px">Dónde se formaron, su punto fuerte y cómo entrenarlo tú.</p><section class="sec">';
+  PROS.forEach(function(p){var r=C.RUTI['pro-'+p.id];
+    h+='<div class="card" style="gap:10px"><div><p class="eyebrow" style="color:var(--gold)">'+esc(p.r)+'</p><b style="font-size:20px">'+esc(p.n)+'</b></div>'+
+      fold('pro-path-'+p.id,'Su camino',ul(p.path),{cls:'inl'})+fold('pro-how-'+p.id,'Cómo lo hace',ul(p.how),{cls:'inl'})+fold('pro-you-'+p.id,'Qué copiar',ul(p.you),{cls:'inl'})+fold('pro-src-'+p.id,'Fuentes',srcList(p.src),{cls:'inl'})+
+      (r?'<button class="btn full" data-a="rut-go" data-v="'+r.id+'">'+esc(r.n)+' · '+r.mins+' min</button>':'')+'</div>';});
+  return h+'<p class="muted" style="font-size:13px">Sesiones inspiradas en su estilo; no son su entrenamiento real.</p></section></div>';}
+function lectHTML(){
+  var h='<div class="pad">'+gBack()+'<p class="eyebrow" style="color:var(--lav)">Para leer</p><h1 class="disp" style="font-size:44px;margin-top:6px">Leer el juego</h1><p class="muted" style="margin-top:6px">Colocación, cuerpo, rival, calentamiento y academias.</p><section class="sec">';
+  LECT.forEach(function(a){h+='<button class="cta-row lect" data-a="g-nav" data-v="art:'+a.id+'"><span class="cta-ic">'+ICON.libro+'</span><span><b>'+esc(a.t)+'</b><small>'+esc(a.sub)+'</small></span><span class="chev" aria-hidden="true">›</span></button>';});
+  h+='<button class="cta-row lect" data-a="g-nav" data-v="libros"><span class="cta-ic">'+ICON.libro+'</span><span><b>Libros para porteros</b><small>Nueve lecturas recomendadas</small></span><span class="chev" aria-hidden="true">›</span></button>';
+  return h+'</section></div>';}
+function artHTML(id){
+  var a=LECT.filter(function(x){return x.id===id;})[0];if(!a)return lectHTML();
+  var h='<div class="pad">'+gBack('lectura')+'<p class="eyebrow" style="color:var(--lav)">Leer el juego</p><h1 class="disp" style="font-size:40px;margin-top:6px">'+esc(a.t)+'</h1><p class="muted" style="margin-top:6px">'+esc(a.sub)+'</p>';
+  if(a.anim&&a.anim.length)h+='<div style="margin-top:12px">'+animBlock({n:a.t,anim:a.anim})+'</div>';
+  h+='<div style="display:grid;gap:8px;margin-top:12px">';
+  a.secs.forEach(function(s,i){var body=(s.p?'<p style="color:var(--text)">'+esc(s.p)+'</p>':'')+(s.li?ul(s.li):'');
+    if(s.h)h+=fold('art-'+a.id+'-'+i,esc(s.h),body);else h+='<div class="card" style="gap:8px">'+body+'</div>';});
+  h+='</div>';
+  if(a.ex&&a.ex.length)h+='<section class="sec"><div class="sec-h"><h2>Para practicarlo</h2></div><div class="lib-list">'+a.ex.map(function(id){var e=C.EXI[id];return e?'<button class="lib" data-a="sheet" data-v="'+e.id+'"><b>'+esc(e.n)+'</b><span class="tags"><span class="tag cat">'+esc(C.CATS[e.cat])+'</span></span></button>':'';}).join('')+'</div></section>';
+  h+='<section class="sec">'+fold('art-src-'+a.id,'Fuentes',srcList(a.src))+'</section>';
+  return h+'</div>';}
+function booksHTML(){
+  var h='<div class="pad">'+gBack('lectura')+'<p class="eyebrow" style="color:var(--lav)">Para leer</p><h1 class="disp" style="font-size:44px;margin-top:6px">Libros para porteros</h1><p class="muted" style="margin-top:6px">Métodos de entrenamiento, historia del puesto y cabeza.</p><section class="sec">';
+  BOOKS.forEach(function(b){h+='<div class="card" style="gap:6px"><b style="font-size:16px">'+esc(b[0])+'</b><span class="mono muted" style="font-size:12px">'+esc(b[1])+'</span><p class="muted" style="font-size:14px">'+esc(b[2])+'</p>'+(b[3]?'<a href="'+b[3]+'" target="_blank" rel="noopener" style="font-size:13px">Ficha del libro ↗</a>':'')+'</div>';});
+  return h+'</section></div>';}
+function dietDefaults(){if(!S.diet)S.diet={w:'',h:'',a:'',sex:'m',bud:'medio',goal:'mantener',day:'fuerte'};return S.diet;}
+function dietHTML(){
+  var d=dietDefaults(),ok=+d.w>=30&&+d.w<=160&&+d.h>=130&&+d.h<=220&&+d.a>=12&&+d.a<=60;
+  var h='<div class="pad">'+gBack()+'<p class="eyebrow" style="color:var(--t-fuerza)">Alimentación</p><h1 class="disp" style="font-size:44px;margin-top:6px">Tu dieta de portero</h1><p class="muted" style="margin-top:6px">Calculada con tus datos y ajustada a cada tipo de día.</p>';
+  h+='<div class="card" style="margin-top:12px"><div class="dgrid"><label class="ctrl"><span>Peso (kg)</span><input type="number" inputmode="decimal" id="d-w" value="'+esc(d.w)+'" placeholder="75"></label><label class="ctrl"><span>Altura (cm)</span><input type="number" inputmode="numeric" id="d-h" value="'+esc(d.h)+'" placeholder="182"></label><label class="ctrl"><span>Edad</span><input type="number" inputmode="numeric" id="d-a" value="'+esc(d.a)+'" placeholder="22"></label></div>';
+  h+='<div class="ctrl"><span>Sexo</span><div class="chips">'+[['m','Hombre'],['f','Mujer']].map(function(x){return '<button class="chip'+(d.sex===x[0]?' on':'')+'" data-a="d-set" data-f="sex" data-v="'+x[0]+'">'+x[1]+'</button>';}).join('')+'</div></div>';
+  h+='<div class="ctrl"><span>Presupuesto</span><div class="chips">'+[['bajo','Ajustado'],['medio','Normal'],['alto','Holgado']].map(function(x){return '<button class="chip'+(d.bud===x[0]?' on':'')+'" data-a="d-set" data-f="bud" data-v="'+x[0]+'">'+x[1]+'</button>';}).join('')+'</div></div>';
+  var teen=+d.a&&+d.a<18;
+  h+='<div class="ctrl"><span>Objetivo</span><div class="chips">'+[['mantener','Mantener'],['ganar','Ganar músculo']].concat(teen?[]:[['bajar','Bajar algo de grasa']]).map(function(x){return '<button class="chip'+(d.goal===x[0]?' on':'')+'" data-a="d-set" data-f="goal" data-v="'+x[0]+'">'+x[1]+'</button>';}).join('')+'</div></div>';
+  h+='<button class="btn full" data-a="d-calc">Calcular</button></div>';
+  if(!ok){h+='<p class="muted" style="font-size:14px;margin-top:10px">Escribe tu peso, tu altura y tu edad y pulsa «Calcular».</p>';}
+  else{
+    var R=dietCalc(d),T=R[d.day]||R.fuerte;
+    if(R.teen)h+='<p class="note info" style="margin-top:10px">Estás en edad de crecimiento: nada de dietas para bajar peso sin un profesional. Come suficiente todos los días.</p>';
+    h+='<section class="sec"><div class="sec-h"><h2>Cada día</h2></div><div class="dtable"><div class="dh"><span></span><span>Energía</span><span>Hidratos</span><span>Proteína</span><span>Grasa</span></div>'+
+      DAYT.map(function(x){var t=R[x[0]];return '<button class="dr'+(d.day===x[0]?' on':'')+'" data-a="d-set" data-f="day" data-v="'+x[0]+'"><span>'+esc(x[1])+'</span><span class="mono">'+t.kcal+'</span><span class="mono">'+t.c+' g</span><span class="mono">'+t.p+' g</span><span class="mono">'+t.f+' g</span></button>';}).join('')+'</div>'+
+      '<p class="muted" style="font-size:13px">Energía en kcal. Agua: unos '+String(R.water).replace('.',',')+' l al día, más medio litro por cada hora de entreno. Toca un tipo de día para ver su menú.</p></section>';
+    h+='<section class="sec"><div class="sec-h"><h2>Menú: '+esc((DAYT.filter(function(x){return x[0]===d.day;})[0]||DAYT[2])[1].toLowerCase())+'</h2></div>';
+    menuFor(d,T).forEach(function(m,i){h+=fold('menu-'+i,esc(m[0]),ul(m[1]),{sm:i===0?'Abre cada comida':''});});
+    h+='</section>';
+    var w=+d.w,c1=Math.round(w),c3=Math.round(3*w),pr=Math.round(.3*w),wat=Math.round(6*w/10)*10;
+    h+='<section class="sec" style="gap:8px"><div class="sec-h"><h2>Día de partido</h2></div>'+fold('d-match','Horario de comidas','<div class="steps">'+[['3–4 h antes','Comida rica en hidratos y baja en grasa y fibra: entre '+c1+' y '+c3+' g de hidratos (pasta o arroz, pan, fruta).'],['Hasta 4 h antes','Unos '+wat+' ml de agua.'],['1 h antes','Si tienes hambre, algo ligero: plátano o tostada con miel.'],['Descanso','Agua o bebida isotónica a sorbos.'],['Al terminar','En la primera hora, unos '+c1+' g de hidratos y '+pr+' g de proteína: por ejemplo, un bocadillo de pollo o atún y un batido de leche.']].map(function(s){return '<div><b>'+esc(s[0])+'</b><span>'+esc(s[1])+'</span></div>';}).join('')+'</div>');
+    h+=fold('d-shop','Lista de la compra','<p>Presupuesto '+esc({bajo:'ajustado',medio:'normal',alto:'holgado'}[d.bud])+':</p>'+ul(SHOP[d.bud]));
+    h+=fold('d-save','Comer bien gastando poco',ul(SAVE));
+    h+=fold('d-gk','Por qué una dieta de portero',ul(['Un portero profesional gastó unas 2.900 kcal al día, unas 600 menos que los jugadores de campo de su equipo: necesitas menos energía, pero no menos calidad.','Los hidratos dan la potencia para saltar y estirarte y ayudan a mantener la concentración: súbelos los días de más carga y el día antes del partido.','La proteína (1,6–2,2 g por kg) repartida en 3–4 comidas ayuda a recuperar y a mantener el músculo.']));
+    h+=fold('d-sup','Suplementos',ul(['Primero la comida: es lo que recomienda el grupo de expertos de la UEFA.','Si eres menor de edad, nada de suplementos sin un profesional.','Hierro o vitamina D, solo si un análisis lo indica.']));
+    h+=fold('d-src','Fuentes y cálculo','<p>Gasto en reposo con la fórmula de Mifflin-St Jeor, multiplicado por un factor según el tipo de día y ajustado a lo que gasta un portero. Hidratos y proteína por kilo según las recomendaciones para fútbol de élite.</p>'+srcList(DIET_SRC))+'</section>';
+    h+='<p class="muted" style="font-size:13px">Orientación general, no un plan médico. Si tienes alguna enfermedad, alergia o te cuesta comer con normalidad, consulta con un dietista-nutricionista.</p>';
+  }
+  return h+'</div>';}
+
 function liteHTML(){
   var days=spDays(),t=today();
   var h='<section class="hero"><div class="pad"><p class="hello">'+greeting()+'.</p><h1 class="disp">'+(days.length?'Tu rutina especial':'Sin rutina activa')+'</h1></div></section><div class="pad"><section class="sec">';
@@ -2198,9 +2554,9 @@ function liteHTML(){
 
 /* ---------- Vistas ---------- */
 function topHTML(){var d=new Date();var sd=C.DAYS[C.dayIdx(d)].slice(0,3)+' '+d.getDate()+' '+['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'][d.getMonth()];
-  return '<header class="top"><div class="top-in pad"><span class="mark"><i aria-hidden="true"></i>Portero Diario</span><span class="mono">'+esc(sd)+'</span></div></header>';}
-function tabsHTML(){var lite=!P(),t=lite?[['hoy','Rutina','rutina'],['ejercicios','Ejercicios'],['crear','Mi plan']]:[['hoy','Hoy'],['plan','Plan'],['ejercicios','Ejercicios'],['progreso','Progreso'],['perfil','Perfil']];
-  return '<nav class="tabs" aria-label="Secciones"><div class="tabs-in"'+(lite?' style="grid-template-columns:repeat(3,minmax(0,1fr))"':'')+'>'+t.map(function(x){var on=U.view===x[0]||(U.view==='sesion'&&x[0]==='hoy');var act=x[0]==='crear'?'data-a="ob-start"':'data-a="tab" data-v="'+x[0]+'"';return '<button class="tab'+(on?' on':'')+'" '+act+' '+(on?'aria-current="page"':'')+'>'+ICON[x[2]||x[0]]+'<span>'+x[1]+'</span></button>';}).join('')+'</div></nav>';}
+  return '<header class="top"><div class="top-in pad"><span class="mark"><i aria-hidden="true"></i>Portero Diario</span><span class="topr"><span class="mono">'+esc(sd)+'</span>'+(P()?'<button class="topbtn'+(U.view==='perfil'?' on':'')+'" data-a="tab" data-v="perfil" aria-label="Perfil">'+ICON.perfil+'</button>':'')+'</span></div></header>';}
+function tabsHTML(){var lite=!P(),t=lite?[['hoy','Rutina','rutina'],['ejercicios','Ejercicios'],['guia','Guía'],['crear','Mi plan']]:[['hoy','Hoy'],['plan','Plan'],['ejercicios','Ejercicios'],['guia','Guía'],['progreso','Progreso']];
+  return '<nav class="tabs" aria-label="Secciones"><div class="tabs-in"'+(lite?' style="grid-template-columns:repeat(4,minmax(0,1fr))"':'')+'>'+t.map(function(x){var on=U.view===x[0]||(U.view==='sesion'&&x[0]==='hoy');var act=x[0]==='crear'?'data-a="ob-start"':'data-a="tab" data-v="'+x[0]+'"';return '<button class="tab'+(on?' on':'')+'" '+act+' '+(on?'aria-current="page"':'')+'>'+ICON[x[2]||x[0]]+'<span>'+x[1]+'</span></button>';}).join('')+'</div></nav>';}
 function dayControls(k,s){
   var p=P(),o=S.day[k]||{},locs=p.locs.length?p.locs:['casa'];
   var h='<div class="ctrl"><span>Hoy estoy</span><div class="chips">'+[['solo','Solo'],['pareja','Con alguien que me tira']].map(function(m){return '<button class="chip'+(s.mode===m[0]?' on':'')+'" data-a="d-mode" data-k="'+k+'" data-v="'+m[0]+'">'+m[1]+'</button>';}).join('')+'</div></div>';
@@ -2527,22 +2883,24 @@ function findItem(k,id){var s=C.buildSession(P(),S,k),r=null;s.blocks.forEach(fu
 /* ---------- Render ---------- */
 function render(){
   var app=document.getElementById('app'),lite=!P();
-  var rutOnly=lite&&U.view==='agujetas'&&!U.ob&&!U.sp;
+  if(U.view==='agujetas'){U.view='guia';U.g=U.g&&RCAT[U.g]?U.g:'agu';}
+  var rutOnly=lite&&U.view==='guia'&&!U.ob&&!U.sp;
   if(U.ob||(lite&&!U.sp&&!hasSp()&&!rutOnly)){if(!U.ob)startOb(false);app.innerHTML='';renderOver();return;}
   if(lite&&!hasSp()&&!rutOnly){app.innerHTML='';renderOver();return;}
   var v=U.view,body='';
-  if(lite&&v!=='sesion'&&v!=='ejercicios'&&v!=='agujetas')v=U.view='hoy';
+  if(lite&&v!=='sesion'&&v!=='ejercicios'&&v!=='guia')v=U.view='hoy';
   if(lite&&v==='sesion'&&!C.spOf(S,U.date||today()))v=U.view='hoy';
-  if(v==='hoy')body=lite?liteHTML():hoyHTML();else if(v==='agujetas')body=rutHTML();else if(v==='sesion')body=sesHTML();else if(v==='plan')body=planHTML();else if(v==='ejercicios')body=libHTML();else if(v==='progreso')body=progHTML();else body=perfilHTML();
+  if(v==='hoy')body=lite?liteHTML():hoyHTML();else if(v==='guia')body=guiaHTML();else if(v==='sesion')body=sesHTML();else if(v==='plan')body=planHTML();else if(v==='ejercicios')body=libHTML();else if(v==='progreso')body=progHTML();else body=perfilHTML();
   app.innerHTML='<div class="shell">'+topHTML()+'<main id="main">'+body+'</main></div>'+tabsHTML();
   if(v==='ejercicios')libList();
+  ANIM.mount(app);
   renderOver();
 }
 function renderOver(){
   var o=document.getElementById('over'),h='';
   if(U.ob)h=obHTML();
   else if(U.sp)h=spHTML();
-  else if(P()||hasSp()||U.view==='agujetas')h=guidedHTML()+sheetHTML()+finishHTML();
+  else if(P()||hasSp()||U.view==='guia')h=guidedHTML()+sheetHTML()+finishHTML();
   if(U.toast)h+='<div class="toast" role="status">'+esc(U.toast)+'</div>';
   o.innerHTML=h;ANIM.mount(o);
   if(U.ob&&U.ob.stage==='gen')animGen();
@@ -2568,9 +2926,12 @@ document.addEventListener('click',function(ev){
     case 'ob-start':U.sheet=null;U.guided=null;stopTimer();startOb(false);break;
     case 'ob-cancel':U.ob=null;U.view='hoy';render();break;
     case 'sp-start':U.ob=null;startSp(null);break;
-    case 'rut-open':U.ob=null;U.sheet=null;stopTimer();if(U.view!=='agujetas')U.prevView=U.view==='sesion'?'hoy':U.view;U.view='agujetas';render();window.scrollTo(0,0);break;
+    case 'rut-open':U.ob=null;U.sheet=null;stopTimer();U.view='guia';U.g=v&&RCAT[v]?v:'agu';render();window.scrollTo(0,0);break;
+    case 'g-nav':U.ob=null;U.sheet=null;U.view='guia';U.g=v||'home';render();window.scrollTo(0,0);break;
+    case 'd-set':{dietRead();var dd=dietDefaults();dd[t.getAttribute('data-f')]=v;save();render();break;}
+    case 'd-calc':{dietRead();save();U.open['menu-0']=true;render();var dt=document.querySelector('.dtable');if(dt)dt.scrollIntoView({behavior:'smooth',block:'start'});break;}
     case 'rut-gear':{var rg=rutGear(),ri=rg.indexOf(v);if(ri>=0)rg.splice(ri,1);else rg.push(v);save();render();break;}
-    case 'rut-go':{var rr=C.RUTI[v];if(!rr)break;dayO(today()).sp={g:Date.now(),sit:'recuperar',rut:v,doms:2,loc:rutLoc(),gear:rutGear().slice(),mode:'solo',mins:rr.mins};save();U.date=today();U.view='sesion';render();window.scrollTo(0,0);toast('Rutina lista');break;}
+    case 'rut-go':{var rr=C.RUTI[v];if(!rr)break;dayO(today()).sp={g:Date.now(),sit:'recuperar',rut:v,doms:2,loc:rutLocFor(rr),gear:rutGear().slice(),mode:rr.mode||'solo',mins:rr.mins};save();U.date=today();U.view='sesion';render();window.scrollTo(0,0);toast('Rutina lista');break;}
     case 'sp-opt':spOpt(v);break;
     case 'sp-next':spNext();break;
     case 'sp-back':spBack();break;
@@ -2578,7 +2939,7 @@ document.addEventListener('click',function(ev){
     case 'sp-set':{var so=C.spOf(S,k);if(!so)break;var fld=t.getAttribute('data-f');so[fld]=(fld==='doms'||fld==='mins')?+v:v;save();render();break;}
     case 'sp-gear':{var sg=C.spOf(S,k);if(!sg)break;sg.gear=sg.gear||[];var gi=sg.gear.indexOf(v);if(gi>=0)sg.gear.splice(gi,1);else sg.gear.push(v);save();render();break;}
     case 'sp-del':{var sd=C.spOf(S,k);if(!sd)break;spClear(sd.g,today());if(S.day[k])delete S.day[k].sp;save();U.view='hoy';U.open['ses-aj']=false;U.open['hoy-aj']=false;render();window.scrollTo(0,0);toast(P()?'Has vuelto a tu plan':'Rutina borrada');break;}
-    case 'tab':U.view=v;U.sheet=null;if(v==='plan')U.planWeek=null;render();window.scrollTo(0,0);break;
+    case 'tab':if(v==='guia')U.g='home';U.view=v;U.sheet=null;if(v==='plan')U.planWeek=null;render();window.scrollTo(0,0);break;
     case 'open-ses':U.date=k;U.view='sesion';render();window.scrollTo(0,0);break;
     case 'd-mode':dayO(k).mode=v;save();render();break;
     case 'd-loc':dayO(k).loc=v;save();render();break;
@@ -2624,10 +2985,12 @@ document.addEventListener('click',function(ev){
 });
 document.addEventListener('input',function(ev){
   if(ev.target.id==='libq'){U.lib.q=ev.target.value;libList();}
+  if(/^d-[wha]$/.test(ev.target.id||'')){dietRead();try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
   if(ev.target.id==='ob-name'&&U.ob){U.ob.a.name=ev.target.value;}
 });
 document.addEventListener('toggle',function(ev){var d=ev.target;if(d&&d.getAttribute&&d.getAttribute('data-fold'))U.open[d.getAttribute('data-fold')]=d.open;},true);
 document.addEventListener('keydown',function(ev){if(ev.key==='Escape'){if(U.sheet){U.sheet=null;renderOver();}else if(U.finish){U.finish=null;renderOver();}}if(ev.key==='Enter'&&ev.target.id==='ob-name'){obNext();}});
+function dietRead(){var dd=dietDefaults();['w','h','a'].forEach(function(f){var el=document.getElementById('d-'+f);if(el)dd[f]=String(el.value||'').replace(',','.').trim();});}
 function noteVal(){var n=document.getElementById('f-note');return n?n.value:(U.finish&&U.finish.note)||'';}
 function firstPending(k){var s=C.buildSession(P(),S,k),i=0,r=0,found=false;s.blocks.forEach(function(b){b.items.forEach(function(it){if(!found&&setsDone(k,it.e.id)<it.d.sets){r=i;found=true;}i++;});});return r;}
 function obNext(){var o=U.ob;if(o.stage==='intro'){o.stage='q';o.step=0;renderOver();return;}
