@@ -363,6 +363,15 @@ details.fold.bad>summary{color:var(--bad)}
 .antabs{display:flex;gap:6px;overflow-x:auto;margin-top:12px;scrollbar-width:none}
 .antabs::-webkit-scrollbar{display:none}
 a.chip{text-decoration:none;display:inline-flex;align-items:center}
+.anvl{display:grid}
+.anv{display:grid;gap:6px;padding:10px 0;border-top:1px solid var(--line)}
+.anvl .anv:first-child{border-top:0;padding-top:2px}
+.anv-t b{display:block;font-size:15px;color:var(--text)}
+.anv-t span{color:var(--muted);font-size:13px}
+.anv p{margin:0;font-size:14px}
+.anv-b{display:flex;flex-wrap:wrap;gap:6px}
+.cta-row.anpre{background:var(--surface);border-color:var(--line)}
+.cta-row.anpre .cta-ic{background:rgba(98,198,234,.14);color:var(--t-reaccion)}
 .ggrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 .gcard{display:grid;gap:4px;align-content:start;text-align:left;cursor:pointer;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;min-height:128px}
 .gcard b{font-size:16.5px}
@@ -2628,7 +2637,39 @@ var AN_FOCUS=[['colocacion','Colocación',['¿Está en la bisectriz antes de cad
   ['pies','Juego de pies',['¿Se perfila antes de recibir?','¿Mira antes de que le llegue el balón?','¿Juega corto o largo según la presión?','¿Con qué pierna pasa y a qué pierna del compañero?']],
   ['paradas','Paradas',['Posición de base y manos antes del tiro.','¿Bloca o rechaza? ¿Hacia dónde rechaza?','En las caídas, ¿va hacia delante?','¿Cómo se levanta para la segunda acción?']],
   ['voz','Voz y cabeza',['¿Cuándo habla y qué dice?','¿Cómo coloca la barrera y a la defensa?','¿Cómo reacciona después de un error?']]];
-var AN_KEEPERS=['Ederson','Alisson Becker','Thibaut Courtois','Emiliano Martinez','Gianluigi Donnarumma','Joan Garcia','Unai Simon','David Raya'];
+var AN_KEEPERS=[['Ederson','Ederson','https://www.fotmob.com/players/363364/ederson-moraes'],['Alisson Becker','Alisson','https://www.fotmob.com/players/319784/alisson-becker'],['Thibaut Courtois','Courtois','https://www.fotmob.com/players/170323/thibaut-courtois'],['Emiliano Martinez','Dibu Martínez','https://www.fotmob.com/players/268375/emiliano-martinez'],['Gianluigi Donnarumma','Donnarumma','https://www.fotmob.com/players/618878/gianluigi-donnarumma'],['Joan Garcia','Joan García','https://www.fotmob.com/players/1167220/joan-garcia'],['Unai Simon','Unai Simón','https://www.fotmob.com/players/660625/unai-simon'],['David Raya','David Raya','https://www.fotmob.com/en-GB/players/562727']];
+function anYT(id){return 'https://www.youtube.com/watch?v='+id;}
+/* Vídeos comprobados: título, canal y fecha verificados en octubre de 2026 */
+var AN_VID=[
+  {id:'neuer-cam',g:'cam',t:'Neuer · Player Cam en el Bernabéu',s:'Neuer Player Cam',k:'Manuel Neuer',src:'Canal del FC Bayern · Champions 2025-26',w:'Neuer',d:'Una cámara solo para él en el Real Madrid 1–2 Bayern: nueve paradas, salidas y juego con los pies.',u:anYT('hATUfsOHs_E')},
+  {id:'pov-liga',g:'pov',t:'Partido de liga en primera persona',s:'Liga en primera persona',k:'RushGK, portero amateur',src:'YouTube · 14 min',w:'RushGK',d:'Cámara en el portero durante un partido de verdad: ves lo que ve él antes de cada acción.',u:anYT('h2fQl57Nkrg')},
+  {id:'pov-copa',g:'pov',t:'Semifinal de copa en primera persona',s:'Semifinal en primera persona',k:'RushGK, portero amateur',src:'YouTube',w:'RushGK',d:'Su mejor partido de la temporada, grabado con una GoPro.',u:anYT('eg2ni1ogYZg')},
+  {id:'arg-fra22',g:'full',t:'Argentina–Francia · final 2022',s:'Argentina–Francia 2022',k:'Emiliano Martínez y Hugo Lloris',w:'Dibu Martínez',d:'Dibu: parada a Kolo Muani en el último minuto de la prórroga y tanda de penaltis.',u:anYT('RgqKdplLIk4')},
+  {id:'ned-arg22',g:'full',t:'Países Bajos–Argentina · cuartos 2022',s:'Países Bajos–Argentina 2022',k:'Emiliano Martínez y Andries Noppert',w:'Dibu Martínez',d:'Dibu para dos penaltis en la tanda. Fíjate en lo que hace antes de cada lanzamiento.',u:anYT('QIpZ1pad73w')},
+  {id:'bra-cro22',g:'full',t:'Brasil–Croacia · cuartos 2022',s:'Brasil–Croacia 2022',k:'Alisson y Dominik Livaković',w:'Livaković',d:'Livaković sostiene a Croacia con muchas paradas y para un penalti en la tanda.',u:anYT('HxBqMbI5kqQ')},
+  {id:'mar-esp22',g:'full',t:'Marruecos–España · octavos 2022',s:'Marruecos–España 2022',k:'Yassine Bounou y Unai Simón',w:'Unai Simón',d:'Unai Simón saca el balón con los pies en un partido de mucha posesión; Bounou para dos penaltis.',u:anYT('ci4vyd6PsNg')},
+  {id:'bra-bel18',g:'full',t:'Brasil–Bélgica · cuartos 2018',s:'Brasil–Bélgica 2018',k:'Thibaut Courtois y Alisson',w:'Courtois',d:'Courtois ante un Brasil que tira mucho: colocación y estiradas. Alisson, ante las contras de Bélgica.',u:anYT('5OJfbYQtKtk')},
+  {id:'bel-usa14',g:'full',t:'Bélgica–EE. UU. · octavos 2014',s:'Bélgica–EE. UU. 2014',k:'Thibaut Courtois y Tim Howard',w:'Tim Howard',d:'Tim Howard firma un partido de récord en paradas; Courtois, en la otra portería.',u:anYT('AgspyOj5BPk')},
+  {id:'ger-arg14',g:'full',t:'Alemania–Argentina · final 2014',s:'Alemania–Argentina 2014',k:'Manuel Neuer y Sergio Romero',w:'Neuer',d:'Neuer: salidas por alto, acciones fuera del área y juego como líbero.',u:anYT('-YbZsM26GDI')},
+  {id:'bra-ger14',g:'full',t:'Brasil–Alemania · semifinal 2014',s:'Brasil–Alemania 2014',k:'Júlio César y Manuel Neuer',w:'Júlio César',d:'Para estudiar goles encajados: en cada gol, ¿qué podía hacer el portero?',u:anYT('L6sbfskaTDQ')},
+  {id:'ned-esp10',g:'full',t:'Países Bajos–España · final 2010',s:'Países Bajos–España 2010',k:'Iker Casillas y Maarten Stekelenburg',w:'Casillas',d:'Casillas gana dos 1 contra 1 a Robben.',u:anYT('7fOG8j_ncWY')},
+  {id:'ita-fra06',g:'full',t:'Italia–Francia · final 2006',s:'Italia–Francia 2006',k:'Gianluigi Buffon y Fabien Barthez',w:'Buffon',d:'Buffon saca el cabezazo de Zidane en la prórroga. Termina en penaltis.',u:anYT('nELaL14ms7A')},
+  {id:'pen-arg-fra',g:'pen',t:'Argentina–Francia 2022',k:'Martínez y Lloris',w:'Dibu Martínez',u:anYT('MCWJNOfJoSM')},
+  {id:'pen-arg-ned',g:'pen',t:'Argentina–Países Bajos 2022',k:'Martínez y Noppert',w:'Dibu Martínez',u:anYT('wiiO9Fx5uLs')},
+  {id:'pen-mar-esp',g:'pen',t:'Marruecos–España 2022',k:'Bounou y Unai Simón',w:'Bounou',u:anYT('yF5mHzhRBWE')},
+  {id:'pen-bra-cro',g:'pen',t:'Brasil–Croacia 2022',k:'Livaković y Alisson',w:'Livaković',u:anYT('uR9vgLLDhE0')}];
+/* Sesiones listas: [id, como quién, foco del día, id de foco, [[vídeo, a quién mirar]], nota] */
+var AN_PRE=[
+  ['courtois','Courtois','Colocación y estiradas','colocacion',[['bra-bel18','Courtois'],['bel-usa14','Courtois'],['bra-cro22','Livaković']],''],
+  ['alisson','Alisson','1 contra 1','uno',[['bra-bel18','Alisson'],['ned-esp10','Casillas'],['arg-fra22','Dibu Martínez']],''],
+  ['dibu','Dibu Martínez','Reacción y penaltis','paradas',[['arg-fra22','Dibu Martínez'],['ned-arg22','Dibu Martínez'],['mar-esp22','Bounou']],''],
+  ['donnarumma','Donnarumma','Juego aéreo','aereo',[['ger-arg14','Neuer'],['ita-fra06','Buffon'],['neuer-cam','Neuer']],'Con Neuer y Buffon: no hay partidos enteros de Donnarumma gratis.'],
+  ['ederson','Ederson','Juego de pies','pies',[['neuer-cam','Neuer'],['mar-esp22','Unai Simón'],['ger-arg14','Neuer']],'Con Neuer y Unai Simón: no hay partidos enteros de Ederson gratis.']];
+function anVid(id){return AN_VID.filter(function(v){return v.id===id;})[0];}
+function anVidByUrl(u){return u?AN_VID.filter(function(v){return v.u===u;})[0]:null;}
+function anPreset(pid){var p=AN_PRE.filter(function(x){return x[0]===pid;})[0];if(!p)return;U.anFocus=p[3];anNew(p[3]);
+  p[4].forEach(function(it,j){var v=anVid(it[0]);if(v){S.anCur.blocks[j].who=(it[1]+' · '+v.t).slice(0,80);S.anCur.blocks[j].link=v.u;}});save();}
+function anUse(id){var a=S.anCur,v=anVid(id);if(!a||a.i>2||!v)return;anRead();var b=a.blocks[a.i];b.who=(v.w+' · '+v.t).slice(0,80);b.link=v.u;save();render();window.scrollTo(0,0);toast('Puesto en el partido '+(a.i+1));}
 var AN_BLOCK=18*60,AN_SUM=5*60;
 function anFocus(id){return AN_FOCUS.filter(function(f){return f[0]===id;})[0]||AN_FOCUS[0];}
 function anNew(focus){S.anCur={id:Date.now(),d:today(),focus:focus,i:0,blocks:[{who:'',link:'',c:{},note:''},{who:'',link:'',c:{},note:''},{who:'',link:'',c:{},note:''}],copy:'',drill:'',t:null,left:AN_BLOCK};save();}
@@ -2645,14 +2686,38 @@ function anStart(){var a=S.anCur;if(!a)return;if(a.t){a.left=anLeft();a.t=null;c
 function anGo(i){var a=S.anCur;if(!a)return;anRead();a.t=null;clearInterval(AT.iv);AT.iv=0;a.i=i;a.left=i<3?AN_BLOCK:AN_SUM;save();render();window.scrollTo(0,0);}
 function anSave(){var a=S.anCur;if(!a)return;anRead();clearInterval(AT.iv);AT.iv=0;S.an=S.an||[];var r={id:a.id,d:a.d,focus:a.focus,blocks:a.blocks,copy:a.copy,drill:a.drill};S.an.unshift(r);S.an=S.an.slice(0,30);S.anCur=null;save();}
 function anSum(blocks){var t={};blocks.forEach(function(b){for(var x in b.c)t[x]=(t[x]||0)+b.c[x];});return t;}
-function anSourcesHTML(){
-  var yt=function(q){return ytUrl(q);};
-  var h=fold('an-src-yt','Cámara del portero en YouTube','<p>Busca «keeper cam», «goalkeeper cam» o «every touch»: la cámara sigue solo al portero durante el partido, muchas veces sin música ni comentarios. Evita los resúmenes con música: no se ve la colocación entre acciones.</p>'+
-    '<div class="chips wrap">'+[['Portero: partido completo','goalkeeper cam full match'],['Keeper cam','keeper cam full match'],['Todas sus acciones','goalkeeper every touch full match'],['Cámara aislada','goalkeeper isolated camera']].map(function(x){return '<a class="chip" href="'+yt(x[1])+'" target="_blank" rel="noopener">'+esc(x[0])+' ↗</a>';}).join('')+'</div>'+
-    '<p>Por portero:</p><div class="chips wrap">'+AN_KEEPERS.map(function(n){return '<a class="chip" href="'+yt(n+' keeper cam every touch')+'" target="_blank" rel="noopener">'+esc(n)+' ↗</a>';}).join('')+'</div>',{sm:'Lo más parecido a «en crudo»'});
-  h+=fold('an-src-full','Partidos completos','<p>Con un partido entero puedes seguir solo al portero, incluido lo que hace cuando el balón está lejos.</p><ul><li><a href="https://www.plus.fifa.com/" target="_blank" rel="noopener">FIFA+</a>: archivo de partidos de los Mundiales.</li><li><a href="'+yt('partido completo full match goalkeeper')+'" target="_blank" rel="noopener">Partidos completos en canales oficiales de YouTube</a>.</li></ul>');
-  h+=fold('an-src-own','Tus propios partidos','<p>Es la fuente que más te enseña. Pon el móvil en un trípode detrás de tu portería, algo elevado, o pide a alguien que te grabe siguiéndote a ti y no al balón. Analízalo con la misma hoja.</p>');
-  h+=fold('an-src-stats','Estadísticas para elegir qué ver','<p>En <a href="https://www.fbref.com/en/comps/Big5/keepers/players/Big-5-European-Leagues-Stats" target="_blank" rel="noopener">FBref</a> tienes las estadísticas de los porteros de las cinco grandes ligas.</p>'+ul(['% de paradas: tiros a puerta parados.','PSxG: goles esperados según dónde va cada tiro a puerta. Si encaja menos de lo esperado, está parando más de lo normal.','Centros parados: centros que bloca o despeja.','Acciones fuera del área: salidas como líbero.']));
+function anLk(u,t){return '<a href="'+u+'" target="_blank" rel="noopener">'+t+' ↗</a>';}
+function anRow(v,act){var a=S.anCur,use=act&&a&&a.i<3;
+  return '<div class="anv"><div class="anv-t"><b>'+esc(v.t)+'</b><span>'+esc(v.k)+(v.src?' · '+esc(v.src):'')+'</span></div>'+(v.d?'<p>'+esc(v.d)+'</p>':'')+
+    '<div class="anv-b"><a class="chip" href="'+v.u+'" target="_blank" rel="noopener">Ver en YouTube ↗</a>'+(use?'<button class="chip" data-a="an-use" data-v="'+v.id+'">Usar en el partido '+(a.i+1)+'</button>':'')+'</div></div>';}
+function anSourcesHTML(act){
+  var yt=function(q){return ytUrl(q);},rows=function(g){return '<div class="anvl">'+AN_VID.filter(function(v){return g.indexOf(v.g)>=0;}).map(function(v){return anRow(v,act);}).join('')+'</div>';};
+  var h=fold('an-src-ver','Cómo verlo','<p><b style="color:var(--text)">En el ordenador</b> (atajos de YouTube; antes, haz clic en el vídeo):</p>'+
+    '<div class="steps"><div><b>K · espacio</b><span>Pausa y sigue.</span></div><div><b>J · L</b><span>10 segundos atrás o adelante.</span></div><div><b>Flechas</b><span>← y →: 5 segundos atrás o adelante.</span></div><div><b>Coma · punto</b><span>Con el vídeo en pausa, fotograma a fotograma: para ver si hace el set en el golpeo.</span></div><div><b>&lt; · &gt;</b><span>Más lento o más rápido.</span></div><div><b>F</b><span>Pantalla completa.</span></div></div>'+
+    '<p>'+anLk('https://support.google.com/youtube/answer/7631406?hl=es','Ayuda de YouTube: atajos de teclado')+'</p>'+
+    '<p><b style="color:var(--text)">En el móvil</b>:</p>'+ul(['Doble toque a la izquierda o a la derecha del vídeo: 10 segundos atrás o adelante.','Toca el vídeo, luego el engranaje y «Velocidad de reproducción»: pon 0,5 para repetir una acción.','Mantén el dedo sobre el vídeo para verlo al doble de velocidad cuando no pasa nada cerca del portero.'])+
+    '<p>'+anLk('https://support.google.com/youtube/answer/7509567?hl=es','Ayuda de YouTube: velocidad de reproducción')+'</p>'+
+    '<p><b style="color:var(--text)">Con esta app</b>:</p>'+ul(['Abre el vídeo con «Ver en YouTube» o «Abrir el vídeo» y vuelve aquí para apuntar: el temporizador sigue contando.','Con la pantalla dividida en el móvil, o dos ventanas en el ordenador, ves el vídeo y apuntas a la vez.','Un partido entero dura casi dos horas y cada bloque, 18 minutos: elige un tramo (el que dice «Qué buscar», o la primera media hora) y míralo seguido, también lo que hace el portero sin balón.']),{sm:'Móvil y ordenador'});
+  h+=fold('an-src-yt','Cámara solo del portero','<p>Casi no hay partidos de primer nivel enteros con una cámara solo para el portero. Estos sí lo son:</p>'+rows(['cam','pov'])+
+    '<p>Algunos clubes publican vídeos con todas las acciones de su portero en sus apps, normalmente de pago. Un ejemplo: '+anLk('https://www.liverpoolfc.com/news/first-team/312982-watch-video-alisson-liverpool-crystal-palace','todas las acciones de Alisson ante el Crystal Palace (LFCTV GO)')+'.</p>'+
+    '<p>Para buscar más (salen vídeos nuevos a menudo):</p><div class="chips wrap">'+[['Keeper cam','keeper cam full match'],['Goalkeeper cam','goalkeeper cam full match'],['Player cam','goalkeeper player cam'],['Todas sus acciones','goalkeeper every touch'],['En primera persona','goalkeeper POV full match']].map(function(x){return '<a class="chip" href="'+yt(x[1])+'" target="_blank" rel="noopener">'+esc(x[0])+' ↗</a>';}).join('')+'</div>'+
+    '<p>Por portero:</p><div class="chips wrap">'+AN_KEEPERS.map(function(n){return '<a class="chip" href="'+yt(n[0]+' keeper cam every touch')+'" target="_blank" rel="noopener">'+esc(n[1])+' ↗</a>';}).join('')+'</div>',{sm:'Lo más «en crudo»'});
+  h+=fold('an-src-full','Partidos completos gratis','<p>Del canal oficial de la FIFA en YouTube. Sigue solo al portero, también cuando el balón está lejos.</p>'+rows(['full'])+
+    '<p>Más partidos enteros: '+anLk('https://www.youtube.com/playlist?list=PLCGIzmTE4d0g2ZpaT5jiaOXSjt9KixbDw','lista #WorldCupAtHome (26 partidos)')+', '+anLk('https://www.youtube.com/playlist?list=PLCGIzmTE4d0iFXeHC5uG9alAZAUXMzRpm','lista World Cup Rewind (9 partidos)')+' y '+anLk('https://www.youtube.com/@FIFA','el canal de la FIFA')+'. La '+anLk('https://www.youtube.com/@BarclaysWSL','liga inglesa femenina (Barclays WSL)')+' también sube partidos enteros.</p>',{sm:'10 partidos de Mundiales'});
+  h+=fold('an-src-pen','Tandas de penaltis completas','<p>Cada tanda entera, sin cortes, en el canal de la FIFA. Mira la colocación, el tiempo que espera y hacia dónde se tira.</p>'+rows(['pen']));
+  h+=fold('an-src-26','Mundial 2026','<p>La final fue España 1–0 Argentina en la prórroga. Dibu Martínez hizo 11 paradas aunque perdió: uno de los mejores partidos de portero del Mundial para analizar. Dónde verlo:</p>'+
+    '<ul><li>'+anLk('https://www.dazn.com/','DAZN')+': los 104 partidos en directo y bajo demanda en España. De pago.</li>'+
+    '<li>'+anLk('https://www.rtve.es/play/','RTVE Play')+': emitió gratis los partidos de España y la final. Las repeticiones dependen de lo que tengan publicado.</li>'+
+    '<li>'+anLk('https://www.plus.fifa.com/','FIFA+')+': el archivo de vídeo de la FIFA.</li>'+
+    '<li>'+anLk('https://www.fifa.com/en/watch/wPkcxDFBUkeW1Hm7xdFSIA','Grandes actuaciones de porteros del Mundial 2026')+' (FIFA, resumen).</li>'+
+    '<li>'+anLk('https://www.sofascore.com/news/martinezs-world-cup-final-masterpiece-even-in-defeat','La final de Dibu en números')+' (Sofascore).</li></ul>',{sm:'La final de Dibu'});
+  h+=fold('an-src-own','Tus propios partidos','<p>Es la fuente que más te enseña. Analízalo con la misma hoja.</p>'+ul(['Pon el móvil en un trípode detrás de tu portería, algo elevado (una grada, un muro), con toda el área en el plano.','Si alguien te graba, que te siga a ti y no al balón.','Graba el partido entero: lo útil también está en lo que haces sin balón.'])+
+    '<p>'+anLk(anYT('0NWOViUuBqw'),'Así graba sus partidos un portero amateur (RushGK)')+'</p>');
+  h+=fold('an-src-stats','Estadísticas para elegir qué ver','<p>En FotMob tienes gratis las estadísticas de la temporada de cada portero: paradas, % de paradas, goles evitados, salidas como líbero y balones por alto atrapados.</p>'+
+    '<div class="chips wrap">'+AN_KEEPERS.map(function(n){return '<a class="chip" href="'+n[2]+'" target="_blank" rel="noopener">'+esc(n[1])+' ↗</a>';}).join('')+'</div>'+
+    '<p>'+anLk('https://www.fotmob.com/leagues/77/stats/season/24254/players/rating/world-cup','Estadísticas del Mundial 2026 en FotMob')+': ahí puedes ver los porteros por goles evitados.</p>'+
+    ul(['% de paradas: tiros a puerta que para.','Goles evitados: los goles que se esperaban según cómo iban los tiros a puerta, menos los que encajó. Si sale en positivo, para más de lo normal.','Salidas como líbero: acciones fuera del área para cortar balones.','Balones por alto atrapados: centros que bloca.'])+
+    '<p>'+anLk('https://www.fbref.com/en/comps/Big5/keepers/players/Big-5-European-Leagues-Stats','FBref')+' sigue teniendo % de paradas, porterías a cero y penaltis parados, pero desde enero de 2026 ya no muestra los datos avanzados.</p>');
   return h;}
 function analisisHTML(){
   var a=S.anCur,h='<div class="pad">'+gBack()+'<p class="eyebrow" style="color:var(--t-reaccion)">Vídeo</p><h1 class="disp" style="font-size:44px;margin-top:6px">Analizar partidos</h1><p class="muted" style="margin-top:6px">Solo el portero, en crudo: una hora, tres partidos y una hoja para apuntar.</p>';
@@ -2662,7 +2727,9 @@ function analisisHTML(){
       '<div class="steps"><div><b>3 × 18 min</b><span>Tres partidos o porteros distintos. En cada uno apuntas sus acciones y lo que ves.</span></div><div><b>5 min</b><span>Conclusiones: tres cosas que copiar y un ejercicio para mañana.</span></div></div>'+
       '<div class="ctrl"><span>¿En qué te fijas hoy?</span><div class="chips wrap">'+AN_FOCUS.map(function(x){return '<button class="chip'+(f===x[0]?' on':'')+'" data-a="an-focus" data-v="'+x[0]+'">'+esc(x[1])+'</button>';}).join('')+'</div></div>'+
       fold('an-what','Qué mirar',ul(anFocus(f)[2]),{cls:'inl'})+'<button class="btn full" data-a="an-new">Empezar la sesión</button></div>';
-    h+='<section class="sec" style="gap:8px"><div class="sec-h"><h2>Dónde verlo</h2></div>'+anSourcesHTML()+'</section>';
+    h+='<section class="sec" style="gap:8px"><div class="sec-h"><h2>Sesiones listas</h2></div><p class="muted" style="margin:0;font-size:14px">Tres partidos ya elegidos, con el enlace y el foco puestos.</p>'+
+      AN_PRE.map(function(p){return '<button class="cta-row anpre" data-a="an-preset" data-v="'+p[0]+'"><span class="cta-ic">'+ICON.video+'</span><span><b>'+esc(p[2])+' · como '+esc(p[1])+'</b><small>'+esc(p[4].map(function(it){var v=anVid(it[0]);return v?v.s:'';}).join(' · '))+(p[5]?'<br>'+esc(p[5]):'')+'</small></span><span class="muted">›</span></button>';}).join('')+'</section>';
+    h+='<section class="sec" style="gap:8px"><div class="sec-h"><h2>Dónde verlo</h2></div>'+anSourcesHTML(false)+'</section>';
     h+='<section class="sec" style="gap:8px">'+fold('an-how','Cómo analizar',ul(['Primera pasada sin parar: mira solo al portero, también cuando el balón está lejos.','Segunda pasada en las acciones clave, a media velocidad.','Pausa justo antes de cada golpeo: ¿dónde está respecto a la bisectriz? ¿Ha hecho el set?','Apunta en la hoja y escribe por qué crees que eligió esa acción.','Al final, compara con tus propios vídeos.']))+'</section>';
     var L=S.an||[];
     if(L.length){h+='<section class="sec" style="gap:8px"><div class="sec-h"><h2>Tus análisis</h2></div>'+L.slice(0,10).map(function(r){var t=anSum(r.blocks),who=r.blocks.map(function(b){return b.who;}).filter(Boolean).join(' · ')||'Sin nombre';
@@ -2675,13 +2742,13 @@ function analisisHTML(){
   h+='<div class="antabs">'+[0,1,2,3].map(function(j){return '<button class="chip'+(j===i?' on':'')+'" data-a="an-go" data-v="'+j+'">'+(j<3?'Partido '+(j+1):'Conclusiones')+'</button>';}).join('')+'</div>';
   h+='<div class="card" style="margin-top:10px;gap:10px;text-align:center"><span class="eyebrow">'+(i<3?'Bloque '+(i+1)+' de 3 · 18 min':'5 min')+' · '+esc(fo[1])+'</span><div class="g-timer" id="an-timer">'+mm(left)+'</div>'+
     '<button class="btn full'+(run?' ghost':'')+'" data-a="an-start">'+(run?'Pausar':(left<(i<3?AN_BLOCK:AN_SUM)?'Seguir':'Empezar'))+'</button></div>';
-  if(i<3){var b=a.blocks[i];
+  if(i<3){var b=a.blocks[i],kv=anVidByUrl(b.link);
     h+='<div class="card" style="margin-top:10px"><label class="ctrl"><span>Portero y partido</span><input type="text" id="an-who" maxlength="80" placeholder="Courtois · Real Madrid–Barça" value="'+esc(b.who)+'"></label>'+
-      '<label class="ctrl"><span>Enlace del vídeo (opcional)</span><input type="text" id="an-link" inputmode="url" placeholder="https://…" value="'+esc(b.link)+'"></label>'+(b.link&&/^https?:\/\//.test(b.link)?'<a class="yt" href="'+esc(b.link)+'" target="_blank" rel="noopener">Abrir el vídeo ↗</a>':'')+'</div>';
+      '<label class="ctrl"><span>Enlace del vídeo (opcional)</span><input type="text" id="an-link" inputmode="url" placeholder="https://…" value="'+esc(b.link)+'"></label>'+(b.link&&/^https?:\/\//.test(b.link)?'<a class="yt" href="'+esc(b.link)+'" target="_blank" rel="noopener">Abrir el vídeo ↗</a>':'')+(kv&&kv.d?'<p class="muted" style="margin:0;font-size:14px"><b style="color:var(--text)">Qué buscar:</b> '+esc(kv.d)+'</p>':'')+'</div>';
     h+='<section class="sec"><div class="sec-h"><h2>Acciones</h2><span class="muted" style="font-size:13px">Toca para sumar</span></div><div class="angrid">'+AN_EV.map(function(e){var n=b.c[e[0]]||0;return '<div class="anc'+(n?' on':'')+'"><button class="anp" data-a="an-inc" data-v="'+e[0]+'"><b class="mono">'+n+'</b><span>'+esc(e[1])+'</span></button><button class="anm" data-a="an-dec" data-v="'+e[0]+'" aria-label="Restar '+esc(e[1])+'">−</button></div>';}).join('')+'</div></section>';
     h+='<section class="sec" style="gap:8px">'+fold('an-what2','Qué mirar: '+esc(fo[1]),ul(fo[2]))+'<label class="ctrl"><span>Notas de este partido</span><textarea id="an-note" maxlength="500" placeholder="Qué hace bien, qué decidió y por qué…">'+esc(b.note)+'</textarea></label>'+
       '<button class="btn full" data-a="an-go" data-v="'+(i+1)+'">'+(i<2?'Siguiente partido':'Ir a conclusiones')+'</button></section>';
-    h+='<section class="sec">'+anSourcesHTML()+'</section>';
+    h+='<section class="sec" style="gap:8px"><div class="sec-h"><h2>Elegir vídeo</h2></div>'+anSourcesHTML(true)+'</section>';
   }else{
     var t=anSum(a.blocks);
     h+='<section class="sec"><div class="sec-h"><h2>Resumen</h2></div><div class="card"><div class="kv-mini">'+(AN_EV.filter(function(e){return t[e[0]];}).map(function(e){return '<span class="tag">'+esc(e[1])+': '+t[e[0]]+'</span>';}).join('')||'<span class="muted">Sin acciones apuntadas.</span>')+'</div></div>'+
@@ -3083,6 +3150,8 @@ document.addEventListener('click',function(ev){
     case 'rut-open':U.ob=null;U.sheet=null;stopTimer();U.view='guia';U.g=v&&RCAT[v]?v:'agu';render();window.scrollTo(0,0);break;
     case 'an-focus':U.anFocus=v;render();break;
     case 'an-new':anNew(U.anFocus||'colocacion');render();window.scrollTo(0,0);break;
+    case 'an-preset':anPreset(v);render();window.scrollTo(0,0);break;
+    case 'an-use':anUse(v);break;
     case 'an-go':anGo(+v);break;
     case 'an-start':anRead();anStart();break;
     case 'an-inc':case 'an-dec':{anRead();var ab=S.anCur&&S.anCur.blocks[S.anCur.i];if(ab){ab.c[v]=Math.max(0,(ab.c[v]||0)+(a==='an-inc'?1:-1));save();render();}break;}
