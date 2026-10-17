@@ -4,6 +4,8 @@ App web para porteros que entrenan sin entrenador de porteros. Un test inicial d
 
 Para casos puntuales (una prueba o un partido mañana, agujetas o la vuelta tras un parón) tiene una **rutina especial**: un test corto que crea la sesión de hoy y los días hasta la prueba o el partido, con los ejercicios de la categoría **Agujetas y víspera**.
 
+Cada ejercicio tiene su animación (varias cuando tiene varias partes) y hay **8 rutinas para quitar agujetas** basadas en revisiones y metaanálisis: exprés, tras saltos o sprints, el día después del partido, tren superior, agujetas fuertes, calentamiento para entrenar con agujetas, antes de dormir y frío, calor o contraste.
+
 Funciona en el móvil como una app: se instala en la pantalla de inicio y abre sin conexión después de la primera visita.
 
 ## Archivos
