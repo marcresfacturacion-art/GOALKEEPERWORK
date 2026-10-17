@@ -352,6 +352,17 @@ details.fold.bad>summary{color:var(--bad)}
 .cta-ic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:rgba(227,107,208,.18);color:var(--t-especial)}
 .cta-ic svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 /* Guía */
+.angrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.anc{position:relative}
+.anp{width:100%;display:grid;gap:2px;justify-items:start;text-align:left;cursor:pointer;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 12px;min-height:64px}
+.anp b{font-size:24px;line-height:1;color:var(--muted)}
+.anp span{font-size:13px;font-weight:600}
+.anc.on .anp{border-color:var(--t-equipo)}
+.anc.on .anp b{color:var(--t-equipo)}
+.anm{position:absolute;top:6px;right:6px;width:30px;height:30px;border-radius:50%;border:1px solid var(--line-2);background:var(--bg-2);color:var(--muted);cursor:pointer;font-size:16px;line-height:1;padding:0}
+.antabs{display:flex;gap:6px;overflow-x:auto;margin-top:12px;scrollbar-width:none}
+.antabs::-webkit-scrollbar{display:none}
+a.chip{text-decoration:none;display:inline-flex;align-items:center}
 .ggrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 .gcard{display:grid;gap:4px;align-content:start;text-align:left;cursor:pointer;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;min-height:128px}
 .gcard b{font-size:16.5px}
@@ -2136,6 +2147,7 @@ var ICON={
   esp:'<svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>'
 };
 ICON.crear=ICON.plan;ICON.rutina=ICON.esp;
+ICON.video='<svg viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3z"/></svg>';
 ICON.guia='<svg viewBox="0 0 24 24"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H11v16H5.5C4.7 20 4 19.3 4 18.5zM20 5.5c0-.8-.7-1.5-1.5-1.5H13v16h5.5c.8 0 1.5-.7 1.5-1.5z"/></svg>';ICON.libro=ICON.guia;
 ICON.plato='<svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="7"/><circle cx="12" cy="13" r="3.5"/><path d="M3 4v5M5 4v5M4 9v11M20 4c-1.5 1.5-2 3-2 5h2v11"/></svg>';
 ICON.mente='<svg viewBox="0 0 24 24"><path d="M9 21v-3H7a2 2 0 0 1-2-2v-3l-2-1 2-3a7 7 0 0 1 14 2c0 2.5-1 4-3 5v5"/></svg>';
@@ -2458,6 +2470,7 @@ function guiaHTML(){
   if(g==='pro')return proHTML();
   if(g==='lectura')return lectHTML();
   if(g==='libros')return booksHTML();
+  if(g==='analisis')return analisisHTML();
   if(g==='video')return videoHTML();
   if(g.indexOf('art:')===0)return artHTML(g.slice(4));
   if(RCAT[g])return rutHTML(g);
@@ -2468,6 +2481,7 @@ function guiaHTML(){
   h+=gCard('agu',ICON.gota,'Agujetas','8 rutinas para recuperar','--t-reaccion');
   h+=gCard('pro',ICON.estrella,'Entrena como…','Ederson, Alisson, Courtois, Dibu y Donnarumma','--gold');
   h+=gCard('lectura',ICON.libro,'Leer el juego','Bisectriz, cuerpo, rival, calentamiento','--t-base');
+  h+=gCard('analisis',ICON.video,'Analizar partidos','Vídeo del portero en crudo y una sesión de 1 hora','--t-equipo');
   h+=gCard('video',ICON.play,'Sala de vídeo','Una hora de análisis solo de porteros','--t-equipo');
   h+=gCard('libros',ICON.libro,'Libros','Nueve lecturas para porteros','--lav');
   h+='</div></section></div>';
@@ -2605,6 +2619,77 @@ function vTimer(i){
   VT.iv=setInterval(function(){if(!VT)return;var el=document.getElementById('vt-'+VT.b);var r=(VT.end-performance.now())/1000;if(el){el.textContent='❚❚ '+mm(r);el.classList.add('run');}
     if(r<=0){var b=VT.b;clearInterval(VT.iv);VT=null;awake(false);beep(880,0.35);setTimeout(function(){beep(880,0.45);},420);try{if(navigator.vibrate)navigator.vibrate([200,100,200]);}catch(e){}render();toast(b<3?'Bloque terminado: al siguiente':'Hora completada');}},500);
   render();}
+
+/* ---------- Analizar partidos: vídeo en crudo solo del portero y sesión de una hora ---------- */
+var AN_EV=[['blo','Blocaje'],['rec','Rechace'],['des','Desvío'],['est','Estirada'],['cen','Centro blocado'],['pun','Despeje de puños'],['uno','1 contra 1'],['fue','Fuera del área'],['pc','Pase corto'],['pl','Pase o saque largo'],['man','Saque con la mano'],['err','Error'],['gol','Gol encajado']];
+var AN_FOCUS=[['colocacion','Colocación',['¿Está en la bisectriz antes de cada tiro?','¿Cuánto se adelanta según dónde está el balón?','¿Hace el set justo en el golpeo?','Con el balón escorado, ¿cierra el primer palo?']],
+  ['uno','1 contra 1',['¿Cuándo sale y cuándo se queda?','¿Aguanta de pie hasta el último momento?','¿K, estrella o a los pies? ¿Por qué eligió eso?','¿Lleva al delantero hacia fuera?']],
+  ['aereo','Juego aéreo',['¿Desde dónde arranca en los centros?','¿Decide pronto y avisa con la voz?','¿Bloca o despeja? ¿Hacia dónde despeja?','¿Batida a una pierna y rodilla arriba?']],
+  ['pies','Juego de pies',['¿Se perfila antes de recibir?','¿Mira antes de que le llegue el balón?','¿Juega corto o largo según la presión?','¿Con qué pierna pasa y a qué pierna del compañero?']],
+  ['paradas','Paradas',['Posición de base y manos antes del tiro.','¿Bloca o rechaza? ¿Hacia dónde rechaza?','En las caídas, ¿va hacia delante?','¿Cómo se levanta para la segunda acción?']],
+  ['voz','Voz y cabeza',['¿Cuándo habla y qué dice?','¿Cómo coloca la barrera y a la defensa?','¿Cómo reacciona después de un error?']]];
+var AN_KEEPERS=['Ederson','Alisson Becker','Thibaut Courtois','Emiliano Martinez','Gianluigi Donnarumma','Joan Garcia','Unai Simon','David Raya'];
+var AN_BLOCK=18*60,AN_SUM=5*60;
+function anFocus(id){return AN_FOCUS.filter(function(f){return f[0]===id;})[0]||AN_FOCUS[0];}
+function anNew(focus){S.anCur={id:Date.now(),d:today(),focus:focus,i:0,blocks:[{who:'',link:'',c:{},note:''},{who:'',link:'',c:{},note:''},{who:'',link:'',c:{},note:''}],copy:'',drill:'',t:null,left:AN_BLOCK};save();}
+function anRead(){var a=S.anCur;if(!a)return;var b=a.blocks[a.i];function v(id){var el=document.getElementById(id);return el?el.value:null;}
+  if(b){var w=v('an-who'),l=v('an-link'),n=v('an-note');if(w!=null)b.who=w.slice(0,80);if(l!=null)b.link=l.trim().slice(0,300);if(n!=null)b.note=n.slice(0,500);}
+  var c=v('an-copy'),d=v('an-drill');if(c!=null)a.copy=c.slice(0,500);if(d!=null)a.drill=d.slice(0,300);}
+var AT={iv:0};
+function anLeft(){var a=S.anCur;if(!a)return 0;if(a.t)return Math.max(0,(a.t-Date.now())/1000);return a.left;}
+function anTick(){var a=S.anCur,el=document.getElementById('an-timer');if(!a||!a.t){clearInterval(AT.iv);AT.iv=0;return;}
+  var l=anLeft();if(el)el.textContent=mm(l);
+  if(l<=0){clearInterval(AT.iv);AT.iv=0;a.t=null;a.left=0;save();beep(880,.35);setTimeout(function(){beep(880,.45);},420);try{if(navigator.vibrate)navigator.vibrate([200,100,200]);}catch(e){}toast(a.i<3?'Fin del bloque: pasa al siguiente':'Análisis terminado');render();}}
+function anStart(){var a=S.anCur;if(!a)return;if(a.t){a.left=anLeft();a.t=null;clearInterval(AT.iv);AT.iv=0;save();render();return;}
+  if(a.left<=0)a.left=a.i<3?AN_BLOCK:AN_SUM;a.t=Date.now()+a.left*1000;save();awake(true);clearInterval(AT.iv);AT.iv=setInterval(anTick,250);render();}
+function anGo(i){var a=S.anCur;if(!a)return;anRead();a.t=null;clearInterval(AT.iv);AT.iv=0;a.i=i;a.left=i<3?AN_BLOCK:AN_SUM;save();render();window.scrollTo(0,0);}
+function anSave(){var a=S.anCur;if(!a)return;anRead();clearInterval(AT.iv);AT.iv=0;S.an=S.an||[];var r={id:a.id,d:a.d,focus:a.focus,blocks:a.blocks,copy:a.copy,drill:a.drill};S.an.unshift(r);S.an=S.an.slice(0,30);S.anCur=null;save();}
+function anSum(blocks){var t={};blocks.forEach(function(b){for(var x in b.c)t[x]=(t[x]||0)+b.c[x];});return t;}
+function anSourcesHTML(){
+  var yt=function(q){return ytUrl(q);};
+  var h=fold('an-src-yt','Cámara del portero en YouTube','<p>Busca «keeper cam», «goalkeeper cam» o «every touch»: la cámara sigue solo al portero durante el partido, muchas veces sin música ni comentarios. Evita los resúmenes con música: no se ve la colocación entre acciones.</p>'+
+    '<div class="chips wrap">'+[['Portero: partido completo','goalkeeper cam full match'],['Keeper cam','keeper cam full match'],['Todas sus acciones','goalkeeper every touch full match'],['Cámara aislada','goalkeeper isolated camera']].map(function(x){return '<a class="chip" href="'+yt(x[1])+'" target="_blank" rel="noopener">'+esc(x[0])+' ↗</a>';}).join('')+'</div>'+
+    '<p>Por portero:</p><div class="chips wrap">'+AN_KEEPERS.map(function(n){return '<a class="chip" href="'+yt(n+' keeper cam every touch')+'" target="_blank" rel="noopener">'+esc(n)+' ↗</a>';}).join('')+'</div>',{sm:'Lo más parecido a «en crudo»'});
+  h+=fold('an-src-full','Partidos completos','<p>Con un partido entero puedes seguir solo al portero, incluido lo que hace cuando el balón está lejos.</p><ul><li><a href="https://www.plus.fifa.com/" target="_blank" rel="noopener">FIFA+</a>: archivo de partidos de los Mundiales.</li><li><a href="'+yt('partido completo full match goalkeeper')+'" target="_blank" rel="noopener">Partidos completos en canales oficiales de YouTube</a>.</li></ul>');
+  h+=fold('an-src-own','Tus propios partidos','<p>Es la fuente que más te enseña. Pon el móvil en un trípode detrás de tu portería, algo elevado, o pide a alguien que te grabe siguiéndote a ti y no al balón. Analízalo con la misma hoja.</p>');
+  h+=fold('an-src-stats','Estadísticas para elegir qué ver','<p>En <a href="https://www.fbref.com/en/comps/Big5/keepers/players/Big-5-European-Leagues-Stats" target="_blank" rel="noopener">FBref</a> tienes las estadísticas de los porteros de las cinco grandes ligas.</p>'+ul(['% de paradas: tiros a puerta parados.','PSxG: goles esperados según dónde va cada tiro a puerta. Si encaja menos de lo esperado, está parando más de lo normal.','Centros parados: centros que bloca o despeja.','Acciones fuera del área: salidas como líbero.']));
+  return h;}
+function analisisHTML(){
+  var a=S.anCur,h='<div class="pad">'+gBack()+'<p class="eyebrow" style="color:var(--t-reaccion)">Vídeo</p><h1 class="disp" style="font-size:44px;margin-top:6px">Analizar partidos</h1><p class="muted" style="margin-top:6px">Solo el portero, en crudo: una hora, tres partidos y una hoja para apuntar.</p>';
+  if(!a){
+    var f=U.anFocus||'colocacion';
+    h+='<div class="card" style="margin-top:12px"><b style="font-size:17px">Sesión de análisis de 1 hora</b>'+
+      '<div class="steps"><div><b>3 × 18 min</b><span>Tres partidos o porteros distintos. En cada uno apuntas sus acciones y lo que ves.</span></div><div><b>5 min</b><span>Conclusiones: tres cosas que copiar y un ejercicio para mañana.</span></div></div>'+
+      '<div class="ctrl"><span>¿En qué te fijas hoy?</span><div class="chips wrap">'+AN_FOCUS.map(function(x){return '<button class="chip'+(f===x[0]?' on':'')+'" data-a="an-focus" data-v="'+x[0]+'">'+esc(x[1])+'</button>';}).join('')+'</div></div>'+
+      fold('an-what','Qué mirar',ul(anFocus(f)[2]),{cls:'inl'})+'<button class="btn full" data-a="an-new">Empezar la sesión</button></div>';
+    h+='<section class="sec" style="gap:8px"><div class="sec-h"><h2>Dónde verlo</h2></div>'+anSourcesHTML()+'</section>';
+    h+='<section class="sec" style="gap:8px">'+fold('an-how','Cómo analizar',ul(['Primera pasada sin parar: mira solo al portero, también cuando el balón está lejos.','Segunda pasada en las acciones clave, a media velocidad.','Pausa justo antes de cada golpeo: ¿dónde está respecto a la bisectriz? ¿Ha hecho el set?','Apunta en la hoja y escribe por qué crees que eligió esa acción.','Al final, compara con tus propios vídeos.']))+'</section>';
+    var L=S.an||[];
+    if(L.length){h+='<section class="sec" style="gap:8px"><div class="sec-h"><h2>Tus análisis</h2></div>'+L.slice(0,10).map(function(r){var t=anSum(r.blocks),who=r.blocks.map(function(b){return b.who;}).filter(Boolean).join(' · ')||'Sin nombre';
+      var body='<div class="kv-mini">'+AN_EV.filter(function(e){return t[e[0]];}).map(function(e){return '<span class="tag">'+esc(e[1])+': '+t[e[0]]+'</span>';}).join('')+'</div>'+
+        r.blocks.map(function(b,i){return (b.who||b.note)?'<p><b style="color:var(--text)">'+(i+1)+'. '+esc(b.who||'Partido '+(i+1))+'</b>'+(b.note?' — '+esc(b.note):'')+'</p>':'';}).join('')+(r.copy?'<p><b style="color:var(--text)">Copiar:</b> '+esc(r.copy)+'</p>':'')+(r.drill?'<p><b style="color:var(--text)">Ejercicio:</b> '+esc(r.drill)+'</p>':'');
+      return fold('an-h-'+r.id,esc(who),body,{sm:esc(r.d.slice(5).split('-').reverse().join('/')+' · '+anFocus(r.focus)[1])});}).join('')+'</section>';}
+    return h+'</div>';
+  }
+  var fo=anFocus(a.focus),i=a.i,run=!!a.t,left=anLeft();
+  h+='<div class="antabs">'+[0,1,2,3].map(function(j){return '<button class="chip'+(j===i?' on':'')+'" data-a="an-go" data-v="'+j+'">'+(j<3?'Partido '+(j+1):'Conclusiones')+'</button>';}).join('')+'</div>';
+  h+='<div class="card" style="margin-top:10px;gap:10px;text-align:center"><span class="eyebrow">'+(i<3?'Bloque '+(i+1)+' de 3 · 18 min':'5 min')+' · '+esc(fo[1])+'</span><div class="g-timer" id="an-timer">'+mm(left)+'</div>'+
+    '<button class="btn full'+(run?' ghost':'')+'" data-a="an-start">'+(run?'Pausar':(left<(i<3?AN_BLOCK:AN_SUM)?'Seguir':'Empezar'))+'</button></div>';
+  if(i<3){var b=a.blocks[i];
+    h+='<div class="card" style="margin-top:10px"><label class="ctrl"><span>Portero y partido</span><input type="text" id="an-who" maxlength="80" placeholder="Courtois · Real Madrid–Barça" value="'+esc(b.who)+'"></label>'+
+      '<label class="ctrl"><span>Enlace del vídeo (opcional)</span><input type="text" id="an-link" inputmode="url" placeholder="https://…" value="'+esc(b.link)+'"></label>'+(b.link&&/^https?:\/\//.test(b.link)?'<a class="yt" href="'+esc(b.link)+'" target="_blank" rel="noopener">Abrir el vídeo ↗</a>':'')+'</div>';
+    h+='<section class="sec"><div class="sec-h"><h2>Acciones</h2><span class="muted" style="font-size:13px">Toca para sumar</span></div><div class="angrid">'+AN_EV.map(function(e){var n=b.c[e[0]]||0;return '<div class="anc'+(n?' on':'')+'"><button class="anp" data-a="an-inc" data-v="'+e[0]+'"><b class="mono">'+n+'</b><span>'+esc(e[1])+'</span></button><button class="anm" data-a="an-dec" data-v="'+e[0]+'" aria-label="Restar '+esc(e[1])+'">−</button></div>';}).join('')+'</div></section>';
+    h+='<section class="sec" style="gap:8px">'+fold('an-what2','Qué mirar: '+esc(fo[1]),ul(fo[2]))+'<label class="ctrl"><span>Notas de este partido</span><textarea id="an-note" maxlength="500" placeholder="Qué hace bien, qué decidió y por qué…">'+esc(b.note)+'</textarea></label>'+
+      '<button class="btn full" data-a="an-go" data-v="'+(i+1)+'">'+(i<2?'Siguiente partido':'Ir a conclusiones')+'</button></section>';
+    h+='<section class="sec">'+anSourcesHTML()+'</section>';
+  }else{
+    var t=anSum(a.blocks);
+    h+='<section class="sec"><div class="sec-h"><h2>Resumen</h2></div><div class="card"><div class="kv-mini">'+(AN_EV.filter(function(e){return t[e[0]];}).map(function(e){return '<span class="tag">'+esc(e[1])+': '+t[e[0]]+'</span>';}).join('')||'<span class="muted">Sin acciones apuntadas.</span>')+'</div></div>'+
+      '<label class="ctrl"><span>Tres cosas que vas a copiar</span><textarea id="an-copy" maxlength="500" placeholder="1. …">'+esc(a.copy)+'</textarea></label>'+
+      '<label class="ctrl"><span>Un ejercicio para mañana</span><input type="text" id="an-drill" maxlength="300" placeholder="Por ejemplo: colocación con conos" value="'+esc(a.drill)+'"></label>'+
+      '<button class="btn gold full" data-a="an-save">Guardar análisis</button><button class="btn small danger" data-a="an-cancel" style="justify-self:start">Descartar</button></section>';
+  }
+  return h+'</div>';}
 
 function liteHTML(){
   var days=spDays(),t=today();
@@ -2962,6 +3047,7 @@ function render(){
   app.innerHTML='<div class="shell">'+topHTML()+'<main id="main">'+body+'</main></div>'+tabsHTML();
   if(v==='ejercicios')libList();
   ANIM.mount(app);
+  if(S.anCur&&S.anCur.t&&!AT.iv)AT.iv=setInterval(anTick,250);
   renderOver();
 }
 function renderOver(){
@@ -2995,6 +3081,13 @@ document.addEventListener('click',function(ev){
     case 'ob-cancel':U.ob=null;U.view='hoy';render();break;
     case 'sp-start':U.ob=null;startSp(null);break;
     case 'rut-open':U.ob=null;U.sheet=null;stopTimer();U.view='guia';U.g=v&&RCAT[v]?v:'agu';render();window.scrollTo(0,0);break;
+    case 'an-focus':U.anFocus=v;render();break;
+    case 'an-new':anNew(U.anFocus||'colocacion');render();window.scrollTo(0,0);break;
+    case 'an-go':anGo(+v);break;
+    case 'an-start':anRead();anStart();break;
+    case 'an-inc':case 'an-dec':{anRead();var ab=S.anCur&&S.anCur.blocks[S.anCur.i];if(ab){ab.c[v]=Math.max(0,(ab.c[v]||0)+(a==='an-inc'?1:-1));save();render();}break;}
+    case 'an-save':anSave();render();window.scrollTo(0,0);toast('Análisis guardado');break;
+    case 'an-cancel':clearInterval(AT.iv);AT.iv=0;S.anCur=null;save();render();break;
     case 'g-nav':U.ob=null;U.sheet=null;U.view='guia';U.g=v||'home';render();window.scrollTo(0,0);break;
     case 'v-open':{var vo=vState();vo.k=v;save();U.view='guia';U.g='video';render();window.scrollTo(0,0);break;}
     case 'v-key':{vRead();vState().k=v;save();render();break;}
@@ -3061,6 +3154,7 @@ document.addEventListener('click',function(ev){
 document.addEventListener('input',function(ev){
   if(ev.target.id==='libq'){U.lib.q=ev.target.value;libList();}
   if(/^v-(o|m|note)$/.test(ev.target.id||'')){vRead();try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}var vsb=document.querySelector('[data-a="v-save"]');if(vsb&&ev.target.id==='v-note'&&ev.target.value.trim())vsb.disabled=false;}
+  if(/^an-(who|link|note|copy|drill)$/.test(ev.target.id||'')){anRead();try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
   if(/^d-[wha]$/.test(ev.target.id||'')){dietRead();try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
   if(ev.target.id==='ob-name'&&U.ob){U.ob.a.name=ev.target.value;}
 });

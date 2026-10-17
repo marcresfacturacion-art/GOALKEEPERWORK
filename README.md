@@ -6,7 +6,7 @@ Para casos puntuales (una prueba o un partido mañana, agujetas o la vuelta tras
 
 Cada ejercicio tiene su animación (varias cuando tiene varias partes) y hay **8 rutinas para quitar agujetas** basadas en revisiones y metaanálisis: exprés, tras saltos o sprints, el día después del partido, tren superior, agujetas fuertes, calentamiento para entrenar con agujetas, antes de dormir y frío, calor o contraste.
 
-La pestaña **Guía** reúne la dieta según peso, altura, edad y presupuesto; rutinas de activación mental, de coordinación y de agujetas; sesiones «Entrena como» inspiradas en Ederson, Alisson, Courtois, Dibu Martínez y Donnarumma; lecturas sobre bisectriz, posición de base, cómo colocar el cuerpo, leer al rival, calentamiento, estiramientos y academias; y una lista de libros para porteros.
+La pestaña **Guía** reúne la dieta según peso, altura, edad y presupuesto; rutinas de activación mental, de coordinación y de agujetas; sesiones «Entrena como» inspiradas en Ederson, Alisson, Courtois, Dibu Martínez y Donnarumma; lecturas sobre bisectriz, posición de base, cómo colocar el cuerpo, leer al rival, calentamiento, estiramientos y academias; una lista de libros para porteros; y **Analizar partidos**: fuentes de vídeo en crudo solo del portero y una sesión de análisis de una hora con temporizador, contadores de acciones y conclusiones.
 
 Funciona en el móvil como una app: se instala en la pantalla de inicio y abre sin conexión después de la primera visita.
 
