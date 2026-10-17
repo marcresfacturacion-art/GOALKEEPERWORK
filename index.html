@@ -366,6 +366,12 @@ details.fold.bad>summary{color:var(--bad)}
 .dtable .dr.on{border-color:var(--t-fuerza);background:rgba(236,138,112,.1)}
 .dtable .dr span:first-child{font-weight:700}
 .topr{display:flex;align-items:center;gap:10px}
+.vgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.vc{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:8px;display:grid;gap:6px;justify-items:center;text-align:center}
+.vc>span{font-size:12px;color:var(--muted);font-weight:600;line-height:1.2;min-height:2.4em;display:grid;place-items:center}
+.vcb{display:grid;grid-template-columns:30px auto 30px;align-items:center;gap:4px}
+.vcb button{width:30px;height:30px;border-radius:50%;border:1px solid var(--line-2);background:var(--surface-2);color:var(--text);font-weight:800;cursor:pointer;padding:0}
+.vcb b{font-size:18px;min-width:22px}
 .topbtn{width:36px;height:36px;border-radius:50%;border:1px solid var(--line-2);background:var(--surface);display:grid;place-items:center;cursor:pointer;color:var(--lav);padding:0}
 .topbtn svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .topbtn.on{border-color:var(--gold);color:var(--gold)}
@@ -2134,6 +2140,7 @@ ICON.guia='<svg viewBox="0 0 24 24"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H11v16H5.5C
 ICON.plato='<svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="7"/><circle cx="12" cy="13" r="3.5"/><path d="M3 4v5M5 4v5M4 9v11M20 4c-1.5 1.5-2 3-2 5h2v11"/></svg>';
 ICON.mente='<svg viewBox="0 0 24 24"><path d="M9 21v-3H7a2 2 0 0 1-2-2v-3l-2-1 2-3a7 7 0 0 1 14 2c0 2.5-1 4-3 5v5"/></svg>';
 ICON.ojo='<svg viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>';
+ICON.play='<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9.5v5l4.5-2.5z"/></svg>';
 ICON.estrella='<svg viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg>';ICON.gota='<svg viewBox="0 0 24 24"><path d="M12 3c-3 4-6 7.5-6 11a6 6 0 0 0 12 0c0-3.5-3-7-6-11z"/></svg>';
 function spCTA(sub){return '<button class="cta-row" data-a="sp-start"><span class="cta-ic">'+ICON.esp+'</span><span><b>Rutina especial</b><small>'+esc(sub||'Prueba o partido mañana, agujetas o vuelta tras un parón')+'</small></span><span class="chev" aria-hidden="true">›</span></button>';}
 
@@ -2451,6 +2458,7 @@ function guiaHTML(){
   if(g==='pro')return proHTML();
   if(g==='lectura')return lectHTML();
   if(g==='libros')return booksHTML();
+  if(g==='video')return videoHTML();
   if(g.indexOf('art:')===0)return artHTML(g.slice(4));
   if(RCAT[g])return rutHTML(g);
   var h='<section class="hero"><div class="pad"><p class="hello">Todo lo que rodea al entreno.</p><h1 class="disp">Guía del portero</h1></div></section><div class="pad"><section class="sec"><div class="ggrid">';
@@ -2460,7 +2468,9 @@ function guiaHTML(){
   h+=gCard('agu',ICON.gota,'Agujetas','8 rutinas para recuperar','--t-reaccion');
   h+=gCard('pro',ICON.estrella,'Entrena como…','Ederson, Alisson, Courtois, Dibu y Donnarumma','--gold');
   h+=gCard('lectura',ICON.libro,'Leer el juego','Bisectriz, cuerpo, rival, calentamiento','--t-base');
-  h+='</div>'+'<button class="cta-row" data-a="g-nav" data-v="libros" style="margin-top:4px"><span class="cta-ic">'+ICON.libro+'</span><span><b>Libros para porteros</b><small>Nueve lecturas recomendadas, en español e inglés</small></span><span class="chev" aria-hidden="true">›</span></button></section></div>';
+  h+=gCard('video',ICON.play,'Sala de vídeo','Una hora de análisis solo de porteros','--t-equipo');
+  h+=gCard('libros',ICON.libro,'Libros','Nueve lecturas para porteros','--lav');
+  h+='</div></section></div>';
   return h;}
 function rutHTML(cat){
   cat=cat||'agu';var RC=RCAT[cat],g=rutGear(),inG=U.view==='guia';
@@ -2485,7 +2495,7 @@ function proHTML(){
   PROS.forEach(function(p){var r=C.RUTI['pro-'+p.id];
     h+='<div class="card" style="gap:10px"><div><p class="eyebrow" style="color:var(--gold)">'+esc(p.r)+'</p><b style="font-size:20px">'+esc(p.n)+'</b></div>'+
       fold('pro-path-'+p.id,'Su camino',ul(p.path),{cls:'inl'})+fold('pro-how-'+p.id,'Cómo lo hace',ul(p.how),{cls:'inl'})+fold('pro-you-'+p.id,'Qué copiar',ul(p.you),{cls:'inl'})+fold('pro-src-'+p.id,'Fuentes',srcList(p.src),{cls:'inl'})+
-      (r?'<button class="btn full" data-a="rut-go" data-v="'+r.id+'">'+esc(r.n)+' · '+r.mins+' min</button>':'')+'</div>';});
+      (r?'<button class="btn full" data-a="rut-go" data-v="'+r.id+'">'+esc(r.n)+' · '+r.mins+' min</button>':'')+'<button class="btn small ghost" data-a="v-open" data-v="'+p.id+'">Analizar sus partidos en vídeo</button></div>';});
   return h+'<p class="muted" style="font-size:13px">Sesiones inspiradas en su estilo; no son su entrenamiento real.</p></section></div>';}
 function lectHTML(){
   var h='<div class="pad">'+gBack()+'<p class="eyebrow" style="color:var(--lav)">Para leer</p><h1 class="disp" style="font-size:44px;margin-top:6px">Leer el juego</h1><p class="muted" style="margin-top:6px">Colocación, cuerpo, rival, calentamiento y academias.</p><section class="sec">';
@@ -2537,6 +2547,64 @@ function dietHTML(){
     h+='<p class="muted" style="font-size:13px">Orientación general, no un plan médico. Si tienes alguna enfermedad, alergia o te cuesta comer con normalidad, consulta con un dietista-nutricionista.</p>';
   }
   return h+'</div>';}
+
+/* ---------- Sala de vídeo: una hora de análisis solo de porteros ---------- */
+var VKEEP=[['ederson','Ederson','Ederson goalkeeper'],['alisson','Alisson','Alisson Becker'],['courtois','Courtois','Thibaut Courtois'],['dibu','Dibu Martínez','Emiliano Martinez goalkeeper'],['donnarumma','Donnarumma','Gianluigi Donnarumma'],['joan','Joan Garcia','Joan Garcia goalkeeper'],['otro','Otro','']];
+var VBLK=[
+  {n:'Todos sus toques',d:'Vídeo en crudo, solo con el portero: colocación sin balón, pies y voz.',q:['{n} every touch','{n} todos los toques'],
+   look:['Con el balón lejos: ¿cuántos metros sale de la línea?','¿Hace el set antes de cada golpeo?','Con el balón en los pies: ¿mira antes de recibir? ¿A qué pierna pasa?','¿Habla y coloca a su defensa?']},
+  {n:'Paradas',d:'Todas sus paradas de un partido o de la temporada.',q:['{n} all saves','{n} paradas'],
+   look:['Antes del tiro: ¿está en la bisectriz y quieto?','Técnica: blocaje, desvío o caída. ¿Con qué mano?','Después: ¿se levanta rápido? ¿Hacia dónde manda el rechace?']},
+  {n:'Salidas, centros y 1 contra 1',d:'Balones altos, salidas fuera del área y duelos.',q:['{n} claims crosses','{n} one on one saves'],
+   look:['¿Cuándo sale y cuándo se queda?','Batida, rodilla arriba y blocaje en el punto más alto.','En el 1 contra 1: ¿cuándo avanza y cuándo se queda quieto?']},
+  {n:'Goles encajados y errores',d:'Lo que más enseña: qué pasó en cada gol.',q:['{n} goals conceded','{n} mistakes'],
+   look:['¿Podía hacer algo más? ¿Colocación, set o decisión?','¿Qué harías tú distinto?','Busca patrones: palo corto, tiros lejanos, centros rasos…']}
+];
+var VCNT=[['paradas','Paradas'],['blocajes','Blocajes'],['rechaces','Rechaces'],['aereos','Salidas por alto'],['punos','Puños'],['unouno','1 contra 1'],['corto','Pases cortos'],['largo','Saques largos'],['errores','Errores']];
+var VSRC=[
+  {h:'Vídeo',li:[['FIFA+: archivo gratuito con partidos completos de los Mundiales, ideal para seguir a un portero los 90 minutos','https://www.plus.fifa.com/'],['YouTube: compilaciones «every touch» (todos los toques) y «all saves» (todas las paradas). Las suben aficionados y canales de análisis, así que la calidad varía','https://www.youtube.com/results?search_query=goalkeeper+every+touch'],['Canales oficiales de clubes y ligas: resúmenes y paradas de cada jornada','https://www.youtube.com/results?search_query=goalkeeper+saves+official']]},
+  {h:'Datos de porteros',li:[['FotMob: paradas, xGoT y «goles evitados» de cada portero y partido','https://www.fotmob.com/'],['Sofascore: paradas, salidas y mapa de tiros de cada partido','https://www.sofascore.com/'],['FBref: estadísticas básicas (sin los datos avanzados desde 2026)','https://fbref.com/']]},
+  {h:'Herramientas profesionales (de pago)',li:[['Wyscout: vídeo de cada acción, el que usan muchos clubes y ojeadores','https://wyscout.com/'],['Hudl: análisis de vídeo para equipos','https://www.hudl.com/']]}
+];
+var VMETHOD=['Primera pasada sin parar: mira el partido entero.','Segunda pasada: pausa en cada acción y mira el antes, el durante y el después.','Puntúa decisión y técnica de 1 a 3.','Busca patrones, no jugadas sueltas.','Termina con una cosa para copiar y otra para entrenar mañana.','Haz lo mismo con tu vídeo: graba tus partidos con el móvil detrás de la portería o en la grada.'];
+var VT=null;
+function vState(){if(!S.va)S.va={k:'courtois',o:'',m:'',c:{},note:''};S.va.c=S.va.c||{};return S.va;}
+function vName(va){if(va.k==='otro')return va.o||'goalkeeper';var x=VKEEP.filter(function(v){return v[0]===va.k;})[0];return x?x[2]:'goalkeeper';}
+function vLabel(va){if(va.k==='otro')return va.o||'Otro portero';var x=VKEEP.filter(function(v){return v[0]===va.k;})[0];return x?x[1]:'';}
+function vQuery(t,va){return t.replace('{n}',vName(va))+(va.m?' '+va.m:'');}
+function vTimerTxt(i){if(VT&&VT.b===i){var r=Math.max(0,(VT.end-performance.now())/1000);return '❚❚ '+mm(r);}return '▶ 15:00';}
+function videoHTML(){
+  var va=vState(),h='<div class="pad">'+gBack()+'<p class="eyebrow" style="color:var(--t-equipo)">Análisis</p><h1 class="disp" style="font-size:44px;margin-top:6px">Sala de vídeo</h1><p class="muted" style="margin-top:6px">Una hora de vídeo solo de porteros, con plan y hoja de análisis.</p>';
+  h+='<div class="card" style="margin-top:12px"><div class="ctrl"><span>Portero</span><div class="chips wrap">'+VKEEP.map(function(x){return '<button class="chip'+(va.k===x[0]?' on':'')+'" data-a="v-key" data-v="'+x[0]+'">'+esc(x[1])+'</button>';}).join('')+'</div></div>';
+  if(va.k==='otro')h+='<label class="ctrl"><span>Nombre</span><input type="text" id="v-o" maxlength="40" placeholder="Por ejemplo, Oblak" value="'+esc(va.o)+'"></label>';
+  h+='<label class="ctrl"><span>Partido o temporada (opcional)</span><input type="text" id="v-m" maxlength="40" placeholder="vs Barcelona · 2025/26" value="'+esc(va.m)+'"></label><button class="btn small ghost" data-a="v-apply" style="justify-self:start">Actualizar búsquedas</button></div>';
+  h+='<section class="sec"><div class="sec-h"><h2>Tu hora</h2><span class="muted mono" style="font-size:12px">4 × 15 min</span></div>';
+  VBLK.forEach(function(b,i){
+    h+='<div class="card" style="gap:10px"><div><p class="eyebrow">Bloque '+(i+1)+' · 15 min</p><b style="font-size:17px">'+esc(b.n)+'</b><p class="muted" style="font-size:14px">'+esc(b.d)+'</p></div>'+
+      '<div class="row">'+b.q.map(function(q,j){return '<a class="yt" href="'+ytUrl(vQuery(q,va))+'" target="_blank" rel="noopener" style="padding:8px 12px">'+(j?'Buscar en español':'Buscar vídeos')+' ↗</a>';}).join('')+'<button class="tbtn'+(VT&&VT.b===i?' run':'')+'" data-a="v-timer" data-v="'+i+'" id="vt-'+i+'">'+vTimerTxt(i)+'</button></div>'+
+      fold('v-look-'+i,'Qué mirar',ul(b.look),{cls:'inl'})+'</div>';});
+  h+='</section>';
+  var c=va.c,tot=0;VCNT.forEach(function(x){tot+=c[x[0]]||0;});
+  h+='<section class="sec"><div class="sec-h"><h2>Hoja de análisis</h2><span class="muted mono" style="font-size:12px">'+esc(vLabel(va))+'</span></div><div class="vgrid">'+
+    VCNT.map(function(x){return '<div class="vc"><span>'+esc(x[1])+'</span><div class="vcb"><button data-a="v-cnt" data-v="'+x[0]+'" data-d="-1" aria-label="Restar '+esc(x[1])+'">−</button><b class="mono">'+(c[x[0]]||0)+'</b><button data-a="v-cnt" data-v="'+x[0]+'" data-d="1" aria-label="Sumar '+esc(x[1])+'">+</button></div></div>';}).join('')+'</div>'+
+    '<label class="ctrl"><span>Notas: una cosa para copiar y otra para entrenar</span><textarea id="v-note" maxlength="400" placeholder="Copiar: … · Entrenar: …">'+esc(va.note||'')+'</textarea></label>'+
+    '<div class="row"><button class="btn small gold" data-a="v-save" '+(tot||va.note?'':'disabled')+'>Guardar análisis</button><button class="btn small ghost" data-a="v-reset">Empezar de cero</button></div>';
+  var pro=C.RUTI['pro-'+va.k];if(pro)h+='<button class="btn full" data-a="rut-go" data-v="'+pro.id+'">Entrena lo que has visto: '+esc(pro.n.replace('Entrena como ',''))+'</button>';
+  h+='</section>';
+  var an=(S.anl||[]).slice().reverse();
+  if(an.length)h+='<section class="sec">'+fold('v-hist','Tus análisis','<div class="hist">'+an.slice(0,15).map(function(x){var s=VCNT.filter(function(v){return x.c[v[0]];}).map(function(v){return v[1]+' '+x.c[v[0]];}).join(' · ');return '<div class="hrow" style="grid-template-columns:auto minmax(0,1fr)"><span class="mono">'+esc(x.d.slice(5).split('-').reverse().join('/'))+'</span><span><b>'+esc(x.k)+(x.m?' · '+esc(x.m):'')+'</b><br><span class="muted" style="font-size:13px">'+esc(s||'Sin acciones contadas')+(x.note?' · «'+esc(x.note)+'»':'')+'</span></span></div>';}).join('')+'</div>',{sm:an.length+''})+'</section>';
+  h+='<section class="sec" style="gap:8px">'+fold('v-method','Cómo analizar como un preparador',ul(VMETHOD))+
+    VSRC.map(function(g,i){return fold('v-src-'+i,esc(g.h),'<ul class="srcs">'+g.li.map(function(x){return '<li><a href="'+x[1]+'" target="_blank" rel="noopener">'+esc(x[0])+'</a></li>';}).join('')+'</ul>');}).join('')+'</section>';
+  h+='<p class="muted" style="font-size:13px">Usa fuentes oficiales o vídeos subidos legalmente.</p>';
+  return h+'</div>';}
+function vRead(){var va=vState(),o=document.getElementById('v-o'),m=document.getElementById('v-m'),n=document.getElementById('v-note');if(o)va.o=o.value.trim().slice(0,40);if(m)va.m=m.value.trim().slice(0,40);if(n)va.note=n.value.slice(0,400);}
+function vTimer(i){
+  if(VT&&VT.b===i){clearInterval(VT.iv);VT=null;awake(false);render();return;}
+  if(VT){clearInterval(VT.iv);}
+  VT={b:i,end:performance.now()+15*60*1000,iv:0};awake(true);beep(660,0.06,0.05);
+  VT.iv=setInterval(function(){if(!VT)return;var el=document.getElementById('vt-'+VT.b);var r=(VT.end-performance.now())/1000;if(el){el.textContent='❚❚ '+mm(r);el.classList.add('run');}
+    if(r<=0){var b=VT.b;clearInterval(VT.iv);VT=null;awake(false);beep(880,0.35);setTimeout(function(){beep(880,0.45);},420);try{if(navigator.vibrate)navigator.vibrate([200,100,200]);}catch(e){}render();toast(b<3?'Bloque terminado: al siguiente':'Hora completada');}},500);
+  render();}
 
 function liteHTML(){
   var days=spDays(),t=today();
@@ -2928,6 +2996,13 @@ document.addEventListener('click',function(ev){
     case 'sp-start':U.ob=null;startSp(null);break;
     case 'rut-open':U.ob=null;U.sheet=null;stopTimer();U.view='guia';U.g=v&&RCAT[v]?v:'agu';render();window.scrollTo(0,0);break;
     case 'g-nav':U.ob=null;U.sheet=null;U.view='guia';U.g=v||'home';render();window.scrollTo(0,0);break;
+    case 'v-open':{var vo=vState();vo.k=v;save();U.view='guia';U.g='video';render();window.scrollTo(0,0);break;}
+    case 'v-key':{vRead();vState().k=v;save();render();break;}
+    case 'v-apply':{vRead();save();render();toast('Búsquedas actualizadas');break;}
+    case 'v-cnt':{vRead();var vc=vState().c,dd2=+t.getAttribute('data-d');vc[v]=Math.max(0,(vc[v]||0)+dd2);save();render();break;}
+    case 'v-timer':vRead();vTimer(+v);break;
+    case 'v-save':{vRead();var vs=vState();S.anl=S.anl||[];S.anl.push({d:today(),k:vLabel(vs),m:vs.m,c:JSON.parse(JSON.stringify(vs.c)),note:vs.note});if(S.anl.length>30)S.anl=S.anl.slice(-30);vs.c={};vs.note='';save();U.open['v-hist']=true;render();toast('Análisis guardado');break;}
+    case 'v-reset':{vRead();var vr=vState();vr.c={};vr.note='';save();render();break;}
     case 'd-set':{dietRead();var dd=dietDefaults();dd[t.getAttribute('data-f')]=v;save();render();break;}
     case 'd-calc':{dietRead();save();U.open['menu-0']=true;render();var dt=document.querySelector('.dtable');if(dt)dt.scrollIntoView({behavior:'smooth',block:'start'});break;}
     case 'rut-gear':{var rg=rutGear(),ri=rg.indexOf(v);if(ri>=0)rg.splice(ri,1);else rg.push(v);save();render();break;}
@@ -2985,6 +3060,7 @@ document.addEventListener('click',function(ev){
 });
 document.addEventListener('input',function(ev){
   if(ev.target.id==='libq'){U.lib.q=ev.target.value;libList();}
+  if(/^v-(o|m|note)$/.test(ev.target.id||'')){vRead();try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}var vsb=document.querySelector('[data-a="v-save"]');if(vsb&&ev.target.id==='v-note'&&ev.target.value.trim())vsb.disabled=false;}
   if(/^d-[wha]$/.test(ev.target.id||'')){dietRead();try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
   if(ev.target.id==='ob-name'&&U.ob){U.ob.a.name=ev.target.value;}
 });
