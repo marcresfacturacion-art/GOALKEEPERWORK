@@ -26,7 +26,7 @@
   --gold:#D9B65E; --gold-soft:#33290F;
   --ok:#5BD098; --ok-soft:#12301F; --warn:#F2B451; --warn-soft:#382A0F; --bad:#F27D70; --bad-soft:#381614;
   --fig:#EEE7F8; --fig-far:#7A6B97; --ball:#F6F2FB; --ball-line:#0B0712; --tennis:#D7E34B; --tennis-line:#8E9622; --band:#F08A5D; --wall:#1D1430; --wall-2:#281C3F;
-  --t-fuerza:#EC8A70; --t-tecnica:#A274FF; --t-reaccion:#62C6EA; --t-activacion:#5BD098; --t-recuperacion:#8A9AC2; --t-base:#CBB6F4; --t-equipo:#F2A15E; --t-partido:#D9B65E; --t-descanso:#5A4C75; --t-especial:#E36BD0;
+  --t-fuerza:#EC8A70; --t-tecnica:#A274FF; --t-reaccion:#62C6EA; --t-activacion:#5BD098; --t-recuperacion:#8A9AC2; --t-base:#CBB6F4; --t-equipo:#F2A15E; --t-partido:#D9B65E; --t-descanso:#5A4C75; --t-especial:#E36BD0; --t-vuelo:#4D9BFF;
   --f-display:"Saira Extra Condensed","Arial Narrow","Roboto Condensed",Impact,sans-serif;
   --f-body:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   --f-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
@@ -452,9 +452,10 @@ var TYPES={
   equipo:{n:'Complemento al entreno',s:'Activación de portero y prevención',int:1,why:'Hoy entrenas con tu equipo. Llega activado como portero y suma la prevención que el equipo no suele hacer.'},
   partido:{n:'Día de partido',s:'Calentamiento progresivo de portero',int:0,why:'Calentamiento de portero de menos a más y la cabeza preparada.'},
   descanso:{n:'Descanso',s:'Opcional: 10 minutos de movilidad',int:0,why:'Descansar también es entrenar: aquí se asimila el trabajo de la semana.'},
-  especial:{n:'Rutina especial',s:'Hecha para tu caso de hoy',int:1,why:'Sesión creada con el test de rutina especial.'}
+  especial:{n:'Rutina especial',s:'Hecha para tu caso de hoy',int:1,why:'Sesión creada con el test de rutina especial.'},
+  vuelo:{n:'Volar',s:'Pliometría, despegue y estiradas',int:3,why:'Tu día para volar: saltos laterales con el cuerpo fresco, el despegue por partes y estiradas completas. Siempre a tres días o más del partido.'}
 };
-var PREF={fuerza:['gimnasio','parque','casa','campo','pared'],tecnica:['campo','parque','pared','gimnasio','casa'],reaccion:['pared','campo','parque','casa','gimnasio'],activacion:['campo','pared','parque','casa','gimnasio'],recuperacion:['casa','parque','gimnasio','campo','pared'],base:['campo','pared','parque','casa','gimnasio'],equipo:['campo','parque','casa','gimnasio','pared'],descanso:['casa','parque','gimnasio','campo','pared'],partido:['campo','parque','pared','casa','gimnasio']};
+var PREF={vuelo:['campo','parque','gimnasio','pared','casa'],fuerza:['gimnasio','parque','casa','campo','pared'],tecnica:['campo','parque','pared','gimnasio','casa'],reaccion:['pared','campo','parque','casa','gimnasio'],activacion:['campo','pared','parque','casa','gimnasio'],recuperacion:['casa','parque','gimnasio','campo','pared'],base:['campo','pared','parque','casa','gimnasio'],equipo:['campo','parque','casa','gimnasio','pared'],descanso:['casa','parque','gimnasio','campo','pared'],partido:['campo','parque','pared','casa','gimnasio']};
 var ROT={1:['tecnica'],2:['fuerza','tecnica'],3:['fuerza','tecnica','reaccion'],4:['fuerza','tecnica','reaccion','base'],5:['fuerza','tecnica','reaccion','recuperacion','base'],6:['fuerza','tecnica','reaccion','recuperacion','fuerza','tecnica'],7:['fuerza','tecnica','reaccion','recuperacion','base','tecnica','descanso']};
 
 function D(s,r,u,rest,sec){return {s:s,r:r,u:u||'',rest:rest||0,sec:sec||0};}
@@ -941,7 +942,21 @@ var PHASE_TXT={base:'Técnica limpia y fuerza general.',des:'Más volumen, poten
 function matchFor(P,S,w){var o=S.weekMatch&&S.weekMatch[w];if(o==='none')return null;if(o!=null&&o!=='')return +o;return P.match==null?null:+P.match;}
 function isTeam(P,d){return P.who==='club'&&(P.teamDays||[]).indexOf(d)>=0;}
 function spOf(S,k){var o=S&&S.day&&S.day[k];return o&&o.sp?o.sp:null;}
-function typeFor(P,S,k){
+/* Día de volar: uno por semana, a 3 días o más del partido. Automático o elegido en «Plan». */
+var VUELO_OK=['tecnica','base','fuerza'];
+function baseTypeD(P,d,m){var avail=P.days.indexOf(d)>=0,team=isTeam(P,d);
+  if(m!=null&&d===m)return 'partido';if(!avail&&!team)return 'descanso';
+  if(m!=null){var to=(m-d+7)%7,after=(d-m+7)%7;if(to===1)return 'activacion';if(team)return 'equipo';if(after===1)return 'recuperacion';if(to===2)return 'reaccion';if(to===3)return 'tecnica';if(to===4)return 'fuerza';return 'base';}
+  if(team)return 'equipo';var own=P.days.filter(function(x){return !isTeam(P,x);}).slice().sort();return ROT[Math.max(1,Math.min(own.length,7))][own.indexOf(d)]||'base';}
+function vueloCands(P,S,w){var m=matchFor(P,S,w),out=[];for(var d=0;d<7;d++){var t=baseTypeD(P,d,m);if(VUELO_OK.indexOf(t)>=0&&(m==null||(m-d+7)%7>=3))out.push({d:d,t:t});}return out;}
+function vueloDay(P,S,w){var v=S&&S.vd;if(v==='no')return -1;var c=vueloCands(P,S,w);
+  if(v!=null&&v!=='auto'){for(var i=0;i<c.length;i++){if(c[i].d===+v)return +v;}}
+  var own=P.days.filter(function(x){return !isTeam(P,x);});if(own.length<3)return -1;
+  var b=c.filter(function(x){return x.t==='base';});if(b.length)return b[0].d;
+  var t=c.filter(function(x){return x.t==='tecnica';});return t.length?t[0].d:-1;}
+function typeFor(P,S,k){var t=typeFor0(P,S,k);if(VUELO_OK.indexOf(t)<0)return t;
+  return dayIdx(parseKey(k))===vueloDay(P,S,weekIndex(P,k))?'vuelo':t;}
+function typeFor0(P,S,k){
   var sp=spOf(S,k);if(sp)return sp.when==='hoy'?'partido':'especial';
   var d=dayIdx(parseKey(k)),w=weekIndex(P,k),m=matchFor(P,S,w);
   var avail=P.days.indexOf(d)>=0,team=isTeam(P,d);
@@ -1005,7 +1020,7 @@ function pick(arr,ctx){
   var tot=0,ws=arr.map(function(e){var w=1;if(ctx.goalCats.indexOf(e.cat)>=0)w+=2;if(ctx.mode==='pareja'&&e.mode==='pareja')w+=3;if(e.anim)w+=0.3;tot+=w;return w;});
   var r=ctx.rng()*tot;for(var i=0;i<arr.length;i++){r-=ws[i];if(r<=0)return arr[i];}return arr[arr.length-1];
 }
-function B(n,f,cats,o){o=o||{};return {n:n,f:f,cats:cats,force:o.force||[],forceOne:!!o.forceOne,maxInt:o.maxInt||0,max:o.max||4};}
+function B(n,f,cats,o){o=o||{};return {n:n,f:f,cats:cats,force:o.force||[],forceOne:!!o.forceOne,maxInt:o.maxInt||0,max:o.max||4,only:o.only||null,cap:o.cap||0};}
 var PP_IDS=['pp-mov','pp-manos','pp-desp','pp-caidas','pp-todas','pp-aereo','pp-tiros','pp-cabeza'];
 function recipe(ctx){
   var t=ctx.type,g=ctx.goalCats,r=ctx.res;
@@ -1019,8 +1034,16 @@ function recipe(ctx){
     if(!r.blando) main.push('man');
     return [B('Calentamiento',.18,['cal'],{max:2}),B('Manos',.2,['man'],{max:2}),B('Bloque principal',.47,main,{max:4}),B('Vuelta a la calma',.15,['mov','men'],{maxInt:1,max:2})];
   }
+  if(t==='vuelo'){var L=Math.min(2,ctx.level+(ctx.ph.bonus||0)),sh=ctx.mins<=25;
+    var PL=[['vol-frena','vol-pogo','pot-imp'],['vol-frena','pot-skater','vol-cono','vol-pogo'],['vol-cajon','pot-skater','vol-lateral-arriba','vol-cono','vol-pogo']][L];
+    var ES=[['cai-rodillas','vol-media','cai-cuclillas','cai-sentado'],['vol-media','cai-base','vol-despegue','cai-cuclillas','cai-rodillas'],['vol-despegue','cai-alta','cai-poste','cai-base','cai-levanta','vol-media','cai-rodillas']][L];
+    var v=[B('Calentamiento',.15,['cal'],{max:2}),B('Pliometría',.22,['vol','pot'],{only:PL,force:PL,max:sh?1:(ctx.mins<=35?2:3),cap:1}),B('Despegue',.15,['vol','pot'],{only:['vol-paso','pot-imp','pot-skater'],force:['vol-paso','pot-imp'],max:sh?1:2,cap:1})];
+    if(r.blando)v.push(B('Estiradas',.33,['vol','cai'],{only:ES,force:ES,max:sh?1:(ctx.mins<=35?2:(ctx.mins>=60?4:3)),cap:1.3}));
+    else v.push(B('Forma del cuerpo',.33,['vol','man'],{only:['vol-forma','man-sombra','man-lateral','man-w'],force:['vol-forma','man-sombra'],max:sh?1:3}));
+    if(!sh)v.push(B('Vuelta a la calma',.1,['mov'],{maxInt:1,max:1}));return v;}
   if(t==='fuerza'){
     var bl=[B('Calentamiento',.15,['cal','mov'],{max:2}),B('Potencia',.25,['pot'],{max:2}),B('Fuerza',.4,['fue'],{max:4}),B('Prevención',.2,['pre'],{force:['pre-copen','pre-nordico'],max:3})];
+    if(ctx.nearVuelo){bl.splice(1,1);bl[1].f=.6;}
     if(ctx.mins>=60) bl.splice(2,0,B('Técnica breve',.12,['man'],{max:1}));
     return bl;
   }
@@ -1033,12 +1056,12 @@ function recipe(ctx){
 }
 function fill(b,ctx){
   var budget=Math.max(3,ctx.mins*b.f);
-  var pool=EX.filter(function(e){return b.cats.indexOf(e.cat)>=0&&eligible(e,ctx,b.maxInt);});
+  var pool=EX.filter(function(e){return b.cats.indexOf(e.cat)>=0&&eligible(e,ctx,b.maxInt)&&(!b.only||b.only.indexOf(e.id)>=0);});
   var out=[],used=0;
   function add(e){out.push(e);ctx.used[e.id]=1;used+=dur(e,ctx);}
   for(var i=0;i<b.force.length;i++){
     var fe=null;for(var j=0;j<pool.length;j++){if(pool[j].id===b.force[i])fe=pool[j];}
-    if(fe&&!ctx.used[fe.id]){add(fe);if(b.forceOne)break;}
+    if(fe&&!ctx.used[fe.id]){add(fe);if(b.forceOne||out.length>=b.max)break;}
   }
   b.cats.forEach(function(c){
     if(used>=budget*0.85||out.length>=b.max)return;
@@ -1049,7 +1072,7 @@ function fill(b,ctx){
   var cand=pool.filter(function(e){return !ctx.used[e.id];});
   while(used<budget*0.85&&cand.length&&out.length<b.max){var e=pick(cand,ctx);add(e);cand=cand.filter(function(x){return x!==e;});}
   var scal=0,fix=0;out.forEach(function(e){if(fixed(e))fix+=dur(e,ctx);else scal+=dur(e,ctx);});
-  var f=1;if(scal>0&&used<budget*0.8)f=Math.max(1,Math.min(1.7,(budget-fix)/scal));
+  var f=1;if(scal>0&&used<budget*0.8)f=Math.max(1,Math.min(b.cap||1.7,(budget-fix)/scal));
   return {n:b.n,items:out.map(function(e){return {e:e,d:doseFor(e,ctx,f)};}),mins:Math.round(fix+scal*f)};
 }
 function sessionMins(P,type,o){
@@ -1070,17 +1093,24 @@ function buildSession(P,S,k){
   if(P.locs&&P.locs.length&&P.locs.indexOf(loc)<0) loc=defaultLoc(P,type);
   var res=resources(P,loc,mode);
   var goalCats=(P.goals||[]).map(function(g){return GOALS[g]?GOALS[g].cat:null;}).filter(Boolean);
-  var ctx={type:type,mins:mins,loc:loc,mode:mode,res:res,ph:ph,level:+P.level||0,inj:P.injuries||[],goalCats:goalCats,used:{},
+  var nearV=type==='fuerza'&&(typeFor(P,S,addDays(k,1))==='vuelo'||typeFor(P,S,addDays(k,-1))==='vuelo');
+  var ctx={type:type,mins:mins,loc:loc,mode:mode,res:res,ph:ph,level:+P.level||0,inj:P.injuries||[],goalCats:goalCats,used:{},nearVuelo:nearV,
     rng:rng(hash([k,type,loc,mode,mins,P.level,(P.goals||[]).join('.'),(P.injuries||[]).join('.'),(P.gear||[]).join('.')].join('|')))};
   var blocks=recipe(ctx).map(function(b){return fill(b,ctx);}).filter(function(b){return b.items.length;});
   var est=0;blocks.forEach(function(b){est+=b.mins;});
   var notes=[];
+  if(type==='vuelo'){notes.push('Salta con el cuerpo fresco: si aterrizas con ruido, se te van las rodillas hacia dentro o saltas menos, para.');if(!res.blando)notes.push('Sin césped ni colchoneta hoy no hay estiradas, y son las que más enseñan a volar. Si puedes, cambia el lugar a campo o parque.');}
+  if(nearV) notes.push('Hoy sin saltos: el día de volar está al lado y así llegas fresco.');
+  if(type==='vuelo'&&est<mins-15) notes.push('La sesión dura menos que tu tiempo a propósito: más saltos no te hacen volar más, solo te cansan.');
   if(type==='tecnica'&&!res.blando) notes.push('Hoy no hay caídas: hacen falta césped o una esterilla. Si puedes, cambia el lugar a campo o parque.');
   if(!res.balon&&type!=='descanso'&&type!=='recuperacion') notes.push('Sin balón la sesión se centra en pies, físico y técnica en sombra. Con un balón el plan mejora mucho.');
   if(ctx.inj.length) notes.push('Has marcado una molestia: hemos quitado los ejercicios que la cargan. Si algo duele más de 3 sobre 10, para.');
   if(ph.id==='desc') notes.push('Semana de descarga: menos series para asimilar y llegar fresco al test.');
   if(type==='recuperacion') notes.push('¿No jugaste el último partido? Márcalo y la sesión pasa a técnica intensa, como hacen los porteros que no juegan.');
-  return {k:k,type:type,mins:mins,loc:loc,mode:mode,ph:ph,w:w,blocks:blocks,est:Math.round(est),notes:notes};
+  var extra=type==='vuelo'?[{id:'aviso',t:'Antes de saltar',li:VOL_SAFE},{id:'porque',t:'Lo que dicen los estudios',facts:VOL_EV},{id:'fuentes',t:'Fuentes',links:VOL_SRC}]:null;
+  var r0={k:k,type:type,mins:mins,loc:loc,mode:mode,ph:ph,w:w,blocks:blocks,est:Math.round(est),notes:notes,extra:extra};
+  if(nearV)r0.sub='Piernas y tronco, sin saltos: el día de volar está al lado';
+  return r0;
 }
 /* ---------- Rutinas para quitar agujetas (basadas en revisiones y metaanálisis) ---------- */
 function RR(id,sets,reps,unit,rest,sec,m,txt){return [id,sets,reps,unit,rest,sec,m,txt];}
@@ -1480,7 +1510,7 @@ function weekSummary(P,S,weekStart){
 return {DAYS:DAYS,DSH:DSH,keyOf:keyOf,parseKey:parseKey,dayIdx:dayIdx,addDays:addDays,mondayKey:mondayKey,daysBetween:daysBetween,weekIndex:weekIndex,
   LOCS:LOCS,LOCSH:LOCSH,GEAR:GEAR,GOALS:GOALS,INJ:INJ,LEVELS:LEVELS,CATS:CATS,TYPES:TYPES,EX:EX,EXI:EXI,TESTS:TESTS,TIPS:TIPS,PHASE_TXT:PHASE_TXT,
   phaseOf:phaseOf,matchFor:matchFor,typeFor:typeFor,defaultLoc:defaultLoc,resources:resources,buildSession:buildSession,partnerDays:partnerDays,weekSummary:weekSummary,fmtSec:fmtSec,sessionMins:sessionMins,
-  spOf:spOf,spTitle:spTitle,spEvent:spEvent,DOMS:DOMS,animsOf:animsOf,RUT:RUT,RUTI:RUTI,MEAS:MEAS,DOMS_EV:DOMS_EV,DOMS_SRC:DOMS_SRC,rutFor:rutFor,MEN_EV:MEN_EV,MEN_SRC:MEN_SRC,COO_EV:COO_EV,COO_SRC:COO_SRC,VOL_EV:VOL_EV,VOL_SRC:VOL_SRC,VOL_SAFE:VOL_SAFE};
+  spOf:spOf,spTitle:spTitle,spEvent:spEvent,DOMS:DOMS,animsOf:animsOf,RUT:RUT,RUTI:RUTI,MEAS:MEAS,DOMS_EV:DOMS_EV,DOMS_SRC:DOMS_SRC,rutFor:rutFor,MEN_EV:MEN_EV,MEN_SRC:MEN_SRC,COO_EV:COO_EV,COO_SRC:COO_SRC,VOL_EV:VOL_EV,VOL_SRC:VOL_SRC,VOL_SAFE:VOL_SAFE,vueloCands:vueloCands,vueloDay:vueloDay};
 })();
 </script>
 
@@ -2477,6 +2507,8 @@ var RGEAR=[['tenis','Pelota de tenis'],['rodillo','Rodillo'],['banda','Banda'],[
 function rutGear(){if(!S.rg){var g=P()?P().gear.map(function(x){return x==='balones'?'balon':x;}):[];S.rg=RGEAR.map(function(r){return r[0];}).filter(function(x){return g.indexOf(x)>=0;});}return S.rg;}
 function rutLocFor(r){var p=P(),ls=p&&p.locs.length?p.locs:null;if(r&&r.locs){if(!ls)return r.locs[0];for(var i=0;i<r.locs.length;i++){if(ls.indexOf(r.locs[i])>=0)return r.locs[i];}}return rutLoc();}
 function rutLoc(){var p=P();if(!p||!p.locs.length)return 'casa';return p.locs.indexOf('casa')>=0?'casa':p.locs[0];}
+function volNext(){var p=P();if(!p)return null;var k=today();for(var i=1;i<8;i++){var kk=C.addDays(k,i);if(C.typeFor(p,S,kk)==='vuelo')return 'Tu próximo día de volar: '+fmtDate(kk);}return null;}
+function volCTA(sub){return '<button class="cta-row anpre" data-a="g-nav" data-v="vol"><span class="cta-ic" style="background:rgba(77,155,255,.16);color:var(--t-vuelo)">'+ICON.vuelo+'</span><span><b>Volar como un profesional</b><small>'+esc(sub||'Pliometría, técnica del cuerpo y del despegue')+'</small></span><span class="chev" aria-hidden="true">›</span></button>';}
 function rutCTA(sub){return '<button class="cta-row alt" data-a="rut-open"><span class="cta-ic">'+ICON.gota+'</span><span><b>Rutinas para quitar agujetas</b><small>'+esc(sub||'8 rutinas: exprés, tras saltos, tras el partido, antes de dormir…')+'</small></span><span class="chev" aria-hidden="true">›</span></button>';}
 /* ---------- Guía: dieta, mente, coordinación, porteros de élite y lecturas ---------- */
 var RCAT={agu:{n:'Quitar agujetas',e:'Recuperación',c:'--t-reaccion',sub:'Elige la rutina que encaje con tu caso.'},
@@ -2629,11 +2661,11 @@ function guiaHTML(){
   if(g.indexOf('art:')===0)return artHTML(g.slice(4));
   if(RCAT[g])return rutHTML(g);
   var h='<section class="hero"><div class="pad"><p class="hello">Todo lo que rodea al entreno.</p><h1 class="disp">Guía del portero</h1></div></section><div class="pad"><section class="sec"><div class="ggrid">';
+  h+=gCard('vol',ICON.vuelo,'Volar','Pliometría, cuerpo y despegue','--t-vuelo');
   h+=gCard('dieta',ICON.plato,'Dieta','Según tu peso, altura y presupuesto','--t-fuerza');
   h+=gCard('men',ICON.mente,'Mente','Activación, nervios, errores y penaltis','--t-tecnica');
   h+=gCard('coo',ICON.ojo,'Coordinación','Ojos, manos y pies','--t-activacion');
   h+=gCard('agu',ICON.gota,'Agujetas','8 rutinas para recuperar','--t-reaccion');
-  h+=gCard('vol',ICON.vuelo,'Volar','Pliometría, cuerpo y despegue','--t-reaccion');
   h+=gCard('pro',ICON.estrella,'Entrena como…','Ederson, Alisson, Courtois, Dibu y Donnarumma','--gold');
   h+=gCard('lectura',ICON.libro,'Leer el juego','Bisectriz, cuerpo, rival, calentamiento','--t-base');
   h+=gCard('analisis',ICON.video,'Analizar partidos','Vídeo del portero en crudo y una sesión de 1 hora','--t-equipo');
@@ -2914,7 +2946,7 @@ function liteHTML(){
       (lg?'<div class="done-badge">✓ Hecha · '+(lg.mins||0)+' min · esfuerzo '+(lg.rpe||'—')+'/10</div>':'')+
       '<button class="btn full'+(k===t&&!lg?'':' ghost')+'" data-a="open-ses" data-k="'+k+'">'+(lg?'Ver la sesión':(k===t?'Empezar':'Ver la sesión'))+'</button></div>';});
   if(!days.length)h+='<p class="muted">Crea una rutina para tu caso o haz el test completo para tener un plan para cada día.</p>';
-  h+=spCTA(days.length?'Crear otra rutina para otro caso':null)+rutCTA();
+  h+=spCTA(days.length?'Crear otra rutina para otro caso':null)+volCTA()+rutCTA();
   h+='</section><section class="sec"><div class="card"><b>¿Entrenas a menudo?</b><p class="muted" style="font-size:14px">Con el test completo tendrás un plan para cada día, ordenado alrededor de tus partidos.</p><button class="btn small" data-a="ob-start">Crear mi plan diario</button></div></section></div>';
   return h;
 }
@@ -2952,7 +2984,7 @@ function hoyHTML(){
   if(!lg&&s.type!=='descanso') h+=s.special?fold('hoy-aj','Ajustar',spControls(k,s.sp),{cls:'inl',sm:esc(spSummary(s.sp))}):fold('hoy-aj','Ajustar',dayControls(k,s),{cls:'inl',sm:esc(dcSummary(s))});
   h+=fold('hoy-why',s.special?'Por qué esta rutina':'Por qué hoy','<p>'+esc(sesWhy(s))+'</p>',{cls:'inl'});
   h+='</div></section>';
-  h+='<section class="sec" style="padding-top:12px;gap:8px">'+(s.special?'':spCTA())+rutCTA()+'</section>';
+  h+='<section class="sec" style="padding-top:12px;gap:8px">'+(s.special?'':spCTA())+(s.type==='vuelo'?'':volCTA(volNext()))+rutCTA()+'</section>';
   // semana
   h+='<section class="sec"><div class="sec-h"><h2>Esta semana</h2><span class="muted" style="font-size:13px">Toca un día</span></div><div class="week">';
   for(var i=0;i<7;i++){var dk=C.addDays(ws,i),t=C.typeFor(p,S,dk),done=!!S.log[dk],dsp=C.spOf(S,dk);
@@ -2967,7 +2999,7 @@ function hoyHTML(){
   if(tot.n===0) h+='<section class="sec"><p class="muted" style="font-size:13.5px">Tu progreso aparecerá en cuanto termines la primera sesión.</p></section>';
   return h+'</div>';
 }
-function shortType(t){return {fuerza:'Fuerza',tecnica:'Técnica',reaccion:'Reacción',activacion:'Activa',recuperacion:'Recup.',base:'Base',equipo:'Equipo',partido:'Partido',descanso:'Libre'}[t]||t;}
+function shortType(t){return {fuerza:'Fuerza',tecnica:'Técnica',reaccion:'Reacción',activacion:'Activa',recuperacion:'Recup.',base:'Base',equipo:'Equipo',partido:'Partido',descanso:'Libre',vuelo:'Volar',especial:'Especial'}[t]||t;}
 function weeksStreak(){var p=P(),w=curWeek(),n=0;
   var cur=C.weekSummary(p,S,weekStartOf(w));if(cur.planned&&cur.done/cur.planned>=0.8)n++;
   for(var i=w-1;i>=0;i--){var s=C.weekSummary(p,S,weekStartOf(i));if(!s.planned)continue;if(s.done/s.planned>=0.8)n++;else break;}
@@ -3001,7 +3033,8 @@ function sesHTML(){
     h+='</section>';
   });
   if(!flat.length) h+='<p class="note">No encontramos ejercicios para este lugar con tu material. Prueba otro lugar o añade material.</p>';
-  if(s.extra&&s.extra.length) h+='<section class="block"><div class="block-h"><h3>'+(C.spEvent(s.sp)&&s.sp.when!=='hoy'?'Hasta el día':'Para hoy')+'</h3></div><div style="display:grid;gap:8px">'+s.extra.map(extraHTML).join('')+'</div></section>';
+  if(s.type==='vuelo') h+='<section class="block">'+volCTA('Antes de empezar: las 5 fases de la estirada y las rutinas sueltas')+'</section>';
+  if(s.extra&&s.extra.length) h+='<section class="block"><div class="block-h"><h3>'+(s.sp&&C.spEvent(s.sp)&&s.sp.when!=='hoy'?'Hasta el día':'Para hoy')+'</h3></div><div style="display:grid;gap:8px">'+s.extra.map(extraHTML).join('')+'</div></section>';
   if(flat.length) h+='<div class="sticky-act"><div class="g-nav"><button class="btn ghost" data-a="finish" data-k="'+k+'">'+(lg?'Editar registro':'Terminar')+'</button><button class="btn" data-a="guided" data-k="'+k+'">Modo guiado</button></div></div>';
   return h+'</div>';
 }
@@ -3035,10 +3068,16 @@ function planHTML(){
   h+=fold('pl-match','Partido de esta semana','<p>Si cambia, la semana se reordena sola.</p><div class="chips wrap">'+
     C.DSH.map(function(d,i){return '<button class="chip'+(ov!=null&&ov!=='none'&&+ov===i?' on':'')+'" data-a="wm" data-v="'+i+'">'+d+'</button>';}).join('')+
     '<button class="chip'+(ov==='none'?' on':'')+'" data-a="wm" data-v="none">Sin partido</button><button class="chip'+(ov==null?' on':'')+'" data-a="wm" data-v="def">Como siempre</button></div>',{sm:esc(m==null?'Sin partido':C.DAYS[m])});
+  var vc=C.vueloCands(p,S,w),vd=C.vueloDay(p,S,w),vs=S.vd==null?'auto':S.vd;
+  h+=fold('pl-vuelo','Tu día de volar','<p>Un día a la semana para pliometría, despegue y estiradas, siempre a tres días o más del partido. El día de fuerza que tenga al lado se queda sin saltos.</p><div class="chips wrap">'+
+    vc.map(function(x){return '<button class="chip'+(vs!=='auto'&&vs!=='no'&&+vs===x.d?' on':'')+'" data-a="vd" data-v="'+x.d+'">'+C.DSH[x.d]+'</button>';}).join('')+
+    '<button class="chip'+(vs==='auto'?' on':'')+'" data-a="vd" data-v="auto">Automático</button><button class="chip'+(vs==='no'?' on':'')+'" data-a="vd" data-v="no">Sin día de volar</button></div>'+
+    (vc.length?'':'<p class="muted">Esta semana no hay ningún día de entreno a tres días o más del partido.</p>')+
+    (vs==='auto'&&vd<0&&vc.length?'<p class="muted">Con menos de tres días de entreno no se pone solo: elige tú el día.</p>':''),{sm:esc(vd>=0?C.DAYS[vd]:'Sin día')});
   h+=spCTA('Para una prueba, un partido fuera de lo normal o agujetas');
   h+='</section><section class="sec">';
   var why='<div class="why">';
-  ['fuerza','tecnica','reaccion','activacion','recuperacion','base','equipo'].forEach(function(t){why+='<div>'+typeDot(t)+'<span><b>'+esc(C.TYPES[t].n)+'.</b> <span class="muted">'+esc(C.TYPES[t].why)+'</span></span></div>';});
+  ['fuerza','tecnica','vuelo','reaccion','activacion','recuperacion','base','equipo'].forEach(function(t){why+='<div>'+typeDot(t)+'<span><b>'+esc(C.TYPES[t].n)+'.</b> <span class="muted">'+esc(C.TYPES[t].why)+'</span></span></div>';});
   why+='</div><p>En porteros de Primera División la carga baja a medida que se acerca el partido y es mínima el día antes. Tu semana sigue esa lógica.</p>';
   h+=fold('pl-why','Por qué cada día',why)+'</section>';
   return h+'</div>';
@@ -3304,6 +3343,7 @@ document.addEventListener('click',function(ev){
     case 'an-inc':case 'an-dec':{anRead();var ab=S.anCur&&S.anCur.blocks[S.anCur.i];if(ab){ab.c[v]=Math.max(0,(ab.c[v]||0)+(a==='an-inc'?1:-1));save();render();}break;}
     case 'an-save':anSave();render();window.scrollTo(0,0);toast('Análisis guardado');break;
     case 'an-cancel':clearInterval(AT.iv);AT.iv=0;S.anCur=null;save();render();break;
+    case 'vd':S.vd=v;save();render();toast(v==='no'?'Sin día de volar':(v==='auto'?'Día de volar automático':'Volar: '+C.DAYS[+v]));break;
     case 'g-nav':U.ob=null;U.sheet=null;U.view='guia';U.g=v||'home';render();window.scrollTo(0,0);break;
     case 'v-open':{var vo=vState();vo.k=v;save();U.view='guia';U.g='video';render();window.scrollTo(0,0);break;}
     case 'v-key':{vRead();vState().k=v;save();render();break;}

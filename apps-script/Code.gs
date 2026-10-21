@@ -23,7 +23,8 @@ const TIPOS = {
   equipo: 'Complemento al entreno',
   partido: 'Día de partido',
   descanso: 'Descanso',
-  especial: 'Rutina especial'
+  especial: 'Rutina especial',
+  vuelo: 'Volar'
 };
 const LUGARES = { campo: 'Campo', parque: 'Parque', gimnasio: 'Gimnasio', pared: 'Pared', casa: 'Casa' };
 const TESTS = {
