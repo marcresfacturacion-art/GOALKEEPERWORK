@@ -1,5 +1,5 @@
 /* Portero Diario: funciona sin conexión después de la primera visita. */
-const CACHE = 'portero-diario-v6';
+const CACHE = 'portero-diario-v7';
 const ASSETS = ['./', './index.html', './manifest.webmanifest', './icon.svg', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', (e) => {

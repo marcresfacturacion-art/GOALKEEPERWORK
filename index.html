@@ -441,7 +441,7 @@ var GEAR={balon:'Un balón',balones:'Varios balones',tenis:'Pelotas de tenis',co
 var GOALS={manos:{n:'Blocaje y manos',cat:'man'},caidas:{n:'Estiradas y caídas',cat:'cai'},aereo:{n:'Juego aéreo y centros',cat:'aer'},uno:{n:'1 contra 1',cat:'uno'},pies:{n:'Juego de pies y saques',cat:'dis'},reflejos:{n:'Reflejos y reacción',cat:'rea'},potencia:{n:'Potencia y salto',cat:'pot'},cabeza:{n:'Confianza y cabeza',cat:'men'}};
 var INJ={hombro:'Hombro',muneca:'Muñeca o dedos',espalda:'Espalda',cadera:'Cadera o ingle',rodilla:'Rodilla',tobillo:'Tobillo'};
 var LEVELS=['Empezando','Amateur o regional','Semiprofesional','Alto nivel'];
-var CATS={agu:'Agujetas y víspera',cal:'Calentamiento',mov:'Movilidad y recuperación',man:'Blocaje y manos',cai:'Caídas y estiradas',aer:'Juego aéreo',uno:'1 contra 1',pie:'Desplazamientos',rea:'Reacción',coo:'Coordinación',dis:'Juego de pies y saques',pot:'Potencia',fue:'Fuerza',pre:'Prevención',men:'Cabeza',pp:'Día de partido'};
+var CATS={agu:'Agujetas y víspera',cal:'Calentamiento',mov:'Movilidad y recuperación',man:'Blocaje y manos',cai:'Caídas y estiradas',aer:'Juego aéreo',uno:'1 contra 1',pie:'Desplazamientos',rea:'Reacción',coo:'Coordinación',dis:'Juego de pies y saques',pot:'Potencia',fue:'Fuerza',pre:'Prevención',men:'Cabeza',vol:'Volar',pp:'Día de partido'};
 var TYPES={
   fuerza:{n:'Fuerza y potencia',s:'Piernas, tronco y saltos de calidad',int:3,why:'Lejos del partido hay margen para cargar. Fuerza de piernas y tronco y saltos de calidad: el motor de la estirada.'},
   tecnica:{n:'Técnica intensa',s:'Caídas, juego aéreo y 1 contra 1',int:3,why:'El día de más volumen técnico: caídas, salidas y duelos, con tiempo para recuperar antes del partido.'},
@@ -671,6 +671,35 @@ X('pot-rapida','pot','Sentadilla rápida con mancuernas ligeras',{need:['pesas']
 X('pot-pase','pot','Pase de pecho explosivo a la pared',{need:['balon','pared'],int:2,t:3,d:D([2,2,3,3],'5','',30),anim:'chestpass',
   how:['A 2–3 m de la pared, balón al pecho y pies escalonados.','Empuja explosivo extendiendo todo el cuerpo y recibe el rebote.'],cues:['Velocidad, no cansancio.'],err:['Encadenar pases sin pausa.'],yt:'pase de pecho explosivo pared'}),
 
+/* Volar: pliometría, cuerpo y despegue */
+X('vol-frena','vol','Caída y frena',{avoid:['rodilla','tobillo'],int:2,t:3,d:D([2,2,3,3],'5','',30),
+  how:['De pie y de puntillas, con los brazos arriba.','Déjate caer de golpe a una posición atlética: cadera atrás, rodillas dobladas y brazos delante. Aguanta 2 segundos.','Cuando salga limpio con dos pies, hazlo a una pierna.'],
+  cues:['Aterriza sin ruido: si suena, estás cayendo duro.','Rodillas en la línea de los pies, nunca hacia dentro.'],err:['Rodillas que se van hacia dentro.','Caer con las piernas rectas.'],yt:'caída y frena aterrizaje pliometría'}),
+X('vol-pogo','vol','Saltos de tobillo a los lados',{avoid:['tobillo'],int:2,t:3,d:D([2,2,3,3],null,'',30,15),
+  how:['Pies juntos al lado de una línea.','Saltitos rápidos de un lado a otro de la línea usando sobre todo los tobillos, con las rodillas casi rectas.','Cuando salga fluido, hazlos también hacia delante y atrás.'],
+  cues:['Toca el suelo lo menos posible: rebota como un muelle.','Apoya la parte delantera del pie.'],err:['Doblar mucho las rodillas: así no trabaja el tobillo.'],yt:'pogo jumps técnica tobillo'}),
+X('vol-cono','vol','Saltos laterales por encima de un cono',{avoid:['rodilla','tobillo'],lvl:1,int:3,t:4,d:D([2,3,3,3],'6','saltos',45),
+  how:['De pie al lado de un cono, una mochila o un balón.','Salta a dos pies por encima, de un lado a otro, con un rebote corto en cada apoyo.','Brazos y rodillas arriba en cada salto.'],
+  cues:['Empuja el suelo hacia el lado contrario: el empuje lateral es el que te lleva lejos en la estirada.','Aterriza suave y sal enseguida.'],err:['Pararte entre salto y salto.','Aterrizar con las rodillas juntas.'],yt:'saltos laterales a dos pies pliometría'}),
+X('vol-lateral-arriba','vol','Salto lateral y salto vertical',{avoid:['rodilla','tobillo'],lvl:1,int:3,t:4,d:D([2,2,3,3],'3','por lado',60),
+  how:['Desde posición de base, salto lateral: empujas con la pierna contraria al lado al que vas y caes con la del lado al que vas.','Apoya enseguida el otro pie y salta hacia arriba con los brazos, como para atrapar un balón alto.','Vuelve andando y repite. Después, hacia el otro lado.'],
+  cues:['Controla primero el salto lateral; luego añade altura.'],err:['Perder el equilibrio al caer del salto lateral.'],yt:'lateral bound vertical jump goalkeeper'}),
+X('vol-cajon','vol','Caída del cajón y salida lateral',{need:['cajon'],lvl:2,avoid:['rodilla','tobillo'],int:3,t:4,d:D([2,2,3,3],'3','por lado',90),
+  how:['Súbete a un cajón o banco bajo, de 30 a 40 cm.','Da un paso al vacío, cae con los dos pies a la vez y sal al instante con un salto lateral.','Cae a una pierna y aguanta 2 segundos.'],
+  cues:['Pasa el menor tiempo posible en el suelo entre la caída y el salto.','Solo si ya aterrizas limpio en el nivel 2.'],err:['Saltar desde el cajón en vez de dejarte caer.','Hundirte al caer: el cajón es demasiado alto.'],yt:'drop jump lateral bound'}),
+X('vol-forma','vol','Forma de vuelo en el suelo',{int:1,t:3,d:D([2,2,3,3],null,'por lado',30,20),
+  how:['Túmbate de costado con los brazos estirados por delante de la cabeza y un balón entre las manos (o sin balón).','Cuerpo recto de las manos a los pies, como en el aire.','Levanta un poco brazos y piernas del suelo y aguanta.'],
+  cues:['Pecho mirando hacia delante, hacia el tirador, no hacia el suelo.','Cabeza entre los brazos, mirando el balón.'],err:['Doblarte por la cadera.','Girar el pecho hacia el suelo.'],yt:'plancha lateral portero estirada'}),
+X('vol-media','vol','Estirada desde una rodilla',{need:['balon','blando'],int:2,t:4,d:D([2,3,3,3],'4','por lado',30),
+  how:['Una rodilla en el suelo y el otro pie apoyado, el del lado del balón. Balón quieto a metro y medio, a ese lado.','Lleva los brazos atrás, empuja fuerte con el pie de apoyo y estírate hacia el balón, hacia delante en diagonal.','Atrápalo y cae de costado.'],
+  cues:['Los brazos van de atrás hacia el balón: te dan impulso.','Tronco bajo y hacia delante, no hacia atrás.'],err:['Caer sobre el codo.','Saltar hacia arriba en lugar de hacia el balón.'],yt:'estirada portero desde una rodilla ejercicio'}),
+X('vol-paso','vol','Paso de poder y frena',{int:2,t:3,d:D([2,2,3,3],'4','por lado',20),
+  how:['Posición de base: pies algo más abiertos que la cadera, rodillas flexionadas sin pasarte, peso en la parte delantera del pie y manos delante.','Da un paso corto con el pie del lado del balón, hacia delante en diagonal, con la punta hacia donde va el balón.','Congela la postura: pie, rodilla y hombro en línea. Vuelve y repite hacia el otro lado.'],
+  cues:['Paso corto: si es largo, frenas en lugar de impulsarte.','Hacia delante, nunca hacia atrás: así cortas el ángulo.'],err:['Dar el paso hacia atrás o hacia el lado sin avanzar.','Rodilla por dentro del pie.'],yt:'power step goalkeeper diving'}),
+X('vol-despegue','vol','Despegue completo',{need:['balon','cesped'],lvl:1,int:3,t:5,d:D([2,3,3,4],'3','por lado',60),
+  how:['Balón quieto a 2–2,5 m a un lado. Posición de base y set.','Paso de poder con el pie del lado del balón, empuje fuerte con las dos piernas y la rodilla de la otra pierna cruzando hacia arriba.','Manos primero al balón, cuerpo de lado y caída de costado: balón, cadera y hombro.'],
+  cues:['La pierna lejana es la que más velocidad te da: empuja el suelo con ella.','Termina el empuje de puntillas, con la cadera y el tobillo estirados.'],err:['Dejarte caer sin empujar.','Girar el pecho hacia el suelo en el aire.','Dar pasos de más antes de despegar.'],pair:'Tu compañero te tira a 2–3 m, raso, a media altura y alto.',yt:'técnica despegue estirada portero'}),
+
 /* Fuerza */
 X('fue-goblet','fue','Sentadilla goblet',{need:['pesas'],avoid:['rodilla'],int:3,t:6,d:D([2,3,3,4],[10,8,8,6],'',90),anim:'speedsquat',
   how:['Mancuerna o kettlebell pegada al pecho.','Baja entre las piernas con el pecho alto y sube empujando el suelo.'],cues:['Rodillas en la dirección de los pies.'],err:['Despegar los talones.'],yt:'sentadilla goblet técnica'}),
@@ -861,6 +890,7 @@ var ANIM_MAP={
   'agu-saque':[['roll','Rodado'],['overarm','Por encima del hombro']],'agu-voz':'voice','agu-ensayo':'visual','agu-respira':'breath','agu-pies-suaves':'passwall',
   'agu-rodillo':'roller','agu-espalda':'backball','agu-calor':'heat','agu-frio':'coldbath','agu-contraste':'shower',
   'men-palabra':'cue','men-activa':'hops','men-foco':'eyes','men-quieteye':'qeye','men-penalti':'dive_shot','men-dormir':'legsup',
+  'vol-frena':'snapstick','vol-pogo':'pogo','vol-cono':'conehop','vol-lateral-arriba':'boundup','vol-cajon':'dropbound','vol-forma':'flyform','vol-media':'halfkneel','vol-paso':'powerstep','vol-despegue':'takeoff',
   'coo-malabar':'juggle','coo-palmada':'clap','coo-debil':'tennis1','coo-escalera':'ladder','coo-colores':'ptennis',
   'pp-mov':'march','pp-manos':'catchW','pp-desp':'shuffle','pp-caidas':[['dive_knee','Desde rodillas'],['dive_squat','Desde cuclillas'],['dive_set','De pie']],'pp-todas':'pmix','pp-aereo':'aero','pp-tiros':[['pmix','Tiros'],['longkick','Saques largos']],'pp-cabeza':'visual'
 };
@@ -1147,6 +1177,47 @@ RUT=RUT.concat([
    why:'Inspirada en su dominio del área: potencia de salto, batida a una pierna, blocaje en el punto más alto y despeje de puños.',
    b:[['Calentar',[[RR('cal-desp',1,null,'',0,180,3),RR('cal-mov',1,null,'',0,180,3)]]],['Potencia',[[RR('pot-cmj',3,'4','',60,0,4)],[RR('pot-skater',2,'5','por lado',60,0,3)]]],['Batida',[[RR('aer-batida',3,'5','por pierna',45,0,3)]]],['Balones altos',[[RR('aer-auto',3,'6','',45,0,5),RR('aer-pared',3,'6','',45,0,4),RR('man-w',3,'8','',45,0,4)],[RR('aer-punos',2,'6','',45,0,4),RR('aer-centros',3,'6','por banda',60,0,6)]]],['Estirada alta',[[RR('cai-alta',2,'4','por lado',60,0,5),RR('man-desvio',2,'6','por lado',45,0,4)]]]]}
 ]);
+/* Volar: pliometría, técnica del cuerpo y técnica del despegue */
+var VOL_SAFE=['Calienta antes y salta descansado: los saltos van al principio de la sesión, no al final.','Calidad antes que cantidad: si aterrizas con ruido, se te van las rodillas hacia dentro o saltas menos, para.','Deja 48–72 horas entre sesiones de saltos fuertes. Una o dos por semana bastan, y nunca el día antes de un partido.','Con agujetas fuertes, dolor o una lesión reciente, hoy no toca pliometría.','Si empiezas o eres joven, quédate en el nivel 1 hasta que aterrices limpio y sin ruido.','Las estiradas, sobre césped o colchoneta, nunca sobre suelo duro.'];
+var VOL_EV=[['La pierna lejana es el motor','En porteros de élite, la pierna contraria al lado de la estirada aportó más del doble de velocidad lateral que la del lado del balón (2,7 frente a 1,2 m/s). La del lado del balón termina el empuje y marca la dirección.'],
+  ['Postura de base','Con las rodillas muy dobladas (90°) la estirada salió más lenta. Una base más abierta de lo habitual, de unos tres cuartos de la longitud de la pierna, fue la más rápida, aunque ningún portero estaba acostumbrado a ella: pruébala tú.'],
+  ['Tu lado malo','Hacia el lado no preferido, los porteros giraron de más la cadera y el pecho al empezar, y su despegue fue más lento y menos directo al balón.'],
+  ['Se puede entrenar','Doce semanas de fuerza, potencia y técnica basadas en estos datos aumentaron la velocidad de despegue: los autores lo traducen en unos 42 cm más de portería cubierta en un penalti.'],
+  ['Saltos a los lados','Los saltos en la dirección del gesto mejoran más ese gesto: por eso casi todos los saltos de estas rutinas son laterales.'],
+  ['Cuántos saltos','Como referencia general: unos 80–100 apoyos por sesión al empezar, 100–120 con experiencia y 120–140 en avanzados, con 48–72 horas entre sesiones fuertes.']];
+var VOL_SRC=[['Ibrahim y cols. (2019). Análisis cinemático y cinético de la estirada del portero, Journal of Sports Sciences','https://research.vu.nl/en/publications/kinematic-and-kinetic-analysis-of-the-goalkeepers-diving-save-in-/'],
+  ['Ibrahim y cols. (2019). Postura de base y rendimiento en la estirada, Frontiers in Sports and Active Living','https://www.frontiersin.org/journals/sports-and-active-living/articles/10.3389/fspor.2019.00015/full'],
+  ['Spratford, Mellifont y Burkett (2009). Lado de la estirada y movimiento en porteros de élite, Sports Biomechanics','https://research.usc.edu.au/esploro/outputs/journalArticle/The-influence-of-dive-direction-on/99449517602621'],
+  ['Matsukura, Asai y Sakamoto (2014). Movimiento y fuerza del portero en la estirada','https://www.bisp-surf.de/Record/PU201702001069'],
+  ['Programa de fuerza, potencia y técnica para la estirada (2022), Sports Biomechanics','https://lida.sport-iat.de/ta/Record/4084406?lng=de'],
+  ['FIFA Training Centre. Estirada de ataque','https://www.fifatrainingcentre.com/en/environment/fifa-goalkeeper-training/goalkeeping-fundamentals/learning-to-perform-an-attacking-dive.php'],
+  ['FIFA Training Centre. Estiradas bajas','https://www.fifatrainingcentre.com/en/environment/fifa-goalkeeper-training/goalkeeping-fundamentals/learning-to-dive-low.php'],
+  ['JB Goalkeeping. Paso de poder y rodilla cruzada','https://www.jbgoalkeeping.com/dive.html'],
+  ['Mulqueen y Woitalla. Complete Soccer Goalkeeper (extracto sobre la estirada)','https://us.humankinetics.com/blogs/excerpt/stop-goals-with-proper-diving-technique'],
+  ['Science for Sport. Cinco movimientos clave del portero','https://www.scienceforsport.com/goalkeeper-training-5-key-movement-skills-and-how-to-train-them/'],
+  ['Guía de pliometría: volumen, descanso y aterrizaje','https://open-exam-prep.com/study-guides/nsca-cpt/mobility-bodyweight-performance/plyometrics'],
+  ['Ground Glory. Saltar más como portero: 10 ejercicios en 4 niveles','https://www.groundglory.com/how-to-jump-higher-goalkeeper']];
+var VOL_LOCS=['campo','parque','gimnasio','pared','casa'];
+RUT=RUT.concat([
+  {id:'vol-plio1',cat:'vol',locs:VOL_LOCS,n:'Pliometría para volar · nivel 1',para:'Aterrizar bien y empuje lateral. Empieza aquí',mins:20,
+   why:'Primero se aprende a aterrizar y después a empujar. Saltos hacia los lados, porque la estirada es lateral, y pocos apoyos para que cada uno salga limpio.',
+   b:[['Calentar',[[RR('cal-mov',1,null,'',0,240,4)],[RR('pie-lateral',2,null,'suave',20,20,2)]]],['Aterrizar',[[RR('vol-frena',2,'5','',30,0,3)]]],['Tobillos',[[RR('vol-pogo',2,null,'',30,15,2)]]],['Empuje lateral',[[RR('pot-imp',2,'4','por lado',45,0,4)]]],['Despegue',[[RR('vol-paso',2,'4','por lado',20,0,3)]]]]},
+  {id:'vol-plio2',cat:'vol',locs:VOL_LOCS,n:'Pliometría para volar · nivel 2',para:'Potencia lateral, cuando ya aterrizas limpio',mins:24,
+   why:'Más empuje a una pierna y saltos encadenados hacia los lados, con un salto vertical al final para la estirada alta.',
+   b:[['Calentar',[[RR('cal-mov',1,null,'',0,240,4)],[RR('vol-pogo',1,null,'',30,15,1)]]],['Aterrizar',[[RR('vol-frena',1,'5','a una pierna, por lado',30,0,2)]]],['Lateral a una pierna',[[RR('pot-skater',3,'5','por lado',60,0,4)]]],['Por encima del cono',[[RR('vol-cono',3,'6','saltos',45,0,4)]]],['Lateral y arriba',[[RR('vol-lateral-arriba',2,'3','por lado',60,0,4)]]],['Vertical',[[RR('pot-cmj',2,'4','',60,0,3)]]]]},
+  {id:'vol-plio3',cat:'vol',locs:['gimnasio','parque','campo','pared','casa'],n:'Pliometría para volar · nivel 3',para:'Saltos reactivos y despegue real. Solo si dominas el nivel 2',mins:26,
+   why:'Saltos reactivos desde el cajón, empuje lateral máximo y despegues completos: lo más parecido a una estirada de partido.',
+   b:[['Calentar',[[RR('cal-mov',1,null,'',0,240,4)],[RR('vol-pogo',1,null,'',30,15,1)]]],['Reactivo',[[RR('vol-cajon',3,'3','por lado',90,0,7),RR('vol-lateral-arriba',3,'3','por lado',60,0,5)]]],['Lateral a una pierna',[[RR('pot-skater',3,'5','por lado',60,0,4)]]],['Vertical',[[RR('pot-cajon',3,'3','',90,0,4),RR('pot-cmj',3,'4','',60,0,3)]]],['Despegue',[[RR('vol-despegue',2,'3','por lado',60,0,5),RR('pot-imp',2,'3','por lado',45,0,3)]]]]},
+  {id:'vol-cuerpo',cat:'vol',locs:VOL_LOCS,n:'Técnica del cuerpo en el vuelo',para:'Postura en el aire y caída de lado, de menos a más',mins:24,
+   why:'Primero la forma del cuerpo en el suelo, luego caídas cortas y después vuelos desde una rodilla y desde cuclillas, siempre cayendo de costado.',
+   b:[['Calentar',[[RR('cal-mov',1,null,'',0,240,4)]]],['Forma',[[RR('vol-forma',2,null,'por lado',30,20,3),RR('fue-plancha',2,null,'por lado',30,30,3)]]],['Caída',[[RR('cai-sentado',2,'4','por lado',30,0,3)],[RR('cai-rodillas',2,'4','por lado',30,0,3)]]],['Vuelo corto',[[RR('vol-media',3,'4','por lado',30,0,5),RR('cai-cuclillas',3,'4','por lado',30,0,4)]]],['Segunda acción',[[RR('cai-levanta',2,'3','pares',60,0,4)]]]]},
+  {id:'vol-desp',cat:'vol',locs:VOL_LOCS,n:'Técnica del despegue',para:'Paso de poder, empuje de las dos piernas y rodilla',mins:26,
+   why:'El despegue por partes: paso de poder congelado, empuje lateral sin caída y, al final, despegues completos con caída.',
+   b:[['Calentar',[[RR('cal-mov',1,null,'',0,240,4)],[RR('pie-lateral',2,null,'',20,20,2)]]],['Base y paso',[[RR('vol-paso',3,'4','por lado',20,0,4)]]],['Empuje',[[RR('pot-imp',3,'3','por lado',45,0,4)],[RR('pot-skater',2,'4','por lado',45,0,3)]]],['Despegue',[[RR('vol-despegue',3,'3','por lado',60,0,6),RR('cai-base',3,'4','por lado',45,0,6),RR('vol-media',3,'4','por lado',30,0,5)]]],['Arriba',[[RR('cai-alta',2,'3','por lado',60,0,4),RR('vol-lateral-arriba',2,'3','por lado',60,0,4)]]]]},
+  {id:'vol-sesion',cat:'vol',locs:VOL_LOCS,n:'Sesión completa para volar',para:'Pliometría, despegue y vuelo en una sesión',mins:36,
+   why:'Las tres cosas juntas y en este orden: saltos con el cuerpo fresco, despegue y, al final, estiradas completas.',
+   b:[['Calentar',[[RR('cal-mov',1,null,'',0,240,4)],[RR('vol-pogo',1,null,'',30,15,1)]]],['Pliometría',[[RR('vol-frena',1,'5','',30,0,2)],[RR('pot-skater',2,'4','por lado',45,0,3)],[RR('vol-cono',2,'6','saltos',45,0,3)]]],['Despegue',[[RR('vol-paso',2,'4','por lado',20,0,3)],[RR('pot-imp',2,'3','por lado',45,0,3)]]],['Vuelo',[[RR('vol-media',2,'4','por lado',30,0,4),RR('cai-rodillas',2,'4','por lado',30,0,3)],[RR('vol-despegue',3,'3','por lado',60,0,6),RR('cai-base',3,'4','por lado',45,0,6)]]],['Arriba',[[RR('cai-alta',2,'3','por lado',60,0,4),RR('vol-lateral-arriba',2,'3','por lado',60,0,4)]]],['Soltar',[[RR('mov-cadera',1,'6','por lado',0,0,2)]]]]}
+]);
 var RUTI={};RUT.forEach(function(r){RUTI[r.id]=r;});
 var MEAS={
   calor:'Calor local 15–20 minutos en la zona (bolsa de agua caliente con una toalla). Fue lo que más alivió el dolor a las 24 y 48 horas.',
@@ -1181,6 +1252,7 @@ var DOMS_SRC=[
 function rutFor(a){if(a.rut&&a.rut!=='auto'&&RUTI[a.rut])return RUTI[a.rut];if(a.sit==='recuperar'&&a.rut==='auto'&&(+a.doms||0)>=3)return RUTI.fuertes;return null;}
 function rutExtras(R0){if(R0.cat==='men')return [{id:'porque',t:'Lo que dicen los estudios',facts:MEN_EV},{id:'fuentes',t:'Fuentes',links:MEN_SRC}];
   if(R0.cat==='coo')return [{id:'porque',t:'Por qué funciona',facts:COO_EV},{id:'fuentes',t:'Fuentes',links:COO_SRC}];
+  if(R0.cat==='vol')return [{id:'aviso',t:'Antes de saltar',li:VOL_SAFE},{id:'porque',t:'Lo que dicen los estudios',facts:VOL_EV},{id:'fuentes',t:'Fuentes',links:VOL_SRC}];
   if(R0.cat==='pro')return [{id:'aviso',t:'Antes de empezar',li:['Es una sesión inspirada en su estilo, no su entrenamiento real.','Si no tienes el material o el sitio, la app cambia los ejercicios por otros parecidos.','En «Guía» tienes cómo se formó y cómo trabaja ese punto fuerte.']}];
   return [{id:'medidas',t:'Además, hoy',li:R0.meas.map(function(m){return MEAS[m];})},{id:'porque',t:'Lo que dicen los estudios',facts:DOMS_EV},
   {id:'alerta',t:'Cuándo parar',tone:'bad',li:['Dolor punzante en un punto concreto, hinchazón o moratón.','Dolor que empeora al moverte en lugar de mejorar.','Orina muy oscura.','Eso ya no son agujetas: para y consulta a un profesional.']},{id:'fuentes',t:'Fuentes',links:DOMS_SRC}];}
@@ -1189,7 +1261,8 @@ function buildRut(P,k,a,R0){
   function okE(id){var e=EXI[id];if(!e)return false;if(e.loc!=='any'&&e.loc.indexOf(loc)<0)return false;if(!has(res,e.need))return false;if(mode==='solo'&&e.mode==='pareja')return false;for(var i=0;i<e.avoid.length;i++){if(inj.indexOf(e.avoid[i])>=0)return false;}return true;}
   var est=0,blocks=R0.b.map(function(b){var items=[],m=0;b[1].forEach(function(alts){for(var i=0;i<alts.length;i++){var r=alts[i];if(okE(r[0])){items.push({e:EXI[r[0]],d:mkD(r[1],r[2],r[3],r[4],r[5],r[7])});m+=r[6];break;}}});est+=m;return {n:b[0],items:items,mins:Math.round(m)};}).filter(function(b){return b.items.length;});
   var notes=[];if(R0.cat==='agu'&&!res.rodillo&&!res.tenis&&R0.b.some(function(b){return /Masaje/.test(b[0]);}))notes.push('Con una pelota de tenis o un rodillo el masaje es más eficaz. Márcalos en «Ajustar» si los tienes.');
-  return {k:k,type:'especial',special:true,rut:R0.id,rcat:R0.cat,sp:a,title:R0.n,sub:R0.para,why:R0.why,mins:Math.round(est),loc:loc,mode:mode,ph:{id:'esp',n:{agu:'Agujetas',men:'Mente',coo:'Coordinación',pro:'Entrena como'}[R0.cat]||'Rutina',vol:1,bonus:0},w:0,blocks:blocks,est:Math.round(est),notes:notes,extra:rutExtras(R0)};
+  if(R0.cat==='vol'&&!res.blando)notes.push('Sin césped ni colchoneta, hoy no hay caídas, y son las que más enseñan a volar. En casa, hazlas sobre una colchoneta.');
+  return {k:k,type:'especial',special:true,rut:R0.id,rcat:R0.cat,sp:a,title:R0.n,sub:R0.para,why:R0.why,mins:Math.round(est),loc:loc,mode:mode,ph:{id:'esp',n:{agu:'Agujetas',men:'Mente',coo:'Coordinación',pro:'Entrena como',vol:'Volar'}[R0.cat]||'Rutina',vol:1,bonus:0},w:0,blocks:blocks,est:Math.round(est),notes:notes,extra:rutExtras(R0)};
 }
 
 /* ---------- Rutina especial: casos puntuales (prueba o partido cerca, agujetas, vuelta tras un parón) ---------- */
@@ -1407,7 +1480,7 @@ function weekSummary(P,S,weekStart){
 return {DAYS:DAYS,DSH:DSH,keyOf:keyOf,parseKey:parseKey,dayIdx:dayIdx,addDays:addDays,mondayKey:mondayKey,daysBetween:daysBetween,weekIndex:weekIndex,
   LOCS:LOCS,LOCSH:LOCSH,GEAR:GEAR,GOALS:GOALS,INJ:INJ,LEVELS:LEVELS,CATS:CATS,TYPES:TYPES,EX:EX,EXI:EXI,TESTS:TESTS,TIPS:TIPS,PHASE_TXT:PHASE_TXT,
   phaseOf:phaseOf,matchFor:matchFor,typeFor:typeFor,defaultLoc:defaultLoc,resources:resources,buildSession:buildSession,partnerDays:partnerDays,weekSummary:weekSummary,fmtSec:fmtSec,sessionMins:sessionMins,
-  spOf:spOf,spTitle:spTitle,spEvent:spEvent,DOMS:DOMS,animsOf:animsOf,RUT:RUT,RUTI:RUTI,MEAS:MEAS,DOMS_EV:DOMS_EV,DOMS_SRC:DOMS_SRC,rutFor:rutFor,MEN_EV:MEN_EV,MEN_SRC:MEN_SRC,COO_EV:COO_EV,COO_SRC:COO_SRC};
+  spOf:spOf,spTitle:spTitle,spEvent:spEvent,DOMS:DOMS,animsOf:animsOf,RUT:RUT,RUTI:RUTI,MEAS:MEAS,DOMS_EV:DOMS_EV,DOMS_SRC:DOMS_SRC,rutFor:rutFor,MEN_EV:MEN_EV,MEN_SRC:MEN_SRC,COO_EV:COO_EV,COO_SRC:COO_SRC,VOL_EV:VOL_EV,VOL_SRC:VOL_SRC,VOL_SAFE:VOL_SAFE};
 })();
 </script>
 
@@ -1992,6 +2065,60 @@ var ANIMS_D={
   qeye:{view:'side',f:1,scene:'floor',deco:MATE_DECO,dur:2.8,kf:KF_QEYE,still:.2}
 };
 for(var dkey in ANIMS_D)ANIMS[dkey]=ANIMS_D[dkey];
+/* ---------- Volar: pliometría, cuerpo y despegue (vista frontal) ---------- */
+/* Caída y frena: de puntillas con los brazos arriba a aterrizaje atlético */
+var SN_T=FW(100,95,105,{p:[100,88],fa:[95,141],fb:[105,141],ha:[90,40],hb:[110,40],ela:[88,60],elb:[112,60]});
+var SN_L=FW(100,86,114,{p:[100,114],t:0,hd:6,kna:[84,130],knb:[116,130],ha:[90,104],hb:[110,104],ela:[80,98],elb:[120,98]});
+var KF_SNAP=[k(0,FW(100,95,105)),k(.14,SN_T),k(.24,SN_T),k(.32,SN_L,{e:'in',lbl:'FRENA 2 S',lo:1}),k(.66,SN_L,{lbl:'FRENA 2 S',lo:1}),k(.86,FW(100,95,105),{lo:0}),k(1,FW(100,95,105))];
+/* Saltos de tobillo a los lados de una línea */
+function POG(x,up){return FW(x,x-5,x+5,{p:[x,up?84:93],fa:[x-5,up?136:146],fb:[x+5,up?136:146],ha:[x-13,98],hb:[x+13,98],ela:[x-16,84],elb:[x+16,84],kna:[x-6,up?111:120],knb:[x+6,up?111:120]});}
+var LINE_MK='<line class="bar" x1="100" y1="140" x2="100" y2="149"/>';
+var KF_POGO=normKF([k(0,POG(84)),k(1,POG(100,1)),k(2,POG(116)),k(3,POG(100,1)),k(4,POG(84))]);
+/* Saltos laterales a dos pies por encima de un cono */
+function CHL(x){return FW(x,x-8,x+8,{p:[x,106],t:0,hd:4,kna:[x-11,126],knb:[x+11,126],ha:[x-16,100],hb:[x+16,100],ela:[x-18,88],elb:[x+18,88]});}
+var CH_A=FW(100,92,108,{p:[100,80],fa:[92,124],fb:[108,124],kna:[90,104],knb:[110,104],ha:[84,74],hb:[116,74],ela:[82,86],elb:[118,86]});
+var KF_CONEHOP=[k(0,CHL(76)),k(.14,CHL(76)),k(.26,CH_A),k(.38,CHL(124),{e:'in'}),k(.52,CHL(124)),k(.64,CH_A),k(.76,CHL(76),{e:'in'}),k(1,CHL(76))];
+/* Salto lateral, apoyo y salto vertical */
+var BU_L=FW(132,118,140,{p:[132,104],t:10,hd:-4,fb:[140,146],knb:[146,124],fa:[118,138],kna:[118,122],ha:[118,96],hb:[150,90],ela:[122,84],elb:[152,78]});
+var BU_D=FW(132,121,143,{p:[132,108],kna:[118,126],knb:[146,126],ha:[120,110],hb:[144,110],ela:[114,100],elb:[150,100]});
+var BU_U=FW(132,126,138,{p:[132,78],fa:[126,132],fb:[138,132],ha:[122,24],hb:[142,24],ela:[124,46],elb:[140,46]});
+var KF_BOUNDUP=[k(0,FW(80,69,91)),k(.08,FSET(80)),k(.16,FW(76,58,90,{p:[76,106],t:-6})),k(.26,P(SKA,{p:[106,84],t:10,fa:[94,124],fb:[110,126],ha:[94,74],hb:[130,70]}),{lbl:'LATERAL',lo:1}),k(.36,BU_L,{lbl:'LATERAL',lo:1}),k(.44,BU_D,{lo:0}),k(.54,BU_U,{lbl:'¡ARRIBA!',lo:1}),k(.64,BU_D,{e:'in',lbl:'¡ARRIBA!',lo:1}),k(.74,FW(132,121,143),{lo:0}),k(.88,FW(106,95,117)),k(1,FW(80,69,91))];
+/* Caída del cajón y salida lateral */
+var BOX_L=dBox(36,116,40,33);
+var DB_T=FW(56,50,62,{p:[56,62],fa:[50,116],fb:[62,116],ha:[44,66],hb:[68,66],ela:[42,54],elb:[70,54]});
+var DB_O=FW(72,66,82,{p:[74,70],t:6,fa:[70,104],fb:[84,112],ha:[60,64],hb:[90,62],ela:[60,52],elb:[92,50]});
+var DB_L=FW(100,88,112,{p:[100,112],hd:6,kna:[84,128],knb:[116,128],ha:[90,104],hb:[110,104],ela:[80,96],elb:[120,96]});
+var DB_LP=FW(152,140,160,{p:[152,104],t:10,hd:-4,fb:[160,146],knb:[166,124],fa:[138,136],kna:[138,120],ha:[138,96],hb:[170,90],ela:[142,84],elb:[172,78]});
+var KF_DROPB=[k(0,DB_T),k(.12,DB_T),k(.22,DB_O,{lbl:'CAE',lo:1}),k(.3,DB_L,{e:'in',lbl:'CAE',lo:1}),k(.34,DB_L,{lbl:'Y SALE',lo:1}),k(.44,P(SKA,{p:[128,86],t:10,fa:[116,124],fb:[132,126],ha:[116,76],hb:[152,72]}),{lbl:'Y SALE',lo:1}),k(.54,DB_LP,{lbl:'AGUANTA',lo:1}),k(.74,DB_LP,{lbl:'AGUANTA',lo:1}),k(.86,FW(152,141,163),{lo:0}),k(.94,DB_T),k(1,DB_T)];
+/* Forma de vuelo en el suelo: de costado, cuerpo en línea y brazos estirados */
+var FF0=KST({p:[92,139],t:88,hd:-4,ha:[160,140],hb:[164,144],ela:[140,140],elb:[142,144],fa:[42,145],fb:[44,141]});
+var FF1=KST({p:[92,136],t:86,hd:-6,ha:[160,128],hb:[164,132],ela:[140,132],elb:[142,136],fa:[42,132],fb:[44,128]});
+var KF_FLYFORM=[k(0,FF0,{ball:[172,138]}),k(.2,FF0,{ball:[172,138]}),k(.36,FF1,{ball:['H',8,0],lbl:'CUERPO EN LÍNEA',lo:1}),k(.74,FF1,{ball:['H',8,0],lbl:'CUERPO EN LÍNEA',lo:1}),k(.9,FF0,{ball:[172,138],lo:0}),k(1,FF0,{ball:[172,138]})];
+/* Estirada desde una rodilla: empuja con el pie de apoyo */
+var HK0={p:[100,118],t:0,hd:0,kna:[92,146],fa:[82,147],knb:[122,122],fb:[120,146],ha:[90,106],hb:[110,106],ela:[84,94],elb:[116,94],toeA:[-6,1]};
+var HK1=P(HK0,{t:-8,ha:[86,128],hb:[94,130],ela:[82,116],elb:[92,116]});
+var KF_HALFK=[k(0,HK0,{ball:[158,141]}),k(.12,HK1,{ball:[158,141],lbl:'BRAZOS ATRÁS',lo:1}),k(.22,P(HK0,{p:[114,112],t:34,kna:[98,136],fa:[84,142],knb:[124,126],fb:[122,146],ha:[140,110],hb:[146,114],ela:[128,106],elb:[134,110]}),{ball:[158,141],lbl:'EMPUJA',lo:1}),k(.3,FLYF(1,158,{p:[128,120]}),{ball:[158,141],lbl:'EMPUJA',lo:1}),k(.38,LANDF(1,158),{ball:[158,141],lbl:'CAE DE LADO',lo:1}),k(.62,LANDF(1,158),{ball:[158,141],lbl:'CAE DE LADO',lo:1}),k(.8,HK0,{ball:[158,141],lo:0}),k(1,HK0,{ball:[158,141]})];
+/* Paso de poder y frena: pie, rodilla y hombro en línea */
+function PSTEP(s){var x=100+s*14,o={p:[100+s*10,108],t:s*14,hd:-s*4,kna:null,knb:null};var r=FW(100+s*10,s>0?90:76,s>0?124:110,o);
+  if(s>0){r.knb=[124,124];r.kna=[92,126];r.hb=[140,104];r.ha=[132,100];r.elb=[132,92];r.ela=[122,90];}else{r.kna=[76,124];r.knb=[108,126];r.ha=[60,104];r.hb=[68,100];r.ela=[68,92];r.elb=[78,90];}return r;}
+var KF_PSTEP=[k(0,SETF),k(.08,FSET(100),{lbl:'SET',lo:1}),k(.18,PSTEP(1),{lbl:'EN LÍNEA',lo:1}),k(.4,PSTEP(1),{lbl:'EN LÍNEA',lo:1}),k(.5,SETF,{lo:0}),k(.58,FSET(100),{lbl:'SET',lo:1}),k(.68,PSTEP(-1),{lbl:'EN LÍNEA',lo:1}),k(.9,PSTEP(-1),{lbl:'EN LÍNEA',lo:1}),k(1,SETF,{lo:0})];
+/* Despegue completo: paso, empuje, rodilla cruzada, vuelo y caída de lado */
+var TO_STEP=FW(104,92,126,{p:[104,106],t:8,hd:-2,kna:[90,126],knb:[124,126],ha:[110,100],hb:[118,102],ela:[100,94],elb:[124,94]});
+var TO_PUSH={p:[116,104],t:28,hd:-6,fa:[88,146],fb:[126,144],kna:[100,128],knb:[128,124],ha:[146,96],hb:[150,102],ela:[134,92],elb:[138,98]};
+var TO_KNEE={p:[132,100],t:52,hd:-10,fa:[118,132],kna:[140,118],fb:[106,138],knb:[118,124],ha:[166,104],hb:[170,110],ela:[154,100],elb:[156,106]};
+var KF_TAKEOFF=[k(0,SETF,{ball:[168,141]}),k(.08,FSET(100),{ball:[168,141],lbl:'SET',lo:1}),k(.16,TO_STEP,{ball:[168,141],lbl:'PASO',lo:1}),k(.24,TO_PUSH,{ball:[168,141],lbl:'EMPUJA',lo:1}),k(.32,TO_KNEE,{ball:[168,141],lbl:'RODILLA',lo:1}),k(.4,FLYF(1,168),{ball:[168,141],lbl:'MANOS AL BALÓN',lo:1}),k(.48,LANDF(1,168),{ball:['H',3,2],lbl:'CAE DE LADO',lo:1}),k(.66,LANDF(1,168),{ball:['H',3,2],lbl:'CAE DE LADO',lo:1}),k(.82,SH(SQF,20),{ball:['H',0,-4],lo:0}),k(.94,SETF,{ball:[168,141]}),k(1,SETF,{ball:[168,141]})];
+var ANIMS_E={
+  snapstick:{view:'front',scene:'floor',dur:2.6,kf:KF_SNAP,still:.45},
+  pogo:{view:'front',scene:'floor',deco:LINE_MK,dur:1.2,kf:KF_POGO,still:0},
+  conehop:{view:'front',scene:'floor',deco:dCone(100),dur:1.8,kf:KF_CONEHOP,still:.26},
+  boundup:{view:'front',scene:'floor',dur:3.4,kf:KF_BOUNDUP,still:.54},
+  dropbound:{view:'front',scene:'floor',deco:BOX_L,dur:3.6,kf:KF_DROPB,still:.34},
+  flyform:{view:'front',scene:'floor',dur:4,kf:KF_FLYFORM,still:.5},
+  halfkneel:{view:'front',scene:'floor',dur:3,kf:KF_HALFK,still:.3},
+  powerstep:{view:'front',scene:'floor',dur:4,kf:KF_PSTEP,still:.3},
+  takeoff:{view:'front',scene:'floor',dur:3.6,kf:KF_TAKEOFF,still:.32}
+};
+for(var ekey in ANIMS_E)ANIMS[ekey]=ANIMS_E[ekey];
 
 function sceneMarkup(cfg){var s=cfg.scene||'floor';
   if(s==='wall'){var x=cfg.wallX||182;return '<rect class="wall" x="'+x+'" y="12" width="'+(200-x)+'" height="137"/><line class="edge" x1="'+x+'" y1="12" x2="'+x+'" y2="149"/><line class="floor" x1="6" y1="149" x2="'+x+'" y2="149"/>';}
@@ -2156,6 +2283,7 @@ var ICON={
   esp:'<svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>'
 };
 ICON.crear=ICON.plan;ICON.rutina=ICON.esp;
+ICON.vuelo='<svg viewBox="0 0 24 24"><path d="M3 18c5-1 8-4 10-7s4-5 8-6"/><path d="M15 5h6v6"/><circle cx="5" cy="9" r="2"/></svg>';
 ICON.video='<svg viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3z"/></svg>';
 ICON.guia='<svg viewBox="0 0 24 24"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H11v16H5.5C4.7 20 4 19.3 4 18.5zM20 5.5c0-.8-.7-1.5-1.5-1.5H13v16h5.5c.8 0 1.5-.7 1.5-1.5z"/></svg>';ICON.libro=ICON.guia;
 ICON.plato='<svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="7"/><circle cx="12" cy="13" r="3.5"/><path d="M3 4v5M5 4v5M4 9v11M20 4c-1.5 1.5-2 3-2 5h2v11"/></svg>';
@@ -2354,7 +2482,24 @@ function rutCTA(sub){return '<button class="cta-row alt" data-a="rut-open"><span
 var RCAT={agu:{n:'Quitar agujetas',e:'Recuperación',c:'--t-reaccion',sub:'Elige la rutina que encaje con tu caso.'},
   men:{n:'Activación mental',e:'Mente',c:'--t-tecnica',sub:'Rutinas cortas para centrarte, calmarte o reiniciar.'},
   coo:{n:'Coordinación',e:'Ojos y manos',c:'--t-activacion',sub:'Pelotas de tenis, mano débil, pies y manos.'},
-  pro:{n:'Entrena como los mejores',e:'Porteros de élite',c:'--gold',sub:'Sesiones inspiradas en el punto fuerte de cada uno.'}};
+  pro:{n:'Entrena como los mejores',e:'Porteros de élite',c:'--gold',sub:'Sesiones inspiradas en el punto fuerte de cada uno.'},
+  vol:{n:'Volar como un profesional',e:'Estiradas',c:'--t-reaccion',sub:'Pliometría, técnica del cuerpo y técnica del despegue.'}};
+var VOL_FASES=[['Posición de base',['Pies algo más abiertos que la cadera, peso en la parte delantera del pie y talones apenas levantados.','Rodillas flexionadas sin pasarte: con las rodillas muy dobladas, la estirada sale más lenta.','Manos delante, a la altura de la cintura, y set justo en el golpeo.']],
+  ['Paso de poder',['Paso corto con el pie del lado del balón, hacia delante en diagonal, con la punta hacia donde va el balón.','Pie, rodilla y hombro en línea: el cuerpo ya apunta al balón.','Si el balón llega muy rápido o muy cerca, no hay paso: te dejas caer de lado sobre él.']],
+  ['Despegue',['Empujan las dos piernas: primero la lejana, que es la que más velocidad te da, y después la del lado del balón, que termina el empuje y marca la dirección.','Estira cadera y tobillo: el despegue termina de puntillas.','La rodilla de la pierna lejana sube y cruza por delante del cuerpo para ganar altura y distancia.','Los brazos van de atrás hacia el balón: también te impulsan.']],
+  ['El cuerpo en el aire',['Las manos van primero, juntas y con las palmas hacia el balón.','Cuerpo de lado y estirado, con el pecho mirando al tirador, no al suelo.','Hacia delante en diagonal, nunca hacia atrás: llegas antes y cortas el ángulo.','Cabeza quieta, mirando el balón entre las manos.']],
+  ['La caída',['El balón toca el suelo primero y te sirve de tercer apoyo.','Después caes de costado: cadera y hombro.','Nunca de barriga, sobre el codo ni rodando de espaldas.','Levántate enseguida para la segunda acción.']]];
+var VOL_PLAN=['Empieza por el nivel 1 de pliometría aunque te parezca fácil. Pasa al siguiente cuando aterrices sin ruido y con las rodillas en línea con los pies.','Pliometría 1 o 2 días por semana, con 48–72 horas entre medias y nunca el día antes de un partido.','Técnica del cuerpo y del despegue: 2 o 3 días por semana. Son de poca carga y caben al principio de cualquier entreno.','La sesión completa junta las tres cosas: úsala el día de técnica intensa.','Haz una serie más hacia tu lado malo y grábate de frente para comparar los dos lados.'];
+var VOL_VID=[['bra-bel18','Courtois, colocación y estiradas'],['ita-fra06','Buffon, estirada alta al cabezazo de Zidane'],['arg-fra22','Dibu, parada a Kolo Muani'],['neuer-cam','Neuer: una cámara solo para él']];
+function volIntroHTML(){
+  var h='<section class="sec" style="gap:8px"><div class="sec-h"><h2>Cómo vuela un profesional</h2></div>'+animBlock({n:'Volar',anim:[['powerstep','Paso de poder'],['takeoff','Despegue, vuelo y caída']]});
+  h+=VOL_FASES.map(function(f,i){return fold('vol-f'+i,(i+1)+'. '+esc(f[0]),ul(f[1]));}).join('');
+  h+=fold('vol-plan','Cómo organizarlo',ul(VOL_PLAN));
+  h+=fold('vol-safe','Antes de saltar',ul(C.VOL_SAFE),{cls:'bad'});
+  h+=fold('vol-ev','Lo que dicen los estudios','<div class="facts-l">'+C.VOL_EV.map(function(f){return '<div><b>'+esc(f[0])+'</b><span>'+esc(f[1])+'</span></div>';}).join('')+'</div>');
+  h+=fold('vol-src','Fuentes',srcList(C.VOL_SRC));
+  h+=fold('vol-vid','Míralo en vídeo','<p>Partidos completos donde fijarte en cómo despegan y caen.</p><div class="anvl">'+VOL_VID.map(function(x){var v=anVid(x[0]);return v?'<div class="anv"><div class="anv-t"><b>'+esc(x[1])+'</b><span>'+esc(v.t)+'</span></div><div class="anv-b"><a class="chip" href="'+v.u+'" target="_blank" rel="noopener">Ver en YouTube ↗</a></div></div>':'';}).join('')+'</div><button class="btn small ghost" data-a="g-nav" data-v="analisis" style="justify-self:start">Analizar partidos</button>');
+  return h+'</section><div class="sec-h" style="margin-top:22px"><h2>Rutinas</h2></div>';}
 var PROS=[
   {id:'ederson',n:'Ederson',r:'El juego de pies',path:['Cantera del São Paulo y, desde 2009, del Benfica (Portugal).','Se hizo en Ribeirão y Rio Ave antes de volver al Benfica.','Manchester City de 2017 a 2025; en el Fenerbahçe desde septiembre de 2025.'],
    how:['Creció jugando fútbol sala: siempre bajo presión, con poco espacio, obligado a decidir rápido y elegir bien el pase.','En la cantera del Benfica jugó a veces de centrocampista.','Pasa con las dos piernas, saca largo con precisión y sale de su línea como un líbero.'],
@@ -2488,6 +2633,7 @@ function guiaHTML(){
   h+=gCard('men',ICON.mente,'Mente','Activación, nervios, errores y penaltis','--t-tecnica');
   h+=gCard('coo',ICON.ojo,'Coordinación','Ojos, manos y pies','--t-activacion');
   h+=gCard('agu',ICON.gota,'Agujetas','8 rutinas para recuperar','--t-reaccion');
+  h+=gCard('vol',ICON.vuelo,'Volar','Pliometría, cuerpo y despegue','--t-reaccion');
   h+=gCard('pro',ICON.estrella,'Entrena como…','Ederson, Alisson, Courtois, Dibu y Donnarumma','--gold');
   h+=gCard('lectura',ICON.libro,'Leer el juego','Bisectriz, cuerpo, rival, calentamiento','--t-base');
   h+=gCard('analisis',ICON.video,'Analizar partidos','Vídeo del portero en crudo y una sesión de 1 hora','--t-equipo');
@@ -2500,9 +2646,10 @@ function rutHTML(cat){
   var h='<div class="pad">'+(inG?gBack():'<button class="back" '+(!P()&&!hasSp()?'data-a="ob-start"':'data-a="tab" data-v="'+(U.prevView&&U.prevView!=='agujetas'?U.prevView:'hoy')+'"')+'>← Volver</button>');
   h+='<p class="eyebrow" style="color:var('+RC.c+')">'+esc(RC.e)+'</p><h1 class="disp" style="font-size:44px;margin-top:6px">'+esc(RC.n)+'</h1><p class="muted" style="margin-top:6px">'+esc(RC.sub)+'</p>';
   h+='<div class="ctrl" style="margin-top:14px"><span>Tengo</span><div class="chips">'+RGEAR.map(function(m){var on=g.indexOf(m[0])>=0;return '<button class="chip'+(on?' on':'')+'" data-a="rut-gear" data-v="'+m[0]+'" aria-pressed="'+on+'">'+m[1]+'</button>';}).join('')+'</div></div>';
-  var ev=cat==='men'?C.MEN_EV:(cat==='coo'?C.COO_EV:(cat==='agu'?C.DOMS_EV:null)),src=cat==='men'?C.MEN_SRC:(cat==='coo'?C.COO_SRC:(cat==='agu'?C.DOMS_SRC:null));
-  if(ev)h+='<div style="display:grid;gap:8px;margin-top:12px">'+fold('rut-ev-'+cat,cat==='agu'?'Qué funciona contra las agujetas':'Lo que dicen los estudios','<div class="facts-l">'+ev.map(function(f){return '<div><b>'+esc(f[0])+'</b><span>'+esc(f[1])+'</span></div>';}).join('')+'</div>')+
+  var ev=cat==='men'?C.MEN_EV:(cat==='coo'?C.COO_EV:(cat==='agu'?C.DOMS_EV:(cat==='vol'?C.VOL_EV:null))),src=cat==='men'?C.MEN_SRC:(cat==='coo'?C.COO_SRC:(cat==='agu'?C.DOMS_SRC:(cat==='vol'?C.VOL_SRC:null)));
+  if(ev&&cat!=='vol')h+='<div style="display:grid;gap:8px;margin-top:12px">'+fold('rut-ev-'+cat,cat==='agu'?'Qué funciona contra las agujetas':'Lo que dicen los estudios','<div class="facts-l">'+ev.map(function(f){return '<div><b>'+esc(f[0])+'</b><span>'+esc(f[1])+'</span></div>';}).join('')+'</div>')+
     fold('rut-src-'+cat,'Fuentes','<ul class="srcs">'+src.map(function(x){return '<li><a href="'+x[1]+'" target="_blank" rel="noopener">'+esc(x[0])+'</a></li>';}).join('')+'</ul>')+'</div>';
+  if(cat==='vol')h+=volIntroHTML();
   if(cat==='pro')h+='<div style="margin-top:12px">'+fold('pro-who','Cómo se formaron y cómo trabajan','<p>Su camino, su punto fuerte y cómo lo entrenan.</p><button class="btn small ghost" data-a="g-nav" data-v="pro" style="justify-self:start">Ver los cinco porteros</button>')+'</div>';
   h+='<section class="sec">';
   C.RUT.filter(function(r){return r.cat===cat;}).forEach(function(r){var a={sit:'recuperar',rut:r.id,loc:rutLocFor(r),gear:g,mode:r.mode||'solo',doms:2},s=C.buildSession(null,{day:{x:{sp:a}}},'x');
