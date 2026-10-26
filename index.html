@@ -26,7 +26,7 @@
   --gold:#D9B65E; --gold-soft:#33290F;
   --ok:#5BD098; --ok-soft:#12301F; --warn:#F2B451; --warn-soft:#382A0F; --bad:#F27D70; --bad-soft:#381614;
   --fig:#EEE7F8; --fig-far:#7A6B97; --ball:#F6F2FB; --ball-line:#0B0712; --tennis:#D7E34B; --tennis-line:#8E9622; --band:#F08A5D; --wall:#1D1430; --wall-2:#281C3F;
-  --t-fuerza:#EC8A70; --t-tecnica:#A274FF; --t-reaccion:#62C6EA; --t-activacion:#5BD098; --t-recuperacion:#8A9AC2; --t-base:#CBB6F4; --t-equipo:#F2A15E; --t-partido:#D9B65E; --t-descanso:#5A4C75; --t-especial:#E36BD0; --t-vuelo:#4D9BFF;
+  --t-fuerza:#EC8A70; --t-tecnica:#A274FF; --t-reaccion:#62C6EA; --t-activacion:#5BD098; --t-recuperacion:#8A9AC2; --t-base:#CBB6F4; --t-equipo:#F2A15E; --t-partido:#D9B65E; --t-descanso:#5A4C75; --t-especial:#E36BD0; --t-vuelo:#4D9BFF; --t-gimnasio:#FF5470;
   --f-display:"Saira Extra Condensed","Arial Narrow","Roboto Condensed",Impact,sans-serif;
   --f-body:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   --f-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
@@ -364,6 +364,34 @@ details.fold.bad>summary{color:var(--bad)}
 .antabs::-webkit-scrollbar{display:none}
 a.chip{text-decoration:none;display:inline-flex;align-items:center}
 .anvl{display:grid}
+.fis-kpi{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.fis-kpi div{display:grid;gap:2px;background:var(--surface-2);border-radius:12px;padding:10px}
+.fis-kpi b{font-size:22px;line-height:1.1}
+.fis-kpi span{font-size:12px;color:var(--muted)}
+.fbar{height:10px;border-radius:99px;background:var(--surface-2);overflow:hidden}
+.fbar i{display:block;height:100%;background:linear-gradient(90deg,var(--t-gimnasio),var(--gold));border-radius:99px}
+.fis-chart{width:100%;height:auto;display:block}
+.fis-chart text{font:10px var(--f-mono);fill:var(--muted)}
+.fis-chart .gl{stroke:var(--line);stroke-width:1}
+.fis-chart .today{stroke:var(--line-2);stroke-width:1;stroke-dasharray:3 3}
+.fis-chart .tg{fill:none;stroke:var(--muted);stroke-width:1.6;stroke-dasharray:5 4}
+.fis-chart .ln{fill:none;stroke:var(--gold);stroke-width:2.4;stroke-linejoin:round}
+.fis-chart circle{fill:var(--gold)}
+.fis-leg{display:flex;gap:14px;font-size:12px;color:var(--muted)}
+.fis-leg i{display:inline-block;width:16px;height:0;border-top:2px dashed var(--muted);vertical-align:middle;margin-right:6px}
+.fis-leg i.lg-ln{border-top:2.4px solid var(--gold)}
+.ftab{display:grid;gap:4px}
+.ftab>div{display:grid;grid-template-columns:minmax(0,1.6fr) 1fr 1fr 32px;gap:6px;align-items:center;font-size:14px;padding:6px 0;border-top:1px solid var(--line)}
+.ftab.t4>div{grid-template-columns:minmax(0,1.1fr) 1fr 1fr 1fr}
+.ftab>div:first-child{border-top:0}
+.ftab .fh{font-size:12px;color:var(--muted)}
+.fis-day{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center}
+.fis-day>div{display:grid;gap:2px}
+.fis-day.on{border-color:var(--t-gimnasio)}
+details.fold.cur>summary .st{color:var(--gold)}
+.card ul.cl{margin:0;padding-left:18px;display:grid;gap:6px;font-size:15px;color:var(--muted)}
+.dgrid input{min-width:0;width:100%;box-sizing:border-box}
+.lnk{background:none;border:0;padding:0;color:var(--purple-hi);text-decoration:underline;cursor:pointer;font:inherit;text-align:left}
 .anv{display:grid;gap:6px;padding:10px 0;border-top:1px solid var(--line)}
 .anvl .anv:first-child{border-top:0;padding-top:2px}
 .anv-t b{display:block;font-size:15px;color:var(--text)}
@@ -441,7 +469,7 @@ var GEAR={balon:'Un balón',balones:'Varios balones',tenis:'Pelotas de tenis',co
 var GOALS={manos:{n:'Blocaje y manos',cat:'man'},caidas:{n:'Estiradas y caídas',cat:'cai'},aereo:{n:'Juego aéreo y centros',cat:'aer'},uno:{n:'1 contra 1',cat:'uno'},pies:{n:'Juego de pies y saques',cat:'dis'},reflejos:{n:'Reflejos y reacción',cat:'rea'},potencia:{n:'Potencia y salto',cat:'pot'},cabeza:{n:'Confianza y cabeza',cat:'men'}};
 var INJ={hombro:'Hombro',muneca:'Muñeca o dedos',espalda:'Espalda',cadera:'Cadera o ingle',rodilla:'Rodilla',tobillo:'Tobillo'};
 var LEVELS=['Empezando','Amateur o regional','Semiprofesional','Alto nivel'];
-var CATS={agu:'Agujetas y víspera',cal:'Calentamiento',mov:'Movilidad y recuperación',man:'Blocaje y manos',cai:'Caídas y estiradas',aer:'Juego aéreo',uno:'1 contra 1',pie:'Desplazamientos',rea:'Reacción',coo:'Coordinación',dis:'Juego de pies y saques',pot:'Potencia',fue:'Fuerza',pre:'Prevención',men:'Cabeza',vol:'Volar',pp:'Día de partido'};
+var CATS={agu:'Agujetas y víspera',cal:'Calentamiento',mov:'Movilidad y recuperación',man:'Blocaje y manos',cai:'Caídas y estiradas',aer:'Juego aéreo',uno:'1 contra 1',pie:'Desplazamientos',rea:'Reacción',coo:'Coordinación',dis:'Juego de pies y saques',pot:'Potencia',fue:'Fuerza',pre:'Prevención',men:'Cabeza',vol:'Volar',fis:'Gimnasio',pp:'Día de partido'};
 var TYPES={
   fuerza:{n:'Fuerza y potencia',s:'Piernas, tronco y saltos de calidad',int:3,why:'Lejos del partido hay margen para cargar. Fuerza de piernas y tronco y saltos de calidad: el motor de la estirada.'},
   tecnica:{n:'Técnica intensa',s:'Caídas, juego aéreo y 1 contra 1',int:3,why:'El día de más volumen técnico: caídas, salidas y duelos, con tiempo para recuperar antes del partido.'},
@@ -453,9 +481,10 @@ var TYPES={
   partido:{n:'Día de partido',s:'Calentamiento progresivo de portero',int:0,why:'Calentamiento de portero de menos a más y la cabeza preparada.'},
   descanso:{n:'Descanso',s:'Opcional: 10 minutos de movilidad',int:0,why:'Descansar también es entrenar: aquí se asimila el trabajo de la semana.'},
   especial:{n:'Rutina especial',s:'Hecha para tu caso de hoy',int:1,why:'Sesión creada con el test de rutina especial.'},
+  gimnasio:{n:'Gimnasio',s:'Fuerza, potencia, pies y agilidad',int:3,why:'Tu sesión del programa de cambio físico: fuerza de piernas y cadera, saltos, pies y agilidad, según la fase en la que estés. Nunca el día del partido ni la víspera.'},
   vuelo:{n:'Volar',s:'Pliometría, despegue y estiradas',int:3,why:'Tu día para volar: saltos laterales con el cuerpo fresco, el despegue por partes y estiradas completas. Siempre a tres días o más del partido.'}
 };
-var PREF={vuelo:['campo','parque','gimnasio','pared','casa'],fuerza:['gimnasio','parque','casa','campo','pared'],tecnica:['campo','parque','pared','gimnasio','casa'],reaccion:['pared','campo','parque','casa','gimnasio'],activacion:['campo','pared','parque','casa','gimnasio'],recuperacion:['casa','parque','gimnasio','campo','pared'],base:['campo','pared','parque','casa','gimnasio'],equipo:['campo','parque','casa','gimnasio','pared'],descanso:['casa','parque','gimnasio','campo','pared'],partido:['campo','parque','pared','casa','gimnasio']};
+var PREF={gimnasio:['gimnasio','parque','campo','casa','pared'],vuelo:['campo','parque','gimnasio','pared','casa'],fuerza:['gimnasio','parque','casa','campo','pared'],tecnica:['campo','parque','pared','gimnasio','casa'],reaccion:['pared','campo','parque','casa','gimnasio'],activacion:['campo','pared','parque','casa','gimnasio'],recuperacion:['casa','parque','gimnasio','campo','pared'],base:['campo','pared','parque','casa','gimnasio'],equipo:['campo','parque','casa','gimnasio','pared'],descanso:['casa','parque','gimnasio','campo','pared'],partido:['campo','parque','pared','casa','gimnasio']};
 var ROT={1:['tecnica'],2:['fuerza','tecnica'],3:['fuerza','tecnica','reaccion'],4:['fuerza','tecnica','reaccion','base'],5:['fuerza','tecnica','reaccion','recuperacion','base'],6:['fuerza','tecnica','reaccion','recuperacion','fuerza','tecnica'],7:['fuerza','tecnica','reaccion','recuperacion','base','tecnica','descanso']};
 
 function D(s,r,u,rest,sec){return {s:s,r:r,u:u||'',rest:rest||0,sec:sec||0};}
@@ -671,6 +700,35 @@ X('pot-rapida','pot','Sentadilla rápida con mancuernas ligeras',{need:['pesas']
   how:['Peso ligero. Baja controlando en 2 s.','Sube lo más rápido posible hasta ponerte de puntillas.'],cues:['Si la última sale más lenta, para.'],err:['Usar demasiado peso.'],yt:'sentadilla explosiva mancuernas'}),
 X('pot-pase','pot','Pase de pecho explosivo a la pared',{need:['balon','pared'],int:2,t:3,d:D([2,2,3,3],'5','',30),anim:'chestpass',
   how:['A 2–3 m de la pared, balón al pecho y pies escalonados.','Empuja explosivo extendiendo todo el cuerpo y recibe el rebote.'],cues:['Velocidad, no cansancio.'],err:['Encadenar pases sin pausa.'],yt:'pase de pecho explosivo pared'}),
+
+/* Gimnasio: cambio físico */
+X('fis-hipthrust','fis','Hip thrust',{need:['pesas'],avoid:['espalda'],int:3,t:6,d:D([3,3,4,4],[10,8,8,6],'',90),
+  how:['Espalda alta apoyada en un banco, pies apoyados a la anchura de la cadera y la barra (o una mancuerna) sobre la cadera, con una almohadilla.','Sube la cadera hasta que el cuerpo quede recto de los hombros a las rodillas y aprieta los glúteos un segundo.','Baja controlando, sin tocar el suelo con el peso.'],
+  cues:['Barbilla recogida y mirada al frente, no al techo.','Las rodillas, en la línea de los pies.'],err:['Arquear la zona lumbar arriba.','Empujar con las puntas en lugar de con los talones.'],yt:'hip thrust técnica correcta'}),
+X('fis-stepup','fis','Subida al cajón con rodilla arriba',{need:['cajon'],avoid:['rodilla'],int:3,t:5,d:D([2,3,3,3],'8','por pierna',60),
+  how:['Un pie entero encima de un cajón o banco a la altura de la rodilla.','Sube empujando solo con esa pierna y lleva la otra rodilla arriba, como en la batida de un balón alto. Brazo contrario arriba.','Baja despacio con la misma pierna. Con mancuernas cuando sea fácil.'],
+  cues:['Empuja con el talón del pie de arriba, no te impulses con el de abajo.','Rodilla libre por encima de la cadera.'],err:['Rodilla del cajón que se va hacia dentro.'],yt:'step up rodilla arriba técnica'}),
+X('fis-soleo','fis','Gemelo sentado (sóleo)',{need:['pesas'],int:2,t:4,d:D([2,3,3,4],'15','',45),
+  how:['Sentado, con la parte delantera de los pies sobre un disco o un escalón y una mancuerna o un disco encima de las rodillas.','Sube los talones todo lo que puedas, aguanta un segundo arriba y baja hasta estirar.'],
+  cues:['Con la rodilla doblada trabaja el sóleo, el músculo que más aguanta en saltos y aterrizajes.'],err:['Rebotar abajo sin control.'],yt:'seated calf raise soleus técnica'}),
+X('fis-pie','fis','Fuerza de los dedos del pie',{int:1,t:3,d:D([2,2,3,3],null,'por pie',20,45),
+  how:['Sentado y descalzo, con una toalla extendida bajo el pie.','Arrastra la toalla hacia ti encogiendo los dedos, sin levantar el talón.','Termina con el pie corto: sube el arco del pie sin doblar los dedos y aguanta 5 segundos.'],
+  cues:['Los dedos agarran el suelo: son los últimos en empujar en el salto.'],err:['Levantar el talón para ayudarte.'],yt:'ejercicios fuerza dedos del pie toalla pie corto'}),
+X('fis-tibial','fis','Elevación de puntas contra la pared',{need:['pared'],int:1,t:3,d:D([2,2,3,3],'15','',30),
+  how:['Espalda y glúteos apoyados en una pared y los talones a dos pies de ella.','Sube las puntas de los pies todo lo que puedas y bájalas despacio.'],
+  cues:['Fortalece la parte delantera de la pierna para frenar y aterrizar mejor.'],err:['Despegar la espalda de la pared.'],yt:'tibialis raise pared técnica'}),
+X('fis-5105','fis','Agilidad 5-10-5',{need:['espacio'],avoid:['rodilla','tobillo'],int:3,t:5,d:D([3,4,4,5],'1','carrera',60),
+  how:['Tres marcas en línea, a 5 m una de otra. Sales del centro, de lado.','Corre 5 m hacia un lado y toca la línea con la mano, 10 m hacia el otro y toca, y vuelve 5 m al centro.','Alterna el lado de salida. Descansa lo suficiente para ir siempre a tope.'],
+  cues:['Baja la cadera antes de cada giro.','El pie de fuera frena y empuja.'],err:['Girar de pie, sin bajar.','Dar pasos cortos de más antes de frenar.'],yt:'pro agility 5-10-5 técnica'}),
+X('fis-banca','fis','Press de banca',{need:['pesas'],avoid:['hombro'],int:3,t:6,d:D([3,3,4,4],[10,8,8,6],'',90),
+  how:['Tumbado en el banco, con los pies en el suelo y los omóplatos juntos y apretados.','Baja la barra o las mancuernas a la parte baja del pecho, con los codos a unos 45° del cuerpo.','Empuja hasta estirar los brazos.'],
+  cues:['Con mancuernas, el hombro trabaja más estable.'],err:['Rebotar en el pecho.','Abrir los codos a 90°.'],yt:'press de banca técnica correcta'}),
+X('fis-latlunge','fis','Zancada lateral',{avoid:['rodilla','cadera'],int:2,t:4,d:D([2,3,3,3],'8','por lado',60),
+  how:['Pies juntos. Da un paso largo hacia un lado y baja la cadera hacia atrás sobre esa pierna, con la otra estirada.','Empuja con el pie de la pierna doblada para volver. Con una mancuerna en el pecho cuando sea fácil.'],
+  cues:['Pecho arriba y rodilla en la línea del pie.','Es la fuerza que usas para desplazarte de lado en la portería.'],err:['Despegar el talón de la pierna doblada.'],yt:'zancada lateral técnica'}),
+X('fis-intervalos','fis','Intervalos en bici o carrera',{int:3,t:10,d:D([1,1,1,1],null,'',0,600),
+  how:['5 minutos suaves para entrar en calor.','Después, 30 s fuerte y 60 s suave, de 6 a 8 veces, en bici o corriendo.'],
+  cues:['En días sin saltos, o al menos 3 horas después de una sesión de saltos.'],err:['Hacerlo justo antes de los saltos.'],yt:'intervalos bici estática principiantes'}),
 
 /* Volar: pliometría, cuerpo y despegue */
 X('vol-frena','vol','Caída y frena',{avoid:['rodilla','tobillo'],int:2,t:3,d:D([2,2,3,3],'5','',30),
@@ -891,6 +949,7 @@ var ANIM_MAP={
   'agu-saque':[['roll','Rodado'],['overarm','Por encima del hombro']],'agu-voz':'voice','agu-ensayo':'visual','agu-respira':'breath','agu-pies-suaves':'passwall',
   'agu-rodillo':'roller','agu-espalda':'backball','agu-calor':'heat','agu-frio':'coldbath','agu-contraste':'shower',
   'men-palabra':'cue','men-activa':'hops','men-foco':'eyes','men-quieteye':'qeye','men-penalti':'dive_shot','men-dormir':'legsup',
+  'fis-hipthrust':'hipthrust','fis-stepup':'stepup','fis-soleo':'soleus','fis-pie':'towel','fis-tibial':'tibraise','fis-5105':'proagility','fis-banca':'benchpress','fis-latlunge':'latlunge','fis-intervalos':[['bike','Bici'],['run','Carrera']],
   'vol-frena':'snapstick','vol-pogo':'pogo','vol-cono':'conehop','vol-lateral-arriba':'boundup','vol-cajon':'dropbound','vol-forma':'flyform','vol-media':'halfkneel','vol-paso':'powerstep','vol-despegue':'takeoff',
   'coo-malabar':'juggle','coo-palmada':'clap','coo-debil':'tennis1','coo-escalera':'ladder','coo-colores':'ptennis',
   'pp-mov':'march','pp-manos':'catchW','pp-desp':'shuffle','pp-caidas':[['dive_knee','Desde rodillas'],['dive_squat','Desde cuclillas'],['dive_set','De pie']],'pp-todas':'pmix','pp-aereo':'aero','pp-tiros':[['pmix','Tiros'],['longkick','Saques largos']],'pp-cabeza':'visual'
@@ -948,13 +1007,15 @@ function baseTypeD(P,d,m){var avail=P.days.indexOf(d)>=0,team=isTeam(P,d);
   if(m!=null&&d===m)return 'partido';if(!avail&&!team)return 'descanso';
   if(m!=null){var to=(m-d+7)%7,after=(d-m+7)%7;if(to===1)return 'activacion';if(team)return 'equipo';if(after===1)return 'recuperacion';if(to===2)return 'reaccion';if(to===3)return 'tecnica';if(to===4)return 'fuerza';return 'base';}
   if(team)return 'equipo';var own=P.days.filter(function(x){return !isTeam(P,x);}).slice().sort();return ROT[Math.max(1,Math.min(own.length,7))][own.indexOf(d)]||'base';}
-function vueloCands(P,S,w){var m=matchFor(P,S,w),out=[];for(var d=0;d<7;d++){var t=baseTypeD(P,d,m);if(VUELO_OK.indexOf(t)>=0&&(m==null||(m-d+7)%7>=3))out.push({d:d,t:t});}return out;}
+function vueloCands(P,S,w){var m=matchFor(P,S,w),out=[],ws=addDays(P.start,7*w),gd=fisWeekDays(P,S,ws).map(function(x){return x.d;});for(var d=0;d<7;d++){var t=baseTypeD(P,d,m);if(VUELO_OK.indexOf(t)>=0&&(m==null||(m-d+7)%7>=3)&&gd.indexOf(d)<0)out.push({d:d,t:t});}return out;}
 function vueloDay(P,S,w){var v=S&&S.vd;if(v==='no')return -1;var c=vueloCands(P,S,w);
   if(v!=null&&v!=='auto'){for(var i=0;i<c.length;i++){if(c[i].d===+v)return +v;}}
   var own=P.days.filter(function(x){return !isTeam(P,x);});if(own.length<3)return -1;
   var b=c.filter(function(x){return x.t==='base';});if(b.length)return b[0].d;
   var t=c.filter(function(x){return x.t==='tecnica';});return t.length?t[0].d:-1;}
-function typeFor(P,S,k){var t=typeFor0(P,S,k);if(VUELO_OK.indexOf(t)<0)return t;
+function typeFor(P,S,k){var t=typeFor0(P,S,k);if(t==='especial'||t==='partido')return t;
+  if(fisLetter(P,S,k))return 'gimnasio';if(t==='fuerza'&&fisActive(S,k))t='base';
+  if(VUELO_OK.indexOf(t)<0)return t;
   return dayIdx(parseKey(k))===vueloDay(P,S,weekIndex(P,k))?'vuelo':t;}
 function typeFor0(P,S,k){
   var sp=spOf(S,k);if(sp)return sp.when==='hoy'?'partido':'especial';
@@ -1037,7 +1098,9 @@ function recipe(ctx){
   if(t==='vuelo'){var L=Math.min(2,ctx.level+(ctx.ph.bonus||0)),sh=ctx.mins<=25;
     var PL=[['vol-frena','vol-pogo','pot-imp'],['vol-frena','pot-skater','vol-cono','vol-pogo'],['vol-cajon','pot-skater','vol-lateral-arriba','vol-cono','vol-pogo']][L];
     var ES=[['cai-rodillas','vol-media','cai-cuclillas','cai-sentado'],['vol-media','cai-base','vol-despegue','cai-cuclillas','cai-rodillas'],['vol-despegue','cai-alta','cai-poste','cai-base','cai-levanta','vol-media','cai-rodillas']][L];
-    var v=[B('Calentamiento',.15,['cal'],{max:2}),B('Pliometría',.22,['vol','pot'],{only:PL,force:PL,max:sh?1:(ctx.mins<=35?2:3),cap:1}),B('Despegue',.15,['vol','pot'],{only:['vol-paso','pot-imp','pot-skater'],force:['vol-paso','pot-imp'],max:sh?1:2,cap:1})];
+    var v=[B('Calentamiento',.15,['cal'],{max:2})];
+    if(ctx.fisOn)v.push(B('Despegue',.2,['vol'],{only:['vol-paso'],force:['vol-paso'],max:1,cap:1}));
+    else v.push(B('Pliometría',.22,['vol','pot'],{only:PL,force:PL,max:sh?1:(ctx.mins<=35?2:3),cap:1}),B('Despegue',.15,['vol','pot'],{only:['vol-paso','pot-imp','pot-skater'],force:['vol-paso','pot-imp'],max:sh?1:2,cap:1}));
     if(r.blando)v.push(B('Estiradas',.33,['vol','cai'],{only:ES,force:ES,max:sh?1:(ctx.mins<=35?2:(ctx.mins>=60?4:3)),cap:1.3}));
     else v.push(B('Forma del cuerpo',.33,['vol','man'],{only:['vol-forma','man-sombra','man-lateral','man-w'],force:['vol-forma','man-sombra'],max:sh?1:3}));
     if(!sh)v.push(B('Vuelta a la calma',.1,['mov'],{maxInt:1,max:1}));return v;}
@@ -1087,18 +1150,20 @@ function sessionMins(P,type,o){
 }
 function buildSession(P,S,k){
   var sp=spOf(S,k);if(sp)return buildSpecial(P,k,sp);
-  var type=typeFor(P,S,k),o=(S.day&&S.day[k])||{},w=weekIndex(P,k),ph=phaseOf(P,w);
+  var type=typeFor(P,S,k);if(type==='gimnasio')return buildGym(P,S,k);
+  var o=(S.day&&S.day[k])||{},w=weekIndex(P,k),ph=phaseOf(P,w);
   var mins=sessionMins(P,type,o);
   var loc=o.loc||defaultLoc(P,type),mode=o.mode||'solo';
   if(P.locs&&P.locs.length&&P.locs.indexOf(loc)<0) loc=defaultLoc(P,type);
   var res=resources(P,loc,mode);
   var goalCats=(P.goals||[]).map(function(g){return GOALS[g]?GOALS[g].cat:null;}).filter(Boolean);
   var nearV=type==='fuerza'&&(typeFor(P,S,addDays(k,1))==='vuelo'||typeFor(P,S,addDays(k,-1))==='vuelo');
-  var ctx={type:type,mins:mins,loc:loc,mode:mode,res:res,ph:ph,level:+P.level||0,inj:P.injuries||[],goalCats:goalCats,used:{},nearVuelo:nearV,
+  var ctx={type:type,mins:mins,loc:loc,mode:mode,res:res,ph:ph,level:+P.level||0,inj:P.injuries||[],goalCats:goalCats,used:{},nearVuelo:nearV,fisOn:fisActive(S,k),
     rng:rng(hash([k,type,loc,mode,mins,P.level,(P.goals||[]).join('.'),(P.injuries||[]).join('.'),(P.gear||[]).join('.')].join('|')))};
   var blocks=recipe(ctx).map(function(b){return fill(b,ctx);}).filter(function(b){return b.items.length;});
   var est=0;blocks.forEach(function(b){est+=b.mins;});
   var notes=[];
+  if(type==='vuelo'&&ctx.fisOn)notes.push('Con el programa de gimnasio, los saltos ya los haces allí: hoy, técnica de despegue y estiradas.');
   if(type==='vuelo'){notes.push('Salta con el cuerpo fresco: si aterrizas con ruido, se te van las rodillas hacia dentro o saltas menos, para.');if(!res.blando)notes.push('Sin césped ni colchoneta hoy no hay estiradas, y son las que más enseñan a volar. Si puedes, cambia el lugar a campo o parque.');}
   if(nearV) notes.push('Hoy sin saltos: el día de volar está al lado y así llegas fresco.');
   if(type==='vuelo'&&est<mins-15) notes.push('La sesión dura menos que tu tiempo a propósito: más saltos no te hacen volar más, solo te cansan.');
@@ -1248,6 +1313,138 @@ RUT=RUT.concat([
    why:'Las tres cosas juntas y en este orden: saltos con el cuerpo fresco, despegue y, al final, estiradas completas.',
    b:[['Calentar',[[RR('cal-mov',1,null,'',0,240,4)],[RR('vol-pogo',1,null,'',30,15,1)]]],['Pliometría',[[RR('vol-frena',1,'5','',30,0,2)],[RR('pot-skater',2,'4','por lado',45,0,3)],[RR('vol-cono',2,'6','saltos',45,0,3)]]],['Despegue',[[RR('vol-paso',2,'4','por lado',20,0,3)],[RR('pot-imp',2,'3','por lado',45,0,3)]]],['Vuelo',[[RR('vol-media',2,'4','por lado',30,0,4),RR('cai-rodillas',2,'4','por lado',30,0,3)],[RR('vol-despegue',3,'3','por lado',60,0,6),RR('cai-base',3,'4','por lado',45,0,6)]]],['Arriba',[[RR('cai-alta',2,'3','por lado',60,0,4),RR('vol-lateral-arriba',2,'3','por lado',60,0,4)]]],['Soltar',[[RR('mov-cadera',1,'6','por lado',0,0,2)]]]]}
 ]);
+/* ---------- Cambio físico: programa de gimnasio de 26 semanas ---------- */
+var FIS_PH=[
+  {id:'f1',n:'Adaptación',w:[1,4],rir:'te sobran 3',d:'Aprender los básicos con buena técnica y a aterrizar bien. Pesos cómodos: en cada serie te sobran 3 repeticiones.'},
+  {id:'f2',n:'Fuerza base',w:[5,12],rir:'te sobran 2',d:'Subir la fuerza de piernas, cadera, tronco y pies. En cada serie te sobran 2 repeticiones.'},
+  {id:'f3',n:'Fuerza y potencia',w:[13,20],rir:'te sobran 1–2',d:'Pesado y rápido: cada ejercicio de fuerza va seguido de un salto. Te sobran 1 o 2 repeticiones.'},
+  {id:'f4',n:'Explosividad y agilidad',w:[21,26],rir:'te sobran 2',d:'Mantienes la fuerza con menos series y el resto es salto reactivo, despegue aéreo y cambio de dirección.'}];
+var FIS_WEEKS=26,FIS_DELOAD=[4,8,12,16,20,24],FIS_TESTW=[1,4,8,12,16,20,24,26],FIS_BREAK=[8,9];
+var FIS_PLYO=['vol-frena','vol-pogo','vol-cono','vol-lateral-arriba','vol-cajon','pot-cmj','pot-cajon','pot-skater','pot-imp','aer-batida','fis-5105','pie-vallas'];
+function fisDef(S){if(!S.fis)S.fis={on:true,start:'2026-11-05',days:[0,2,4],w0:'',h:'',goal:'',a:'',rate:.7,log:[],tests:[]};return S.fis;}
+function fisWeek(F,k){return Math.floor(daysBetween(F.start,k)/7)+1;}
+function fisPhaseIdx(wk){if(wk<=4)return 0;if(wk<=12)return 1;if(wk<=20)return 2;return 3;}
+function fisActive(S,k){var F=S&&S.fis;return !!(F&&F.on&&F.start&&k>=F.start);}
+/* Días de gimnasio de una semana (lunes ws): nunca el día del partido ni la víspera. Letras A, B, C; la B (tren superior) cae a dos días del partido. */
+function fisWeekDays(P,S,ws){var F=S&&S.fis;if(!F||!F.on)return [];var m=P&&P.start?matchFor(P,S,Math.floor(daysBetween(P.start,ws)/7)):null,out=[];
+  for(var d=0;d<7;d++){var k=addDays(ws,d);if(!fisActive(S,k))continue;if((F.days||[]).indexOf(d)<0&&k!==F.start)continue;
+    if(m!=null&&(d===m||(m-d+7)%7===1))continue;out.push({d:d,k:k,md2:m!=null&&(m-d+7)%7===2});}
+  var L=[[],['A'],['A','B'],['A','B','C'],['A','B','C','B'],['A','B','C','A','B'],['A','B','C','A','B','C'],['A','B','C','A','B','C','B']][Math.min(out.length,7)];
+  out.forEach(function(x,i){x.l=L[i];});
+  var md=out.filter(function(x){return x.md2&&x.l!=='B';})[0],bd=out.filter(function(x){return x.l==='B'&&!x.md2;})[0];
+  if(md&&bd){bd.l=md.l;md.l='B';}
+  return out;}
+function fisLetter(P,S,k){var r=fisWeekDays(P,S,mondayKey(k)).filter(function(x){return x.k===k;})[0];return r?r.l:null;}
+/* Sesiones por fase */
+var FIS_SES={
+ f1:{
+  A:{n:'Pierna, empuje y tirón',why:'Cuerpo entero para aprender los básicos: sentadilla, bisagra de cadera, empuje y tirón, más aterrizajes y pies.',
+   b:[['Calentar',[[RR('cal-mov',1,null,'',0,240,4)],[RR('cal-banda',1,'10','de cada',0,0,3),RR('pie-lateral',1,null,'',0,40,1)]]],['Aterrizar',[[RR('vol-frena',2,'5','',30,0,2)]]],
+      ['Fuerza',[[RR('fue-goblet',3,'10','· te sobran 3',90,0,7),RR('fue-bulgara',3,'10','por pierna',60,0,6)],[RR('fue-rdl',3,'8','por pierna · te sobran 3',60,0,6)],[RR('fis-banca',3,'10','· te sobran 3',90,0,7),RR('fue-flex',3,'10','',60,0,5)],[RR('fue-remo',3,'10','por brazo · te sobran 3',60,0,6),RR('fue-remoinv',3,'8','',60,0,5)]]],
+      ['Pies',[[RR('fis-tibial',2,'15','',30,0,2)],[RR('fue-gemelo',2,'12','por pierna',30,0,3)]]],['Tronco',[[RR('fue-plancha',2,null,'por lado',30,30,3)]]]]},
+  B:{n:'Cadera, hombros y espalda',why:'Hip thrust y subida al cajón para la cadera, que es el motor del salto; hombros y espalda para los despejes y las estiradas.',
+   b:[['Calentar',[[RR('cal-mov',1,null,'',0,240,4)],[RR('vol-pogo',2,null,'',30,15,2)]]],['Empuje lateral',[[RR('pot-imp',2,'4','por lado',45,0,3)]]],
+      ['Fuerza',[[RR('fis-hipthrust',3,'10','· te sobran 3',90,0,7),RR('fue-puente',3,'12','por pierna',45,0,4)],[RR('fis-stepup',3,'8','por pierna · te sobran 3',60,0,6),RR('fue-bulgara',3,'8','por pierna',60,0,6)],[RR('fue-press',3,'10','· te sobran 3',60,0,5)],[RR('fue-dominadas',3,'5','asistidas si hace falta',90,0,6),RR('fue-remoinv',3,'8','',60,0,5)]]],
+      ['Prevención',[[RR('pre-copen',2,'6','por lado',45,0,3)],[RR('pre-hombro',2,'12','',30,0,3),RR('pre-ytw',2,'8','de cada',30,0,3)]]],['Pies',[[RR('fis-pie',2,null,'por pie',20,45,3)]]]]},
+  C:{n:'Una pierna, pies y agilidad',why:'Trabajo a una pierna y hacia los lados, como en la portería, con la agilidad 5-10-5 aprendida a ritmo suave.',
+   b:[['Calentar',[[RR('cal-mov',1,null,'',0,240,4)],[RR('pie-lateral',2,null,'',20,20,2)]]],['Agilidad',[[RR('fis-5105',4,'1','carrera al 70 %',60,0,5)],[RR('pie-escalera',2,'2','pasadas',30,0,3)]]],
+      ['Fuerza',[[RR('fue-bulgara',3,'8','por pierna · te sobran 3',60,0,6)],[RR('fis-latlunge',3,'8','por lado',60,0,5)],[RR('fue-flex',3,'10','',60,0,4)]]],
+      ['Pies',[[RR('fis-soleo',3,'15','',45,0,4),RR('fue-gemelo',3,'12','por pierna',45,0,4)]]],['Tronco',[[RR('fue-pallof',2,'10','por lado',30,0,3),RR('fue-plancha',2,null,'por lado',30,30,3)]]]]}},
+ f2:{
+  A:{n:'Pierna fuerte y salto',why:'Sentadilla pesada, bisagra de cadera y hip thrust: la fuerza que luego se convierte en salto. Saltos al principio, con las piernas frescas.',
+   b:[['Calentar',[[RR('cal-mov',1,null,'',0,240,4)],[RR('vol-pogo',2,null,'',30,15,2)]]],['Salto',[[RR('pot-cmj',3,'4','al máximo',60,0,4)]]],
+      ['Fuerza',[[RR('fue-sentadilla',4,'6','· te sobran 2',150,0,10),RR('fue-goblet',4,'8','· te sobran 2',90,0,7)],[RR('fue-rdl',3,'8','por pierna · te sobran 2',60,0,6)],[RR('fis-hipthrust',3,'8','· te sobran 2',90,0,6),RR('fue-puente',3,'12','por pierna',45,0,4)]]],
+      ['Pies',[[RR('fue-gemelo',3,'12','por pierna, con peso',45,0,4)],[RR('fis-tibial',2,'15','',30,0,2)]]],['Prevención',[[RR('pre-nordico',2,'5','',90,0,3),RR('pre-copen',2,'8','por lado',45,0,3)]]]]},
+  B:{n:'Tren superior y tronco',why:'Empuje, tirón y lanzamientos para despejar de puños, sacar con la mano y aguantar los choques. Sin saltos: es el día que puede caer cerca del partido.',
+   b:[['Calentar',[[RR('cal-banda',1,'10','de cada',0,0,3),RR('cal-mov',1,null,'',0,180,3)],[RR('pre-ytw',1,'8','de cada',0,0,2)]]],['Lanzar',[[RR('pot-medrot',3,'5','por lado',60,0,4),RR('pot-pase',3,'6','',45,0,3)]]],
+      ['Fuerza',[[RR('fis-banca',4,'8','· te sobran 2',120,0,8),RR('fue-flex',4,'12','',60,0,5)],[RR('fue-dominadas',4,'6','· te sobran 2',120,0,8),RR('fue-remoinv',4,'8','',60,0,5)],[RR('fue-press',3,'8','· te sobran 2',90,0,5)],[RR('fue-remo',3,'10','por brazo',60,0,5)]]],
+      ['Tronco',[[RR('fue-pallof',3,'10','por lado',30,0,3)],[RR('fue-plancha',2,null,'por lado',30,40,3)]]],['Prevención',[[RR('pre-hombro',2,'12','',30,0,2),RR('pre-ytw',2,'8','de cada',30,0,2)]]]]},
+  C:{n:'Una pierna, pies y agilidad',why:'Búlgara, subida al cajón con rodilla arriba (la batida del portero) y zancada lateral, con agilidad 5-10-5 a tope y saltos laterales.',
+   b:[['Calentar',[[RR('cal-mov',1,null,'',0,240,4)],[RR('pie-lateral',2,null,'',20,20,2)]]],['Agilidad',[[RR('fis-5105',5,'1','carrera a tope',90,0,8)]]],['Saltos laterales',[[RR('pot-skater',3,'5','por lado',60,0,4)]]],
+      ['Fuerza',[[RR('fue-bulgara',3,'8','por pierna · te sobran 2',90,0,7)],[RR('fis-stepup',3,'6','por pierna, rodilla arriba',60,0,5),RR('aer-batida',3,'5','por pierna',45,0,4)],[RR('fis-latlunge',3,'8','por lado',60,0,5)]]],
+      ['Pies',[[RR('fis-soleo',3,'15','',45,0,4),RR('fue-gemelo',3,'12','por pierna',45,0,4)],[RR('fis-pie',2,null,'por pie',20,45,3)]]]]}},
+ f3:{
+  A:{n:'Contraste: pesado y salto',why:'Cada serie pesada va seguida de saltos al máximo: el músculo cansado de fuerza salta más (potenciación). Es el corazón de la explosividad aérea.',
+   b:[['Calentar',[[RR('cal-mov',1,null,'',0,240,4)],[RR('vol-pogo',2,null,'',30,15,2)]]],['Contraste 1',[[RR('fue-sentadilla',4,'4','pesado · te sobran 1–2',120,0,8),RR('fue-goblet',4,'6','pesado',90,0,6)],[RR('pot-cmj',4,'3','justo después, al máximo',120,0,4)]]],
+      ['Contraste 2',[[RR('fue-pmuerto',3,'4','· te sobran 2',150,0,7),RR('fue-rdl',3,'6','por pierna',90,0,5)],[RR('pot-cajon',3,'3','',90,0,4),RR('pot-cmj',3,'3','',90,0,3)]]],
+      ['Cadera',[[RR('fis-hipthrust',3,'6','rápido al subir',90,0,5),RR('fue-puente',3,'10','por pierna',45,0,4)]]],['Pies',[[RR('fue-gemelo',3,'10','por pierna, pesado',60,0,4)]]],['Prevención',[[RR('pre-nordico',2,'6','',90,0,3),RR('pre-copen',2,'8','por lado',45,0,3)]]]]},
+  B:{n:'Tren superior potente',why:'Lanzamientos explosivos y fuerza de empuje y tirón con menos repeticiones: potencia en los brazos para despejes y saques.',
+   b:[['Calentar',[[RR('cal-banda',1,'10','de cada',0,0,3),RR('cal-mov',1,null,'',0,180,3)],[RR('pre-ytw',1,'8','de cada',0,0,2)]]],['Potencia',[[RR('pot-med',3,'5','',60,0,4),RR('pot-pase',3,'6','',45,0,3)],[RR('pot-medrot',3,'5','por lado',60,0,4)]]],
+      ['Fuerza',[[RR('fis-banca',4,'6','· te sobran 1–2',120,0,8),RR('fue-flex',4,'12','',60,0,5)],[RR('fue-dominadas',4,'5','· te sobran 1–2',120,0,8),RR('fue-remoinv',4,'8','',60,0,5)],[RR('fue-press',3,'6','',90,0,5)]]],
+      ['Tronco',[[RR('fue-pallof',3,'10','por lado',30,0,3)]]],['Prevención',[[RR('pre-hombro',2,'12','',30,0,2),RR('pre-ytw',2,'8','de cada',30,0,2)]]]]},
+  C:{n:'Agilidad y potencia lateral',why:'Cambios de dirección a tope, saltos laterales con salida hacia arriba y subida al cajón explosiva: moverte rápido de palo a palo y despegar.',
+   b:[['Calentar',[[RR('cal-mov',1,null,'',0,240,4)],[RR('pie-lateral',2,null,'',20,20,2)]]],['Agilidad',[[RR('fis-5105',6,'1','carrera a tope',90,0,9)],[RR('pie-vallas',3,'2','pasadas',45,0,3),RR('pie-escalera',3,'2','pasadas',30,0,3)]]],
+      ['Potencia lateral',[[RR('vol-lateral-arriba',3,'3','por lado',60,0,5)],[RR('pot-skater',3,'4','por lado',60,0,4)]]],
+      ['Fuerza',[[RR('fis-stepup',3,'5','por pierna, explosivo',90,0,5),RR('aer-batida',3,'5','por pierna',60,0,4)],[RR('fue-bulgara',3,'6','por pierna · te sobran 2',90,0,6)]]],
+      ['Pies',[[RR('fis-soleo',3,'12','pesado',60,0,4),RR('fue-gemelo',3,'10','por pierna',45,0,3)],[RR('fis-tibial',2,'15','',30,0,2)]]]]}},
+ f4:{
+  A:{n:'Reactivo y fuerza que mantienes',why:'Saltos reactivos desde el cajón y salidas laterales con el cuerpo fresco, y la fuerza pesada justa para no perderla.',
+   b:[['Calentar',[[RR('cal-mov',1,null,'',0,240,4)],[RR('vol-pogo',2,null,'',30,15,2)]]],['Reactivo',[[RR('vol-cajon',3,'3','por lado',90,0,6),RR('vol-lateral-arriba',3,'3','por lado',60,0,5)]]],['Salto',[[RR('pot-cajon',3,'3','',90,0,4),RR('pot-cmj',3,'4','',60,0,3)]]],
+      ['Fuerza que mantienes',[[RR('fue-sentadilla',3,'3','pesado · te sobran 2',150,0,7),RR('fue-goblet',3,'6','pesado',90,0,5)],[RR('fis-hipthrust',2,'6','rápido',90,0,4),RR('fue-puente',2,'10','por pierna',45,0,3)]]],
+      ['Pies',[[RR('fue-gemelo',3,'10','por pierna, rápido',45,0,3)]]]]},
+  B:{n:'Tren superior y tronco',why:'Lanzamientos y fuerza de tren superior con pocas series: mantener lo ganado sin cansarte para los días de salto.',
+   b:[['Calentar',[[RR('cal-banda',1,'10','de cada',0,0,3),RR('cal-mov',1,null,'',0,180,3)]]],['Potencia',[[RR('pot-med',3,'5','',60,0,4),RR('pot-pase',3,'6','',45,0,3)],[RR('pot-medrot',3,'5','por lado',60,0,4)]]],
+      ['Fuerza que mantienes',[[RR('fis-banca',3,'5','',120,0,6),RR('fue-flex',3,'12','',60,0,4)],[RR('fue-dominadas',3,'5','',120,0,6),RR('fue-remoinv',3,'8','',60,0,4)]]],
+      ['Tronco',[[RR('fue-pallof',3,'10','por lado',30,0,3)],[RR('fue-plancha',2,null,'por lado',30,40,3)]]],['Prevención',[[RR('pre-copen',2,'8','por lado',45,0,3)]]]]},
+  C:{n:'Agilidad y despegue aéreo',why:'Agilidad a tope, batida a una pierna para el balón alto y trabajo lateral: lo que más se parece a un partido.',
+   b:[['Calentar',[[RR('cal-mov',1,null,'',0,240,4)],[RR('pie-lateral',2,null,'',20,20,2)]]],['Agilidad',[[RR('fis-5105',6,'1','carrera a tope',90,0,9)],[RR('pie-conos',3,null,'',30,20,3),RR('pie-escalera',3,'2','pasadas',30,0,3)]]],
+      ['Aéreo',[[RR('aer-batida',3,'5','por pierna',60,0,5)],[RR('fis-stepup',3,'5','por pierna, explosivo',90,0,5)]]],['Lateral',[[RR('pot-skater',3,'4','por lado',60,0,4)],[RR('fis-latlunge',2,'8','por lado',45,0,3)]]],
+      ['Pies',[[RR('fis-soleo',3,'12','',45,0,4)],[RR('fis-pie',2,null,'por pie',20,45,3)]]]]}}};
+var FIS_LOCS=['gimnasio','parque','campo','casa','pared'];
+(function(){FIS_PH.forEach(function(ph,i){['A','B','C'].forEach(function(L){var s=FIS_SES[ph.id][L];
+  RUT.push({id:'fis-'+(i+1)+L.toLowerCase(),cat:'fis',locs:FIS_LOCS,n:'Gimnasio '+L+' · '+s.n,para:'Fase '+(i+1)+': '+ph.n,mins:s.b.reduce(function(n,b){return n+b[1].reduce(function(m,alts){return m+alts[0][6];},0);},0),why:s.why,b:s.b,ph:i,L:L});});});})();
+/* Descarga (menos series) y sin saltos cuando el día de volar o el partido están cerca */
+function fisPrep(R0,o){if(!o.dl&&!o.np)return R0;var r={};for(var x in R0)r[x]=R0[x];
+  r.b=R0.b.map(function(b){var cal=/Calentar/.test(b[0]);return [b[0],b[1].map(function(alts){return alts.filter(function(rr){return !(o.np&&FIS_PLYO.indexOf(rr[0])>=0);}).map(function(rr){if(!o.dl||cal||rr[1]<=1)return rr;var c=rr.slice();c[1]=Math.max(1,Math.round(rr[1]*.6));c[6]=Math.max(1,Math.round(rr[6]*.65));return c;});}).filter(function(alts){return alts.length;})];}).filter(function(b){return b[1].length;});
+  return r;}
+function fisNear(P,S,k){if(!P||!P.start)return false;var m=matchFor(P,S,weekIndex(P,k)),d=dayIdx(parseKey(k));return m!=null&&(m-d+7)%7===2;}
+function buildGym(P,S,k){
+  var F=S.fis,wk=fisWeek(F,k),pi=fisPhaseIdx(wk),L=fisLetter(P,S,k)||'A',R0=RUTI['fis-'+(pi+1)+L.toLowerCase()],o=(S.day&&S.day[k])||{};
+  var dl=FIS_DELOAD.indexOf(wk)>=0,np=fisNear(P,S,k);
+  var r=buildRut(P,k,{loc:o.loc||'gimnasio',gear:P.gear||[],mode:o.mode||'solo'},fisPrep(R0,{dl:dl,np:np}));
+  r.type='gimnasio';r.special=false;delete r.sp;delete r.rut;r.title='Gimnasio · sesión '+L;r.sub=FIS_PH[pi].n+' · '+FIS_SES[FIS_PH[pi].id][L].n;
+  r.ph={id:'fis',n:wk>FIS_WEEKS?'Mantenimiento':'Semana '+wk+' de '+FIS_WEEKS,vol:1,bonus:0};r.mins=r.est;
+  r.notes=r.notes||[];if(dl)r.notes.push('Semana de descarga: menos series para asimilar, y semana de tests (Físico).');if(np)r.notes.push('Hoy sin saltos: el día de volar o el partido están cerca.');
+  if(o.loc&&o.loc!=='gimnasio')r.notes.push('Fuera del gimnasio algunos ejercicios cambian por otros parecidos.');
+  r.extra=[{id:'fase',t:'Fase '+(pi+1)+': '+FIS_PH[pi].n,li:[FIS_PH[pi].d,'Esfuerzo: en las series de fuerza, '+FIS_PH[pi].rir+' repeticiones antes del fallo.','Sube el peso cuando hagas todas las series con las repeticiones y el esfuerzo marcados.']},{id:'fuentes',t:'Fuentes',links:FIS_SRC}];
+  return r;}
+/* Nutrición para bajar grasa sin perder fuerza */
+var FIS_DAYT=[['gimnasio','Gimnasio',1.6],['portero','Entreno de portero',1.65],['partido','Partido',1.7],['descanso','Descanso',1.4]];
+function fisNow(F){var L=(F.log||[]).slice().sort(function(a,b){return a.d<b.d?-1:1;});return L.length?+L[L.length-1].w:+F.w0;}
+function fisDiet(F,brk){var w=fisNow(F),h=+F.h,a=+F.a,g=+F.goal||w;if(!(w>30&&h>120&&a>=12))return null;var teen=a<18,bmr=10*w+6.25*h-5*a+5;
+  var D=teen||brk?0:Math.min(w*(+F.rate||.7)/100*7700/7,.25*bmr*1.55),p=Math.round((teen?1.8*w:2.2*g)/5)*5,f=Math.round(.9*Math.min(w,g)/5)*5,out={teen:teen,D:Math.round(D/10)*10,p:p,f:f,bmr:Math.round(bmr)};
+  FIS_DAYT.forEach(function(x){var kcal=bmr*x[2]-D,c=(kcal-4*p-9*f)/4;if(c<2.5*g){c=2.5*g;kcal=4*c+4*p+9*f;}out[x[0]]={kcal:Math.round(kcal/10)*10,c:Math.round(c/5)*5};});
+  return out;}
+function fisWeeksTo(F){var w=fisNow(F),g=+F.goal,r=(+F.rate||.7)/100;if(!(g>0)||w<=g)return 0;return Math.ceil(Math.log(g/w)/Math.log(1-r));}
+/* Ritmo real entre los dos últimos registros separados al menos 5 días (% de peso por semana) */
+function fisTrend(F){var L=(F.log||[]).filter(function(x){return +x.w>0;}).slice().sort(function(a,b){return a.d<b.d?-1:1;});if(L.length<2)return null;
+  var last=L[L.length-1],prev=null;for(var i=L.length-2;i>=0;i--){if(daysBetween(L[i].d,last.d)>=5){prev=L[i];break;}}if(!prev)return null;
+  var days=daysBetween(prev.d,last.d),pct=(prev.w-last.w)/prev.w*100/(days/7);return {pct:Math.round(pct*100)/100,kg:Math.round((prev.w-last.w)/(days/7)*100)/100,from:prev,to:last};}
+var FIS_EV=[['Bajar despacio conserva el músculo','En deportistas de élite que entrenaban fuerza, bajar un 0,7 % del peso por semana hizo ganar músculo (+2,1 %) y perder más grasa; bajar más rápido no ganó músculo.'],
+  ['Proteína alta','Hasta unos 1,6 g por kilo al día se gana más masa muscular con el entreno de fuerza, y algunos se benefician hasta 2,2. Con dieta, se recomienda aún más: 2,3–3,1 g por kilo de masa magra.'],
+  ['La fuerza manda','Los deportistas más fuertes saltan, esprintan y cambian de dirección mejor: la fuerza máxima es la base de la explosividad.'],
+  ['Volumen y frecuencia','Entrenar cada músculo dos veces por semana dio más músculo que una sola vez. Con más series semanales se gana algo más; unas 10 por músculo es una buena referencia.'],
+  ['Fuerza de los pies','Siete semanas de fuerza de los dedos del pie aumentaron el salto horizontal de 2,25 a 2,31 m.'],
+  ['Dormir','Con 5,5 horas de sueño en lugar de 8,5, con la misma dieta, la parte del peso perdido que era grasa bajó un 55 % y se perdió más músculo.'],
+  ['Cardio y saltos','El cardio no frena la fuerza ni el músculo, pero sí la explosividad si va en la misma sesión: sepáralo al menos 3 horas o hazlo en otro día.'],
+  ['Pasos','Tras bajar peso, cada 1.000 pasos diarios más se asociaron a mantener un 1,1–1,3 % más de lo perdido.'],
+  ['Pausas de dieta','Alternar bloques de dieta con dos semanas a mantenimiento quitó más grasa que la dieta seguida en hombres con obesidad.'],
+  ['Cintura','Mantén la cintura por debajo de la mitad de tu altura: es la referencia de salud del NICE británico.']];
+var FIS_SRC=[['Garthe y cols. (2011). Dos ritmos de pérdida de peso en deportistas de élite','https://lida.sport-iat.de/ta/Record/4020931?lng=en'],
+  ['Helms, Aragon y Fitschen (2014). Recomendaciones de nutrición para la definición','https://openrepository.aut.ac.nz/items/723f44d2-7c20-4214-ba62-987339099039/full'],
+  ['Morton y cols. (2018). Proteína y entrenamiento de fuerza: metaanálisis, BJSM','https://bjsm.bmj.com/content/52/6/376'],
+  ['Suchomel, Nimphius y Stone (2016). La importancia de la fuerza en el rendimiento','https://ro.ecu.edu.au/ecuworkspost2013/2238'],
+  ['Schoenfeld, Ogborn y Krieger (2016). Volumen semanal e hipertrofia','https://paulogentil.com/pdf/Dose-response%20relationship%20between%20weekly%20resistance%20training%20volume%20and%20increases%20in%20muscle%20mass%20-%20A%20systematic%20review%20and%20metaanalysis.pdf'],
+  ['Schoenfeld y cols. (2016). Frecuencia de entrenamiento e hipertrofia','https://pubmed.ncbi.nlm.nih.gov/27102172/'],
+  ['Goldmann y cols. (2013). Fuerza de los dedos del pie y rendimiento','https://fis.dshs-koeln.de/en/publications/the-potential-of-toe-flexor-muscles-to-enhance-performance/'],
+  ['Nedeltcheva y cols. (2010). Dormir poco y pérdida de grasa','https://pubmed.ncbi.nlm.nih.gov/20921542/'],
+  ['Schumann y cols. (2022). Cardio y fuerza a la vez: metaanálisis','https://researchonline.jcu.edu.au/71546/'],
+  ['Pasos diarios y mantenimiento del peso: metaanálisis (2026)','https://www.epocrates.com/online/article/eco-2026-8-500-daily-steps-may-maintain-weight-loss'],
+  ['Byrne y cols. (2018). Estudio MATADOR: pausas de dieta','https://ecite.utas.edu.au/123184'],
+  ['NICE (2022). La cintura, menos de la mitad de la altura','https://www.nice.org.uk/news/articles/keep-the-size-of-your-waist-to-less-than-half-of-your-height-nice--recommends'],
+  ['Sánchez-Sánchez y cols. (2024). Pliometría y fuerza en futbolistas','https://sportsmedicine-open.springeropen.com/counter/pdf/10.1186/s40798-024-00720-w.pdf'],
+  ['Fussballtransfers. Ficha de Antonín Kinský (1,90 m, 83 kg)','https://www.fussballtransfers.com/spieler/antonin-kinsky'],
+  ['Wikipedia. Antonín Kinský','https://en.wikipedia.org/wiki/Anton%C3%ADn_Kinsk%C3%BD_(footballer,_born_2003)']];
 var RUTI={};RUT.forEach(function(r){RUTI[r.id]=r;});
 var MEAS={
   calor:'Calor local 15–20 minutos en la zona (bolsa de agua caliente con una toalla). Fue lo que más alivió el dolor a las 24 y 48 horas.',
@@ -1282,17 +1479,19 @@ var DOMS_SRC=[
 function rutFor(a){if(a.rut&&a.rut!=='auto'&&RUTI[a.rut])return RUTI[a.rut];if(a.sit==='recuperar'&&a.rut==='auto'&&(+a.doms||0)>=3)return RUTI.fuertes;return null;}
 function rutExtras(R0){if(R0.cat==='men')return [{id:'porque',t:'Lo que dicen los estudios',facts:MEN_EV},{id:'fuentes',t:'Fuentes',links:MEN_SRC}];
   if(R0.cat==='coo')return [{id:'porque',t:'Por qué funciona',facts:COO_EV},{id:'fuentes',t:'Fuentes',links:COO_SRC}];
+  if(R0.cat==='fis'){var ph=FIS_PH[R0.ph||0];return [{id:'fase',t:'Fase '+((R0.ph||0)+1)+': '+ph.n,li:[ph.d,'Esfuerzo: en las series de fuerza, '+ph.rir+' repeticiones antes del fallo.','Sube el peso cuando hagas todas las series con las repeticiones y el esfuerzo marcados.']},{id:'fuentes',t:'Fuentes',links:FIS_SRC}];}
   if(R0.cat==='vol')return [{id:'aviso',t:'Antes de saltar',li:VOL_SAFE},{id:'porque',t:'Lo que dicen los estudios',facts:VOL_EV},{id:'fuentes',t:'Fuentes',links:VOL_SRC}];
   if(R0.cat==='pro')return [{id:'aviso',t:'Antes de empezar',li:['Es una sesión inspirada en su estilo, no su entrenamiento real.','Si no tienes el material o el sitio, la app cambia los ejercicios por otros parecidos.','En «Guía» tienes cómo se formó y cómo trabaja ese punto fuerte.']}];
   return [{id:'medidas',t:'Además, hoy',li:R0.meas.map(function(m){return MEAS[m];})},{id:'porque',t:'Lo que dicen los estudios',facts:DOMS_EV},
   {id:'alerta',t:'Cuándo parar',tone:'bad',li:['Dolor punzante en un punto concreto, hinchazón o moratón.','Dolor que empeora al moverte en lugar de mejorar.','Orina muy oscura.','Eso ya no son agujetas: para y consulta a un profesional.']},{id:'fuentes',t:'Fuentes',links:DOMS_SRC}];}
 function buildRut(P,k,a,R0){
+  if(R0.cat==='fis'&&(a.dl||a.np))R0=fisPrep(R0,{dl:a.dl,np:a.np});
   var loc=a.loc||'casa',mode=a.mode||'solo',res=resources({gear:a.gear||[]},loc,mode),inj=(P&&P.injuries)||[];
   function okE(id){var e=EXI[id];if(!e)return false;if(e.loc!=='any'&&e.loc.indexOf(loc)<0)return false;if(!has(res,e.need))return false;if(mode==='solo'&&e.mode==='pareja')return false;for(var i=0;i<e.avoid.length;i++){if(inj.indexOf(e.avoid[i])>=0)return false;}return true;}
   var est=0,blocks=R0.b.map(function(b){var items=[],m=0;b[1].forEach(function(alts){for(var i=0;i<alts.length;i++){var r=alts[i];if(okE(r[0])){items.push({e:EXI[r[0]],d:mkD(r[1],r[2],r[3],r[4],r[5],r[7])});m+=r[6];break;}}});est+=m;return {n:b[0],items:items,mins:Math.round(m)};}).filter(function(b){return b.items.length;});
   var notes=[];if(R0.cat==='agu'&&!res.rodillo&&!res.tenis&&R0.b.some(function(b){return /Masaje/.test(b[0]);}))notes.push('Con una pelota de tenis o un rodillo el masaje es más eficaz. Márcalos en «Ajustar» si los tienes.');
   if(R0.cat==='vol'&&!res.blando)notes.push('Sin césped ni colchoneta, hoy no hay caídas, y son las que más enseñan a volar. En casa, hazlas sobre una colchoneta.');
-  return {k:k,type:'especial',special:true,rut:R0.id,rcat:R0.cat,sp:a,title:R0.n,sub:R0.para,why:R0.why,mins:Math.round(est),loc:loc,mode:mode,ph:{id:'esp',n:{agu:'Agujetas',men:'Mente',coo:'Coordinación',pro:'Entrena como',vol:'Volar'}[R0.cat]||'Rutina',vol:1,bonus:0},w:0,blocks:blocks,est:Math.round(est),notes:notes,extra:rutExtras(R0)};
+  return {k:k,type:'especial',special:true,rut:R0.id,rcat:R0.cat,sp:a,title:R0.n,sub:R0.para,why:R0.why,mins:Math.round(est),loc:loc,mode:mode,ph:{id:'esp',n:{agu:'Agujetas',men:'Mente',coo:'Coordinación',pro:'Entrena como',vol:'Volar',fis:'Gimnasio'}[R0.cat]||'Rutina',vol:1,bonus:0},w:0,blocks:blocks,est:Math.round(est),notes:notes,extra:rutExtras(R0)};
 }
 
 /* ---------- Rutina especial: casos puntuales (prueba o partido cerca, agujetas, vuelta tras un parón) ---------- */
@@ -1510,7 +1709,7 @@ function weekSummary(P,S,weekStart){
 return {DAYS:DAYS,DSH:DSH,keyOf:keyOf,parseKey:parseKey,dayIdx:dayIdx,addDays:addDays,mondayKey:mondayKey,daysBetween:daysBetween,weekIndex:weekIndex,
   LOCS:LOCS,LOCSH:LOCSH,GEAR:GEAR,GOALS:GOALS,INJ:INJ,LEVELS:LEVELS,CATS:CATS,TYPES:TYPES,EX:EX,EXI:EXI,TESTS:TESTS,TIPS:TIPS,PHASE_TXT:PHASE_TXT,
   phaseOf:phaseOf,matchFor:matchFor,typeFor:typeFor,defaultLoc:defaultLoc,resources:resources,buildSession:buildSession,partnerDays:partnerDays,weekSummary:weekSummary,fmtSec:fmtSec,sessionMins:sessionMins,
-  spOf:spOf,spTitle:spTitle,spEvent:spEvent,DOMS:DOMS,animsOf:animsOf,RUT:RUT,RUTI:RUTI,MEAS:MEAS,DOMS_EV:DOMS_EV,DOMS_SRC:DOMS_SRC,rutFor:rutFor,MEN_EV:MEN_EV,MEN_SRC:MEN_SRC,COO_EV:COO_EV,COO_SRC:COO_SRC,VOL_EV:VOL_EV,VOL_SRC:VOL_SRC,VOL_SAFE:VOL_SAFE,vueloCands:vueloCands,vueloDay:vueloDay};
+  spOf:spOf,spTitle:spTitle,spEvent:spEvent,DOMS:DOMS,animsOf:animsOf,RUT:RUT,RUTI:RUTI,MEAS:MEAS,DOMS_EV:DOMS_EV,DOMS_SRC:DOMS_SRC,rutFor:rutFor,MEN_EV:MEN_EV,MEN_SRC:MEN_SRC,COO_EV:COO_EV,COO_SRC:COO_SRC,VOL_EV:VOL_EV,VOL_SRC:VOL_SRC,VOL_SAFE:VOL_SAFE,vueloCands:vueloCands,vueloDay:vueloDay,fisDef:fisDef,fisWeek:fisWeek,fisPhaseIdx:fisPhaseIdx,fisWeekDays:fisWeekDays,fisLetter:fisLetter,FIS_PH:FIS_PH,FIS_SES:FIS_SES,FIS_WEEKS:FIS_WEEKS,FIS_DELOAD:FIS_DELOAD,FIS_TESTW:FIS_TESTW,FIS_BREAK:FIS_BREAK,fisDiet:fisDiet,FIS_DAYT:FIS_DAYT,fisNow:fisNow,fisWeeksTo:fisWeeksTo,fisTrend:fisTrend,FIS_EV:FIS_EV,FIS_SRC:FIS_SRC};
 })();
 </script>
 
@@ -2149,6 +2348,57 @@ var ANIMS_E={
   takeoff:{view:'front',scene:'floor',dur:3.6,kf:KF_TAKEOFF,still:.32}
 };
 for(var ekey in ANIMS_E)ANIMS[ekey]=ANIMS_E[ekey];
+/* ---------- Físico: gimnasio, pies y agilidad ---------- */
+/* Hip thrust: espalda alta en el banco, barra en la cadera */
+var HT_B=dBench(26,44,114);
+var HT_D={p:[100,136],t:-48,hd:24,fa:[127,146],fb:[124,146],kna:[120,121],knb:[117,122],ha:[100,130],hb:[98,131],es:[-1,-1]};
+var HT_U={p:[98,113],t:-84,hd:36,fa:[127,146],fb:[124,146],kna:[124,119],knb:[121,120],ha:[98,107],hb:[96,108],es:[-1,-1]};
+var KF_HIPT=[k(0,HT_D),k(.4,HT_U,{lbl:'APRIETA',lo:1}),k(.6,HT_U,{lbl:'APRIETA',lo:1}),k(1,HT_D,{lo:0})];
+/* Subida al cajón con rodilla arriba */
+var SU_BOX=dBox(116,112,48,37);
+var SU_0={p:[100,96],t:10,hd:-4,fa:[128,112],kna:[124,96],fb:[94,146],ha:[110,104],hb:[94,104],toeA:[7,1]};
+var SU_1={p:[132,62],t:2,hd:0,fa:[134,112],kna:[136,88],fb:[148,92],knb:[152,66],ha:[150,52],hb:[120,92],toeB:[6,4]};
+var KF_STEPUP=[k(0,SU_0),k(.12,SU_0),k(.36,SU_1,{lbl:'RODILLA ARRIBA',lo:1}),k(.56,SU_1,{lbl:'RODILLA ARRIBA',lo:1}),k(.74,P(SU_1,{fb:[110,140],knb:[118,112],p:[124,72]}),{lo:0}),k(.9,SU_0),k(1,SU_0)];
+/* Gemelo sentado (sóleo) */
+var SO_B=dBench(52,46,110);
+var SO_D={p:[86,104],t:2,hd:4,kna:[116,104],fa:[118,146],knb:[113,105],fb:[115,146],ha:[114,100],hb:[112,101],toeA:[8,1],toeB:[8,1]};
+var SO_U=P(SO_D,{kna:[116,97],fa:[118,139],knb:[113,98],fb:[115,139],ha:[114,93],hb:[112,94],toeA:[7,7],toeB:[7,7]});
+var KF_SOLEUS=[k(0,SO_D),k(.4,SO_U,{lbl:'PUNTILLAS',lo:1}),k(.6,SO_U,{lbl:'PUNTILLAS',lo:1}),k(1,SO_D,{lo:0})];
+/* Dedos del pie con toalla */
+var TW_B=dBench(52,46,110)+'<path class="thin" d="M104 148 H150"/>';
+var TW_0={p:[86,104],t:4,hd:22,kna:[116,104],fa:[118,146],knb:[112,105],fb:[112,146],ha:[110,102],hb:[108,103],toeA:[9,1],toeB:[8,1]};
+var TW_1=P(TW_0,{fa:[118,144],toeA:[6,3]});
+var KF_TOWEL=[k(0,TW_0,{lbl:'ABRE',lo:1}),k(.3,TW_0,{lbl:'ABRE',lo:1}),k(.36,TW_1,{lbl:'ENCOGE LOS DEDOS',lo:1}),k(.7,TW_1,{lbl:'ENCOGE LOS DEDOS',lo:1}),k(.76,TW_0,{lbl:'ABRE',lo:1}),k(1,TW_0,{lbl:'ABRE',lo:1})];
+/* Elevación de puntas con la espalda en la pared */
+var TB_W='<rect class="wall" x="4" y="12" width="26" height="137"/><line class="edge" x1="30" y1="12" x2="30" y2="149"/>';
+var TB_0={p:[42,92],t:-4,hd:6,fa:[70,146],fb:[66,146],ha:[46,100],hb:[42,100],toeA:[8,1],toeB:[8,1]};
+var TB_1=P(TB_0,{toeA:[7,-6],toeB:[7,-6]});
+var KF_TIB=[k(0,TB_0),k(.4,TB_1,{lbl:'PUNTAS ARRIBA',lo:1}),k(.6,TB_1,{lbl:'PUNTAS ARRIBA',lo:1}),k(1,TB_0,{lo:0})];
+/* Agilidad 5-10-5 con tres conos */
+var AG_C=dCone(44)+dCone(100)+dCone(156);
+function AGR(x,s){return FW(x,x-10,x+12,{p:[x,100],t:s*10,hd:-s*4,ha:[x-12+s*6,96],hb:[x+12+s*6,96],ela:[x-16,84],elb:[x+16,84]});}
+function AGT(x,s){return FW(x,x-s*20,x+s*14,{p:[x,116],t:s*28,hd:-s*8,kna:[x-s*24,126],knb:[x+s*18,126],ha:[x+s*22,144],ela:[x+s*16,124],hb:[x+s*2,108],elb:[x-s*6,104]});}
+var KF_AGIL=[k(0,FSET(100),{lbl:'SALIDA',lo:1}),k(.08,FSET(100),{lbl:'SALIDA',lo:1}),k(.2,AGR(140,1),{lbl:'5 m',lo:1}),k(.26,AGT(152,1),{lbl:'TOCA',lo:1}),k(.34,AGR(130,-1),{lbl:'10 m',lo:1}),k(.48,AGR(70,-1),{lbl:'10 m',lo:1}),k(.56,AGT(48,-1),{lbl:'TOCA',lo:1}),k(.64,AGR(70,1),{lbl:'5 m',lo:1}),k(.76,AGR(104,1),{lbl:'META',lo:1}),k(.88,FW(110,99,121),{lbl:'META',lo:1}),k(1,FSET(100),{lbl:'SALIDA',lo:1})];
+/* Press de banca */
+var BP_B=dBench(36,96,112);
+var BP_D={p:[66,106],t:90,hd:0,kna:[46,112],fa:[44,146],knb:[42,113],fb:[40,146],ha:[96,88],hb:[94,89],ela:[94,114],elb:[92,115],es:[1,1],toeA:[-6,1],toeB:[-6,1]};
+var BP_U=P(BP_D,{ha:[96,52],hb:[94,53],ela:[97,72],elb:[95,73]});
+var KF_BENCH=[k(0,BP_U),k(.45,BP_D),k(.55,BP_D),k(1,BP_U)];
+/* Zancada lateral */
+var LL_C=FW(100,78,122,{p:[100,94],ha:[96,96],hb:[104,96],ela:[86,90],elb:[114,90]});
+function LLs(s){var x=100+s*14,r=FW(x,s>0?70:86,s>0?114:130,{p:[x,114],t:s*6,hd:-s*4,ha:[x-4+s*6,104],hb:[x+4+s*6,104],ela:[x-14,98],elb:[x+14,98]});if(s>0){r.fb=[130,146];r.knb=[134,124];r.fa=[70,146];}else{r.fa=[70,146];r.kna=[66,124];r.fb=[130,146];}return r;}
+var KF_LATL=[k(0,LL_C),k(.1,LL_C),k(.3,LLs(1),{lbl:'CADERA ATRÁS',lo:1}),k(.42,LLs(1),{lbl:'CADERA ATRÁS',lo:1}),k(.55,LL_C,{lo:0}),k(.6,LL_C),k(.8,LLs(-1),{lbl:'CADERA ATRÁS',lo:1}),k(.92,LLs(-1),{lbl:'CADERA ATRÁS',lo:1}),k(1,LL_C,{lo:0})];
+var ANIMS_F={
+  hipthrust:{view:'side',f:1,scene:'floor',deco:HT_B,bb:1,dur:3,kf:KF_HIPT,still:.5},
+  stepup:{view:'side',f:1,scene:'floor',deco:SU_BOX,dur:3.4,kf:KF_STEPUP,still:.46},
+  soleus:{view:'side',f:1,scene:'floor',deco:SO_B,db:true,dur:2.6,kf:KF_SOLEUS,still:.5},
+  towel:{view:'side',f:1,scene:'floor',deco:TW_B,dur:3.2,kf:KF_TOWEL,still:.5},
+  tibraise:{view:'side',f:1,scene:'floor',deco:TB_W,dur:2.4,kf:KF_TIB,still:.5},
+  proagility:{view:'front',scene:'floor',deco:AG_C,dur:4,kf:KF_AGIL,still:.26},
+  benchpress:{view:'side',f:1,scene:'floor',deco:BP_B,bb:1,dur:2.8,kf:KF_BENCH,still:.5},
+  latlunge:{view:'front',scene:'floor',dur:3.6,kf:KF_LATL,still:.36}
+};
+for(var fkey in ANIMS_F)ANIMS[fkey]=ANIMS_F[fkey];
 
 function sceneMarkup(cfg){var s=cfg.scene||'floor';
   if(s==='wall'){var x=cfg.wallX||182;return '<rect class="wall" x="'+x+'" y="12" width="'+(200-x)+'" height="137"/><line class="edge" x1="'+x+'" y1="12" x2="'+x+'" y2="149"/><line class="floor" x1="6" y1="149" x2="'+x+'" y2="149"/>';}
@@ -2360,7 +2610,7 @@ function obHTML(){
       '<h2 style="font-size:clamp(52px,15vw,78px)">Portero<br>Diario</h2>'+
       '<p class="s" style="font-size:17px;color:var(--lav)">Un test de dos minutos y tendrás tu plan para cada día, aunque entrenes solo.</p>'+
       '<ul class="intro-list"><li><b>1</b><span>Con quién, dónde y con qué entrenas</span></li><li><b>2</b><span>Tu semana alrededor del partido</span></li><li><b>3</b><span>Cada día, tu sesión con temporizador y vídeos</span></li></ul>'+
-      '</div><div class="ob-alt"><button class="btn full" data-a="ob-next">Crear mi plan</button>'+spCTA('¿Solo necesitas algo puntual? Prueba o partido mañana, agujetas…')+rutCTA('Sin test: elige una y empieza')+
+      '</div><div class="ob-alt"><button class="btn full" data-a="ob-next">Crear mi plan</button>'+fisCard()+spCTA('¿Solo necesitas algo puntual? Prueba o partido mañana, agujetas…')+rutCTA('Sin test: elige una y empieza')+
       (!P()&&hasSp()?'<button class="btn ghost full" data-a="ob-cancel">Volver a mi rutina</button>':'')+'</div></div></div>';
   }
   if(o.stage==='gen'){
@@ -2474,7 +2724,7 @@ function spCreate(a){
 }
 function hasSp(){var t=today();return Object.keys(S.day||{}).some(function(k){return k>=t&&S.day[k]&&S.day[k].sp;});}
 function spDays(){var t=today();return Object.keys(S.day||{}).filter(function(k){return k>=t&&S.day[k]&&S.day[k].sp;}).sort();}
-function dayTitle(k,t){var sp=C.spOf(S,k);return sp?C.spTitle(sp):C.TYPES[t].n;}
+function dayTitle(k,t){var sp=C.spOf(S,k);if(sp)return C.spTitle(sp);if(t==='gimnasio')return 'Gimnasio · sesión '+(C.fisLetter(P(),S,k)||'A');return C.TYPES[t].n;}
 function dayShort(k,t){var sp=C.spOf(S,k);if(sp)return sp.when==='hoy'?(sp.sit==='prueba'?'Prueba':'Partido'):'Especial';return shortType(t);}
 function spControls(k,sp){
   var ev=spIsEv(sp),h='',isRut=sp.sit==='recuperar'&&sp.rut&&sp.rut!=='auto'&&C.RUTI[sp.rut];
@@ -2661,6 +2911,7 @@ function guiaHTML(){
   if(g.indexOf('art:')===0)return artHTML(g.slice(4));
   if(RCAT[g])return rutHTML(g);
   var h='<section class="hero"><div class="pad"><p class="hello">Todo lo que rodea al entreno.</p><h1 class="disp">Guía del portero</h1></div></section><div class="pad"><section class="sec"><div class="ggrid">';
+  h+='<button class="gcard" data-a="tab" data-v="fisico" style="--gc:var(--t-gimnasio)"><span class="gic">'+ICON.fisico+'</span><b>Físico</b><small>Gimnasio, dieta y seguimiento para tu cambio</small></button>';
   h+=gCard('vol',ICON.vuelo,'Volar','Pliometría, cuerpo y despegue','--t-vuelo');
   h+=gCard('dieta',ICON.plato,'Dieta','Según tu peso, altura y presupuesto','--t-fuerza');
   h+=gCard('men',ICON.mente,'Mente','Activación, nervios, errores y penaltis','--t-tecnica');
@@ -2937,6 +3188,123 @@ function analisisHTML(){
   }
   return h+'</div>';}
 
+/* ---------- Físico: cambio físico con gimnasio, dieta y seguimiento ---------- */
+ICON.fisico='<svg viewBox="0 0 24 24"><path d="M6.5 6.5v11M17.5 6.5v11M3.5 9.5v5M20.5 9.5v5M6.5 12h11"/></svg>';
+function nf(x,d){return String(Math.round(x*Math.pow(10,d||0))/Math.pow(10,d||0)).replace('.',',');}
+function fisNum(id){var el=document.getElementById(id);if(!el)return null;var v=String(el.value||'').replace(',','.').trim();return v===''?'':(isNaN(+v)?'':v);}
+function fisRead(){var F=C.fisDef(S);['w0','h','goal','a'].forEach(function(f){var v=fisNum('f-'+f);if(v!==null)F[f]=v;});var st=document.getElementById('f-start');if(st&&/^\d{4}-\d\d-\d\d$/.test(st.value))F.start=st.value;}
+function fisReady(F){return +F.w0>30&&+F.h>120&&+F.goal>30;}
+function fisDeload(F,k){return C.FIS_DELOAD.indexOf(C.fisWeek(F,k))>=0;}
+function fisNextGym(){var F=C.fisDef(S),p=P(),t=today();for(var i=0;i<21;i++){var k=C.addDays(t,i);if(k<F.start)continue;var L=C.fisLetter(p,S,k);if(L)return {k:k,l:L};}return null;}
+function fisCard(){var F=C.fisDef(S);if(!F.on)return '';var t=today(),txt,sub;
+  if(t<F.start){var n=C.daysBetween(t,F.start);txt='Tu cambio físico empieza el '+fmtDate(F.start).toLowerCase();sub=n===1?'Mañana empiezas el gimnasio':'Faltan '+n+' días: prepara tus datos en Físico';}
+  else{var wk=C.fisWeek(F,t),pi=C.fisPhaseIdx(wk),nx=fisNextGym();txt='Físico · semana '+Math.min(wk,C.FIS_WEEKS)+' de '+C.FIS_WEEKS+' · '+C.FIS_PH[pi].n;
+    sub=nx?(nx.k===t?'Hoy toca gimnasio: sesión '+nx.l:'Próximo gimnasio: '+fmtDate(nx.k).toLowerCase()+' · sesión '+nx.l):'Elige tus días de gimnasio';}
+  return '<button class="cta-row anpre" data-a="tab" data-v="fisico"><span class="cta-ic" style="background:rgba(255,84,112,.14);color:var(--t-gimnasio)">'+ICON.fisico+'</span><span><b>'+esc(txt)+'</b><small>'+esc(sub)+'</small></span><span class="chev" aria-hidden="true">›</span></button>';}
+/* Gráfico: peso real frente al ritmo objetivo */
+function fisChart(F){var w0=+F.w0,g=+F.goal,r=(+F.rate||.7)/100,L=(F.log||[]).filter(function(x){return +x.w>0;}).slice().sort(function(a,b){return a.d<b.d?-1:1;});
+  var wks=Math.max(C.FIS_WEEKS,C.fisWeeksTo({log:[],w0:w0,goal:g,rate:F.rate})+2),days=wks*7,W=340,H=160,pl=34,pr=8,pt=10,pb=24;
+  var ws=L.map(function(x){return +x.w;}).concat([w0,g]),lo=Math.floor(Math.min.apply(null,ws))-1,hi=Math.ceil(Math.max.apply(null,ws))+1;
+  function X(d){return pl+(W-pl-pr)*Math.max(0,Math.min(1,d/days));}function Y(v){return pt+(H-pt-pb)*(hi-v)/(hi-lo);}
+  var tg='';for(var i=0;i<=wks;i++){var v=Math.max(g,w0*Math.pow(1-r,i));tg+=(i?'L':'M')+X(i*7).toFixed(1)+' '+Y(v).toFixed(1);}
+  var ln='',pts='';L.forEach(function(x,i){var d=C.daysBetween(F.start,x.d);ln+=(i?'L':'M')+X(d).toFixed(1)+' '+Y(+x.w).toFixed(1);pts+='<circle cx="'+X(d).toFixed(1)+'" cy="'+Y(+x.w).toFixed(1)+'" r="3.2"/>';});
+  var ty='';[hi-1,Math.round((hi+lo)/2),lo+1].forEach(function(v){ty+='<text x="'+(pl-6)+'" y="'+(Y(v)+4).toFixed(1)+'" text-anchor="end">'+v+'</text><line class="gl" x1="'+pl+'" x2="'+(W-pr)+'" y1="'+Y(v).toFixed(1)+'" y2="'+Y(v).toFixed(1)+'"/>';});
+  var tx='';[0,Math.round(wks/2),wks].forEach(function(i){tx+='<text x="'+X(i*7).toFixed(1)+'" y="'+(H-6)+'" text-anchor="'+(i===0?'start':(i===wks?'end':'middle'))+'">'+(i===0?'Inicio':'Sem '+i)+'</text>';});
+  var td=C.daysBetween(F.start,today()),tl=td>=0&&td<=days?'<line class="today" x1="'+X(td).toFixed(1)+'" x2="'+X(td).toFixed(1)+'" y1="'+pt+'" y2="'+(H-pb)+'"/>':'';
+  return '<svg class="fis-chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Peso real frente al ritmo objetivo">'+ty+tx+tl+'<path class="tg" d="'+tg+'"/>'+(L.length>1?'<path class="ln" d="'+ln+'"/>':'')+pts+'</svg>'+
+    '<div class="fis-leg"><span><i class="lg-tg"></i>Ritmo objetivo</span><span><i class="lg-ln"></i>Tu peso</span></div>';}
+function fisTrendHTML(F){var T=C.fisTrend(F);if(!T)return '<p class="muted" style="font-size:14px">Con dos registros separados una semana verás tu ritmo y qué ajustar.</p>';
+  var p=T.pct,msg,cls='info';
+  if(p<0.25){msg='Vas a '+nf(p,2)+' % por semana: más lento de lo previsto. Si se repite otra semana, quita unas 150 kcal al día (unos 35 g de hidratos) o suma 2.000 pasos diarios.';cls='warn';}
+  else if(p>1){msg='Vas a '+nf(p,2)+' % por semana: demasiado rápido, puedes perder músculo y salto. Suma unas 150 kcal al día.';cls='warn';}
+  else msg='Vas a '+nf(p,2)+' % por semana ('+nf(T.kg,2)+' kg): buen ritmo para bajar grasa sin perder músculo. Sigue así.';
+  return '<p class="note '+cls+'">'+esc(msg)+'</p>';}
+function fisSesList(id){var R=C.RUTI[id];if(!R)return '';return '<ol>'+R.b.map(function(b){return '<li><b>'+esc(b[0])+':</b> '+b[1].map(function(alts){var r=alts[0],e=C.EXI[r[0]];return e?'<button class="lnk" data-a="sheet" data-v="'+e.id+'">'+esc(e.n)+'</button> <span class="muted">('+esc(r[7]||((r[1]>1||r[2]?r[1]+' × ':'')+(r[2]||(r[5]?C.fmtSec(r[5]):''))+(r[3]?' '+r[3]:'')))+')</span>':'';}).join(', ')+'</li>';}).join('')+'</ol>';}
+var FIS_PIL=[['Explosividad aérea',['La base es la fuerza máxima de piernas y cadera: sentadilla, peso muerto e hip thrust. Los deportistas más fuertes saltan más.','Después, convertirla en salto: en la fase 3 cada serie pesada va seguida de saltos al máximo.','La batida del portero es a una pierna: subida al cajón con la rodilla arriba y batida con rodilla.','Cada kilo de grasa que bajas sin perder fuerza es un kilo menos que levantar en cada salto.'],['fue-sentadilla','fis-hipthrust','fis-stepup','aer-batida','pot-cmj','vol-cajon']],
+  ['Fuerza en los pies',['Gemelo de pie y gemelo sentado (sóleo): el tobillo es lo último que empuja en el salto y en la estirada.','Dedos del pie: en un estudio, siete semanas de fuerza de los dedos alargaron el salto horizontal.','Elevación de puntas (tibial) para aterrizar y frenar mejor.','Saltos de tobillo: un tobillo rígido devuelve la energía del salto.'],['fue-gemelo','fis-soleo','fis-pie','fis-tibial','vol-pogo']],
+  ['Agilidad',['Agilidad 5-10-5: arrancar, frenar y cambiar de dirección como de palo a palo.','Saltos laterales a una pierna y zancada lateral: fuerza hacia los lados.','Escalera, conos y vallas para pies rápidos.','La pliometría es el método más usado para mejorar el cambio de dirección en futbolistas.'],['fis-5105','pot-skater','fis-latlunge','pie-escalera','pie-conos']]];
+var FIS_HAB=['Duerme 8–9 horas: con poco sueño la dieta quita menos grasa y más músculo.','Camina 8.000–10.000 pasos al día, también los días de descanso.','Proteína en cada comida (3–4 al día): carne, pescado, huevos, lácteos o legumbres.','Fruta y verdura en cada comida: llenan con pocas calorías.','Agua: unos 35 ml por kilo al día, más en los entrenos.','Alcohol y bebidas azucaradas, lo mínimo: son calorías que no te dan nada.','El cardio extra, si lo haces, en días sin saltos o al menos 3 horas después.'];
+var FIS_TESTS=[['Salto vertical con alcance','De lado a una pared con tiza en los dedos: marca de pie con el brazo estirado y después salta y marca lo más alto. La diferencia en centímetros es tu salto.'],
+  ['Salto lateral a una pierna','Sobre una pierna, salta hacia el lado y cae con la otra sin perder el equilibrio. Mide desde el borde del pie de salida al del pie de caída. Mejor de tres, por lado.'],
+  ['Agilidad 5-10-5','Tres conos a 5 m: sales del centro, corres 5 m a un lado, tocas la línea, 10 m al otro, tocas y vuelves al centro. Cronometra con el móvil. Mejor de dos.'],
+  ['Peso y cintura','Pésate al levantarte, después del baño y antes de comer, 3–7 días de la semana, y apunta la media. La cintura, a la altura del ombligo, soltando el aire.'],
+  ['Fotos','Cada 4 semanas, con la misma luz y la misma ropa: de frente, de lado y de espaldas.']];
+var KINSKY=['Antonín Kinský, nacido el 13 de marzo de 2003 en Praga.','Mide 1,90 m y pesa 83 kg según su ficha.','Del Slavia de Praga al Tottenham en enero de 2025.','Diestro y convocado con la selección checa absoluta desde 2024.'];
+function fisicoHTML(){
+  var F=C.fisDef(S),t=today(),p=P(),wk=C.fisWeek(F,t),pi=C.fisPhaseIdx(Math.max(1,wk)),started=t>=F.start,ready=fisReady(F),now=C.fisNow(F);
+  var h='<section class="hero"><div class="pad"><p class="hello">'+(p&&p.name?esc(p.name)+', este':'Este')+' es tu cambio físico.</p><h1 class="disp">Físico</h1></div></section><div class="pad">';
+  /* Estado */
+  var st=!F.on?'Programa en pausa':(!started?'Empiezas el '+fmtDate(F.start).toLowerCase():(wk>C.FIS_WEEKS?'Mantenimiento · programa completado':'Semana '+wk+' de '+C.FIS_WEEKS+' · fase '+(pi+1)+': '+C.FIS_PH[pi].n));
+  h+='<section class="sec"><div class="card" style="gap:12px"><span class="eyebrow" style="color:var(--t-gimnasio)">'+esc(st)+'</span>';
+  if(started&&fisDeload(F,t))h+='<p class="note info">Semana de descarga y de tests: menos series y mide tu progreso.</p>';
+  if(!ready){
+    h+='<b style="font-size:17px">Tus datos para empezar</b><div class="dgrid"><label class="ctrl"><span>Peso hoy (kg)</span><input type="number" inputmode="decimal" id="f-w0" value="'+esc(F.w0)+'" placeholder="kg"></label><label class="ctrl"><span>Altura (cm)</span><input type="number" inputmode="numeric" id="f-h" value="'+esc(F.h)+'" placeholder="cm"></label><label class="ctrl"><span>Objetivo (kg)</span><input type="number" inputmode="decimal" id="f-goal" value="'+esc(F.goal)+'" placeholder="kg"></label></div>'+
+      (+F.h>120?'<p class="muted" style="font-size:14px">Con la proporción de Kinský (1,90 m y 83 kg), a tu altura serían unos '+Math.round(83/1.9/1.9*Math.pow(F.h/100,2))+' kg. Si ganas músculo, unos kilos más está bien: manda la cintura.</p>':'')+
+      '<button class="btn full" data-a="fis-save-data">Guardar mis datos</button>';
+  }else{
+    var lost=Math.max(0,+F.w0-now),tot=Math.max(.1,+F.w0-+F.goal),pc=Math.max(0,Math.min(100,lost/tot*100)),cin=(F.log||[]).filter(function(x){return +x.cin>0;}).slice(-1)[0],half=Math.round(+F.h/2);
+    h+='<div class="fis-kpi"><div><b class="mono">'+nf(now,1)+'</b><span>kg ahora</span></div><div><b class="mono">'+nf(+F.goal,1)+'</b><span>kg objetivo</span></div><div><b class="mono">'+(cin?nf(+cin.cin,1):'—')+'</b><span>cm de cintura · meta &lt; '+half+'</span></div></div>';
+    h+='<div class="fbar" role="progressbar" aria-valuenow="'+Math.round(pc)+'" aria-valuemin="0" aria-valuemax="100"><i style="width:'+pc.toFixed(1)+'%"></i></div><p class="muted" style="font-size:13px;margin:0">'+nf(lost,1)+' de '+nf(tot,1)+' kg</p>';
+    var n=C.fisWeeksTo(F);if(n>0){var base=started?t:F.start;h+='<p style="margin:0;font-size:14px">A un '+nf(+F.rate||.7,1)+' % por semana llegas a '+nf(+F.goal,0)+' kg en unas <b>'+n+' semanas</b>, hacia '+esc(fmtDate(C.addDays(base,n*7)).toLowerCase().replace(/^[a-záéíóú]+ /,''))+'. Las semanas a mantenimiento lo alargan un poco, y está bien.</p>';}
+  }
+  h+='</div></section>';
+  /* Esta semana */
+  var ws=C.mondayKey(started?t:F.start),wd=C.fisWeekDays(p,S,ws);
+  h+='<section class="sec" style="gap:8px"><div class="sec-h"><h2>'+(started?'Esta semana':'Tu primera semana')+'</h2><span class="muted" style="font-size:13px">Gimnasio</span></div>';
+  if(!F.on)h+='<p class="muted">El programa está en pausa. Actívalo en «Ajustar el programa».</p>';
+  else if(!wd.length)h+='<p class="muted">Esta semana no hay días de gimnasio que encajen: elige tus días abajo.</p>';
+  wd.forEach(function(x){var wkx=C.fisWeek(F,x.k),px=C.fisPhaseIdx(wkx),id='fis-'+(px+1)+x.l.toLowerCase(),R=C.RUTI[id],done=!!S.log[x.k],isT=x.k===t;
+    var btn=p?'<button class="btn small'+(isT&&!done?'':' ghost')+'" data-a="open-ses" data-k="'+x.k+'">'+(done?'Ver':(isT?'Empezar':'Ver'))+'</button>':(isT?'<button class="btn small" data-a="fis-go" data-v="'+id+'">Empezar</button>':'');
+    h+='<div class="card fis-day'+(isT?' on':'')+'"><div><span class="eyebrow">'+esc(fmtDate(x.k))+(isT?' · hoy':'')+(fisDeload(F,x.k)?' · descarga':'')+'</span><b style="font-size:16px">Sesión '+x.l+' · '+esc(C.FIS_SES[C.FIS_PH[px].id][x.l].n)+'</b>'+(done?'<small class="muted">Hecha ✓</small>':'')+'</div>'+btn+'</div>';});
+  h+=fold('fis-days','Tus días de gimnasio','<p>Elige de 2 a 4 días. El día del partido y la víspera se saltan solos, y el día a dos del partido toca la sesión B, sin saltos.</p><div class="chips wrap">'+C.DSH.map(function(d,i){var on=(F.days||[]).indexOf(i)>=0;return '<button class="chip'+(on?' on':'')+'" data-a="fis-day" data-v="'+i+'" aria-pressed="'+on+'">'+d+'</button>';}).join('')+'</div>'+(p?'<p class="muted" style="font-size:13px">En tu plan esos días pasan a ser «Gimnasio». El día de volar se mueve a otro día, y el de fuerza de portero pasa a técnica base.</p>':''),{sm:(F.days||[]).map(function(i){return C.DSH[i];}).join(' · ')||'Ninguno'});
+  h+='</section>';
+  /* Seguimiento */
+  if(ready){
+    var L=(F.log||[]).slice().sort(function(a,b){return a.d<b.d?1:-1;});
+    h+='<section class="sec" style="gap:8px"><div class="sec-h"><h2>Seguimiento</h2><span class="muted" style="font-size:13px">Una vez por semana</span></div><div class="card" style="gap:10px">'+fisChart(F)+fisTrendHTML(F)+
+      '<div class="dgrid"><label class="ctrl"><span>Peso medio (kg)</span><input type="number" inputmode="decimal" id="f-lw" placeholder="'+nf(now,1)+'"></label><label class="ctrl"><span>Cintura (cm)</span><input type="number" inputmode="decimal" id="f-lc" placeholder="cm"></label></div><button class="btn full" data-a="fis-log">Guardar la semana</button></div>';
+    if(L.length)h+=fold('fis-hist','Tus registros','<div class="ftab">'+L.slice(0,12).map(function(x){return '<div><span>'+esc(fmtDate(x.d))+'</span><span class="mono">'+(x.w?nf(+x.w,1)+' kg':'—')+'</span><span class="mono">'+(x.cin?nf(+x.cin,1)+' cm':'—')+'</span><button class="anm" style="position:static" data-a="fis-del" data-v="'+x.d+'" aria-label="Borrar el registro">×</button></div>';}).join('')+'</div>',{sm:L.length+''});
+    h+='</section>';
+  }
+  /* Tests */
+  var T=(F.tests||[]).slice().sort(function(a,b){return a.d<b.d?1:-1;}),tw=C.FIS_TESTW.map(function(w){return w===1?'1':String(w);}).join(', ');
+  h+='<section class="sec" style="gap:8px"><div class="sec-h"><h2>Tests</h2><span class="muted" style="font-size:13px">Semanas '+tw+'</span></div><div class="card" style="gap:10px">'+
+    '<div class="dgrid"><label class="ctrl"><span>Salto vertical (cm)</span><input type="number" inputmode="decimal" id="f-vj"></label><label class="ctrl"><span>Salto lateral izq. (cm)</span><input type="number" inputmode="decimal" id="f-li"></label><label class="ctrl"><span>Salto lateral der. (cm)</span><input type="number" inputmode="decimal" id="f-ld"></label><label class="ctrl"><span>5-10-5 (s)</span><input type="number" inputmode="decimal" id="f-ag"></label></div>'+
+    '<button class="btn full ghost" data-a="fis-test">Guardar los tests</button>'+
+    (T.length?'<div class="ftab t4"><div class="fh"><span></span><span>Vertical</span><span>Lateral</span><span>5-10-5</span></div>'+T.slice(0,8).map(function(x){return '<div><span>'+esc(fmtDate(x.d).replace(/^[A-Za-zÁÉÍÓÚáéíóú]+ /,''))+'</span><span class="mono">'+(x.vj?nf(+x.vj,0)+' cm':'—')+'</span><span class="mono">'+(x.li||x.ld?(x.li?nf(+x.li,0):'—')+' / '+(x.ld?nf(+x.ld,0):'—'):'—')+'</span><span class="mono">'+(x.ag?nf(+x.ag,2)+' s':'—')+'</span></div>';}).join('')+'</div>':'')+
+    '</div>'+fold('fis-howtest','Cómo hacer los tests','<div class="steps">'+FIS_TESTS.map(function(x){return '<div><b>'+esc(x[0])+'</b><span>'+esc(x[1])+'</span></div>';}).join('')+'</div>')+'</section>';
+  /* Comida */
+  var age=F.a||(S.diet&&S.diet.a)||'',brk=started&&C.FIS_BREAK.indexOf(wk)>=0,R=ready&&+age?C.fisDiet({w0:F.w0,h:F.h,goal:F.goal,a:age,rate:F.rate,log:F.log},brk):null;
+  h+='<section class="sec" style="gap:8px"><div class="sec-h"><h2>Lo que comes</h2></div><div class="card" style="gap:10px">';
+  h+='<div class="dgrid"><label class="ctrl"><span>Edad</span><input type="number" inputmode="numeric" id="f-a" value="'+esc(age)+'" placeholder="años"></label></div>';
+  h+='<div class="ctrl"><span>Ritmo por semana</span><div class="chips wrap">'+[[.5,'0,5 % suave'],[.7,'0,7 % recomendado'],[1,'1 % rápido']].map(function(x){return '<button class="chip'+((+F.rate||.7)===x[0]?' on':'')+'" data-a="fis-rate" data-v="'+x[0]+'">'+x[1]+'</button>';}).join('')+'</div></div>';
+  if(!ready)h+='<p class="muted" style="font-size:14px">Guarda primero tus datos de arriba.</p>';
+  else if(!+age)h+='<p class="muted" style="font-size:14px">Escribe tu edad para calcular tus calorías.</p><button class="btn small" data-a="fis-calc" style="justify-self:start">Calcular</button>';
+  else if(R){
+    if(R.teen)h+='<p class="note info">Con menos de 18 años no hacemos dieta para bajar: come para rendir y crecer, y el cambio vendrá del entreno. Si quieres bajar peso, hazlo con un profesional.</p>';
+    else if(brk)h+='<p class="note info">Semanas '+C.FIS_BREAK.join(' y ')+': pausa de dieta, a mantenimiento. Sigues entrenando igual; después vuelves al déficit.</p>';
+    else h+='<p class="muted" style="font-size:14px;margin:0">Unas '+R.D+' kcal menos de lo que gastas cada día. Proteína y grasa iguales todos los días; los hidratos suben cuando entrenas.</p>';
+    h+='<div class="dtable"><div class="dh"><span></span><span>Energía</span><span>Hidratos</span><span>Proteína</span><span>Grasa</span></div>'+C.FIS_DAYT.map(function(x){var d=R[x[0]];return '<div class="dr"><span>'+esc(x[1])+'</span><span class="mono">'+d.kcal+'</span><span class="mono">'+d.c+' g</span><span class="mono">'+R.p+' g</span><span class="mono">'+R.f+' g</span></div>';}).join('')+'</div>';
+    h+='<p class="muted" style="font-size:13px;margin:0">Energía en kcal. Es un punto de partida: el seguimiento semanal te dice si subir o bajar.</p><button class="btn small ghost" data-a="g-nav" data-v="dieta" style="justify-self:start">Menús y lista de la compra</button>';
+  }
+  h+='</div>'+fold('fis-eat','Cómo comer para bajar grasa sin perder salto',ul(['Proteína alta todos los días ('+(R?R.p:'unos 2,2 g por kilo de tu peso objetivo')+(R?' g':'')+'), repartida en 3–4 comidas.','Hidratos alrededor del entreno: antes para rendir y después para recuperar.','Platos con medio plato de verdura, un cuarto de proteína y un cuarto de hidratos los días de descanso.','Pésate igual cada semana y ajusta con el seguimiento, no con un mal día.','Si la comida empieza a darte ansiedad o culpa, para la dieta y habla con un profesional.']))+'</section>';
+  /* Plan de 26 semanas */
+  h+='<section class="sec" style="gap:8px"><div class="sec-h"><h2>El plan de 26 semanas</h2></div>';
+  C.FIS_PH.forEach(function(ph,i){var a=C.addDays(F.start,(ph.w[0]-1)*7),b=C.addDays(F.start,ph.w[1]*7-1),cur=started&&wk>=ph.w[0]&&wk<=ph.w[1];
+    var body='<p style="color:var(--text)">'+esc(ph.d)+'</p>'+['A','B','C'].map(function(L){var id='fis-'+(i+1)+L.toLowerCase(),R0=C.RUTI[id];return '<div class="card" style="gap:8px"><b>Sesión '+L+' · '+esc(C.FIS_SES[ph.id][L].n)+'</b><span class="muted" style="font-size:13px">≈ '+R0.mins+' min</span>'+fisSesList(id)+'<button class="btn small ghost" data-a="fis-go" data-v="'+id+'" style="justify-self:start">Hacer ahora</button></div>';}).join('');
+    h+=fold('fis-ph'+i,'Fase '+(i+1)+': '+esc(ph.n),body,{sm:'Semanas '+ph.w[0]+'–'+ph.w[1]+(cur?' · ahora':''),cls:cur?'cur':''});});
+  h+=fold('fis-weeks','Descargas, tests y pausa de dieta',ul(['Semanas '+C.FIS_DELOAD.join(', ')+': descarga, con un 40 % menos de series, y tests.','Semanas '+C.FIS_BREAK.join(' y ')+' ('+fmtDate(C.addDays(F.start,(C.FIS_BREAK[0]-1)*7)).toLowerCase()+' en adelante): pausa de dieta, comes a mantenimiento.','Después de la semana '+C.FIS_WEEKS+', sigues con las sesiones de la fase 4 para mantener.']))+'</section>';
+  /* Pilares */
+  h+='<section class="sec" style="gap:8px"><div class="sec-h"><h2>Los tres pilares</h2></div>'+FIS_PIL.map(function(x,i){return fold('fis-pil'+i,esc(x[0]),ul(x[1])+'<div class="chips wrap">'+x[2].map(function(id){var e=C.EXI[id];return e?'<button class="chip" data-a="sheet" data-v="'+id+'">'+esc(e.n)+'</button>':'';}).join('')+'</div>');}).join('')+'</section>';
+  /* Hábitos y Kinský */
+  h+='<section class="sec" style="gap:8px"><div class="sec-h"><h2>Hábitos</h2></div>'+fold('fis-hab','Lo que pasa fuera del gimnasio',ul(FIS_HAB)+'<div class="chips wrap"><button class="chip" data-a="sheet" data-v="fis-intervalos">Intervalos en bici o carrera</button></div>')+'</section>';
+  h+='<section class="sec" style="gap:8px"><div class="sec-h"><h2>Tu referencia</h2></div><div class="card" style="gap:8px"><b style="font-size:17px">Antonín Kinský</b><ul class="cl">'+KINSKY.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>'+
+    (ready?'<p style="margin:0;font-size:14px">Tú: '+nf(+F.h/100,2)+' m y '+nf(now,1)+' kg, con objetivo de '+nf(+F.goal,1)+' kg. Su peso es la referencia, pero tu meta real es la cintura por debajo de '+Math.round(+F.h/2)+' cm y saltar más alto y más lejos que hoy.</p>':'')+'</div></section>';
+  /* Estudios, fuentes, ajustes y avisos */
+  h+='<section class="sec" style="gap:8px">'+fold('fis-ev','Lo que dicen los estudios','<div class="facts-l">'+C.FIS_EV.map(function(f){return '<div><b>'+esc(f[0])+'</b><span>'+esc(f[1])+'</span></div>';}).join('')+'</div>')+fold('fis-src','Fuentes',srcList(C.FIS_SRC));
+  h+=fold('fis-set','Ajustar el programa','<div class="dgrid"><label class="ctrl"><span>Inicio</span><input type="date" id="f-start" value="'+esc(F.start)+'"></label>'+(ready?'<label class="ctrl"><span>Peso inicial (kg)</span><input type="number" inputmode="decimal" id="f-w0" value="'+esc(F.w0)+'"></label><label class="ctrl"><span>Altura (cm)</span><input type="number" inputmode="numeric" id="f-h" value="'+esc(F.h)+'"></label><label class="ctrl"><span>Objetivo (kg)</span><input type="number" inputmode="decimal" id="f-goal" value="'+esc(F.goal)+'"></label>':'')+'</div><button class="btn small" data-a="fis-save-data" style="justify-self:start">Guardar</button><button class="btn small ghost" data-a="fis-on" style="justify-self:start">'+(F.on?'Pausar el programa':'Reanudar el programa')+'</button>');
+  h+=fold('fis-stop','Cuándo parar',ul(['Dolor en una articulación, que no sea cansancio muscular.','Mareos, mucho cansancio o dormir peor varias semanas: sube las calorías y descansa.','Si bajas más de un 1 % por semana varias semanas seguidas, come más.','Si tienes alguna enfermedad o tomas medicación, consulta antes con un médico.']),{cls:'bad'})+'</section>';
+  return h+'</div>';}
 function liteHTML(){
   var days=spDays(),t=today();
   var h='<section class="hero"><div class="pad"><p class="hello">'+greeting()+'.</p><h1 class="disp">'+(days.length?'Tu rutina especial':'Sin rutina activa')+'</h1></div></section><div class="pad"><section class="sec">';
@@ -2946,7 +3314,7 @@ function liteHTML(){
       (lg?'<div class="done-badge">✓ Hecha · '+(lg.mins||0)+' min · esfuerzo '+(lg.rpe||'—')+'/10</div>':'')+
       '<button class="btn full'+(k===t&&!lg?'':' ghost')+'" data-a="open-ses" data-k="'+k+'">'+(lg?'Ver la sesión':(k===t?'Empezar':'Ver la sesión'))+'</button></div>';});
   if(!days.length)h+='<p class="muted">Crea una rutina para tu caso o haz el test completo para tener un plan para cada día.</p>';
-  h+=spCTA(days.length?'Crear otra rutina para otro caso':null)+volCTA()+rutCTA();
+  h+=fisCard()+spCTA(days.length?'Crear otra rutina para otro caso':null)+volCTA()+rutCTA();
   h+='</section><section class="sec"><div class="card"><b>¿Entrenas a menudo?</b><p class="muted" style="font-size:14px">Con el test completo tendrás un plan para cada día, ordenado alrededor de tus partidos.</p><button class="btn small" data-a="ob-start">Crear mi plan diario</button></div></section></div>';
   return h;
 }
@@ -2954,8 +3322,8 @@ function liteHTML(){
 /* ---------- Vistas ---------- */
 function topHTML(){var d=new Date();var sd=C.DAYS[C.dayIdx(d)].slice(0,3)+' '+d.getDate()+' '+['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'][d.getMonth()];
   return '<header class="top"><div class="top-in pad"><span class="mark"><i aria-hidden="true"></i>Portero Diario</span><span class="topr"><span class="mono">'+esc(sd)+'</span>'+(P()?'<button class="topbtn'+(U.view==='perfil'?' on':'')+'" data-a="tab" data-v="perfil" aria-label="Perfil">'+ICON.perfil+'</button>':'')+'</span></div></header>';}
-function tabsHTML(){var lite=!P(),t=lite?[['hoy','Rutina','rutina'],['ejercicios','Ejercicios'],['guia','Guía'],['crear','Mi plan']]:[['hoy','Hoy'],['plan','Plan'],['ejercicios','Ejercicios'],['guia','Guía'],['progreso','Progreso']];
-  return '<nav class="tabs" aria-label="Secciones"><div class="tabs-in"'+(lite?' style="grid-template-columns:repeat(4,minmax(0,1fr))"':'')+'>'+t.map(function(x){var on=U.view===x[0]||(U.view==='sesion'&&x[0]==='hoy');var act=x[0]==='crear'?'data-a="ob-start"':'data-a="tab" data-v="'+x[0]+'"';return '<button class="tab'+(on?' on':'')+'" '+act+' '+(on?'aria-current="page"':'')+'>'+ICON[x[2]||x[0]]+'<span>'+x[1]+'</span></button>';}).join('')+'</div></nav>';}
+function tabsHTML(){var lite=!P(),t=lite?[['hoy','Rutina','rutina'],['fisico','Físico'],['ejercicios','Ejercicios'],['guia','Guía'],['crear','Mi plan']]:[['hoy','Hoy'],['plan','Plan'],['fisico','Físico'],['ejercicios','Ejercicios'],['guia','Guía'],['progreso','Progreso']];
+  return '<nav class="tabs" aria-label="Secciones"><div class="tabs-in" style="grid-template-columns:repeat('+t.length+',minmax(0,1fr))">'+t.map(function(x){var on=U.view===x[0]||(U.view==='sesion'&&x[0]==='hoy');var act=x[0]==='crear'?'data-a="ob-start"':'data-a="tab" data-v="'+x[0]+'"';return '<button class="tab'+(on?' on':'')+'" '+act+' '+(on?'aria-current="page"':'')+'>'+ICON[x[2]||x[0]]+'<span>'+x[1]+'</span></button>';}).join('')+'</div></nav>';}
 function dayControls(k,s){
   var p=P(),o=S.day[k]||{},locs=p.locs.length?p.locs:['casa'];
   var h='<div class="ctrl"><span>Hoy estoy</span><div class="chips">'+[['solo','Solo'],['pareja','Con alguien que me tira']].map(function(m){return '<button class="chip'+(s.mode===m[0]?' on':'')+'" data-a="d-mode" data-k="'+k+'" data-v="'+m[0]+'">'+m[1]+'</button>';}).join('')+'</div></div>';
@@ -2984,7 +3352,7 @@ function hoyHTML(){
   if(!lg&&s.type!=='descanso') h+=s.special?fold('hoy-aj','Ajustar',spControls(k,s.sp),{cls:'inl',sm:esc(spSummary(s.sp))}):fold('hoy-aj','Ajustar',dayControls(k,s),{cls:'inl',sm:esc(dcSummary(s))});
   h+=fold('hoy-why',s.special?'Por qué esta rutina':'Por qué hoy','<p>'+esc(sesWhy(s))+'</p>',{cls:'inl'});
   h+='</div></section>';
-  h+='<section class="sec" style="padding-top:12px;gap:8px">'+(s.special?'':spCTA())+(s.type==='vuelo'?'':volCTA(volNext()))+rutCTA()+'</section>';
+  h+='<section class="sec" style="padding-top:12px;gap:8px">'+fisCard()+(s.special?'':spCTA())+(s.type==='vuelo'?'':volCTA(volNext()))+rutCTA()+'</section>';
   // semana
   h+='<section class="sec"><div class="sec-h"><h2>Esta semana</h2><span class="muted" style="font-size:13px">Toca un día</span></div><div class="week">';
   for(var i=0;i<7;i++){var dk=C.addDays(ws,i),t=C.typeFor(p,S,dk),done=!!S.log[dk],dsp=C.spOf(S,dk);
@@ -2999,7 +3367,7 @@ function hoyHTML(){
   if(tot.n===0) h+='<section class="sec"><p class="muted" style="font-size:13.5px">Tu progreso aparecerá en cuanto termines la primera sesión.</p></section>';
   return h+'</div>';
 }
-function shortType(t){return {fuerza:'Fuerza',tecnica:'Técnica',reaccion:'Reacción',activacion:'Activa',recuperacion:'Recup.',base:'Base',equipo:'Equipo',partido:'Partido',descanso:'Libre',vuelo:'Volar',especial:'Especial'}[t]||t;}
+function shortType(t){return {fuerza:'Fuerza',tecnica:'Técnica',reaccion:'Reacción',activacion:'Activa',recuperacion:'Recup.',base:'Base',equipo:'Equipo',partido:'Partido',descanso:'Libre',vuelo:'Volar',gimnasio:'Gym',especial:'Especial'}[t]||t;}
 function weeksStreak(){var p=P(),w=curWeek(),n=0;
   var cur=C.weekSummary(p,S,weekStartOf(w));if(cur.planned&&cur.done/cur.planned>=0.8)n++;
   for(var i=w-1;i>=0;i--){var s=C.weekSummary(p,S,weekStartOf(i));if(!s.planned)continue;if(s.done/s.planned>=0.8)n++;else break;}
@@ -3069,7 +3437,7 @@ function planHTML(){
     C.DSH.map(function(d,i){return '<button class="chip'+(ov!=null&&ov!=='none'&&+ov===i?' on':'')+'" data-a="wm" data-v="'+i+'">'+d+'</button>';}).join('')+
     '<button class="chip'+(ov==='none'?' on':'')+'" data-a="wm" data-v="none">Sin partido</button><button class="chip'+(ov==null?' on':'')+'" data-a="wm" data-v="def">Como siempre</button></div>',{sm:esc(m==null?'Sin partido':C.DAYS[m])});
   var vc=C.vueloCands(p,S,w),vd=C.vueloDay(p,S,w),vs=S.vd==null?'auto':S.vd;
-  h+=fold('pl-vuelo','Tu día de volar','<p>Un día a la semana para pliometría, despegue y estiradas, siempre a tres días o más del partido. El día de fuerza que tenga al lado se queda sin saltos.</p><div class="chips wrap">'+
+  h+=fold('pl-vuelo','Tu día de volar','<p>Un día a la semana para pliometría, despegue y estiradas, siempre a tres días o más del partido. El día de fuerza que tenga al lado se queda sin saltos. Con el programa de gimnasio (Físico), los saltos ya están allí y este día es de técnica de despegue y estiradas.</p><div class="chips wrap">'+
     vc.map(function(x){return '<button class="chip'+(vs!=='auto'&&vs!=='no'&&+vs===x.d?' on':'')+'" data-a="vd" data-v="'+x.d+'">'+C.DSH[x.d]+'</button>';}).join('')+
     '<button class="chip'+(vs==='auto'?' on':'')+'" data-a="vd" data-v="auto">Automático</button><button class="chip'+(vs==='no'?' on':'')+'" data-a="vd" data-v="no">Sin día de volar</button></div>'+
     (vc.length?'':'<p class="muted">Esta semana no hay ningún día de entreno a tres días o más del partido.</p>')+
@@ -3077,7 +3445,7 @@ function planHTML(){
   h+=spCTA('Para una prueba, un partido fuera de lo normal o agujetas');
   h+='</section><section class="sec">';
   var why='<div class="why">';
-  ['fuerza','tecnica','vuelo','reaccion','activacion','recuperacion','base','equipo'].forEach(function(t){why+='<div>'+typeDot(t)+'<span><b>'+esc(C.TYPES[t].n)+'.</b> <span class="muted">'+esc(C.TYPES[t].why)+'</span></span></div>';});
+  ['gimnasio','fuerza','tecnica','vuelo','reaccion','activacion','recuperacion','base','equipo'].forEach(function(t){why+='<div>'+typeDot(t)+'<span><b>'+esc(C.TYPES[t].n)+'.</b> <span class="muted">'+esc(C.TYPES[t].why)+'</span></span></div>';});
   why+='</div><p>En porteros de Primera División la carga baja a medida que se acerca el partido y es mínima el día antes. Tu semana sigue esa lógica.</p>';
   h+=fold('pl-why','Por qué cada día',why)+'</section>';
   return h+'</div>';
@@ -3288,15 +3656,15 @@ function findItem(k,id){var s=C.buildSession(P(),S,k),r=null;s.blocks.forEach(fu
 
 /* ---------- Render ---------- */
 function render(){
-  var app=document.getElementById('app'),lite=!P();
+  var app=document.getElementById('app'),lite=!P();C.fisDef(S);
   if(U.view==='agujetas'){U.view='guia';U.g=U.g&&RCAT[U.g]?U.g:'agu';}
-  var rutOnly=lite&&U.view==='guia'&&!U.ob&&!U.sp;
+  var rutOnly=lite&&(U.view==='guia'||U.view==='fisico')&&!U.ob&&!U.sp;
   if(U.ob||(lite&&!U.sp&&!hasSp()&&!rutOnly)){if(!U.ob)startOb(false);app.innerHTML='';renderOver();return;}
   if(lite&&!hasSp()&&!rutOnly){app.innerHTML='';renderOver();return;}
   var v=U.view,body='';
-  if(lite&&v!=='sesion'&&v!=='ejercicios'&&v!=='guia')v=U.view='hoy';
+  if(lite&&v!=='sesion'&&v!=='ejercicios'&&v!=='guia'&&v!=='fisico')v=U.view='hoy';
   if(lite&&v==='sesion'&&!C.spOf(S,U.date||today()))v=U.view='hoy';
-  if(v==='hoy')body=lite?liteHTML():hoyHTML();else if(v==='guia')body=guiaHTML();else if(v==='sesion')body=sesHTML();else if(v==='plan')body=planHTML();else if(v==='ejercicios')body=libHTML();else if(v==='progreso')body=progHTML();else body=perfilHTML();
+  if(v==='hoy')body=lite?liteHTML():hoyHTML();else if(v==='guia')body=guiaHTML();else if(v==='sesion')body=sesHTML();else if(v==='plan')body=planHTML();else if(v==='ejercicios')body=libHTML();else if(v==='progreso')body=progHTML();else if(v==='fisico')body=fisicoHTML();else body=perfilHTML();
   app.innerHTML='<div class="shell">'+topHTML()+'<main id="main">'+body+'</main></div>'+tabsHTML();
   if(v==='ejercicios')libList();
   ANIM.mount(app);
@@ -3307,7 +3675,7 @@ function renderOver(){
   var o=document.getElementById('over'),h='';
   if(U.ob)h=obHTML();
   else if(U.sp)h=spHTML();
-  else if(P()||hasSp()||U.view==='guia')h=guidedHTML()+sheetHTML()+finishHTML();
+  else if(P()||hasSp()||U.view==='guia'||U.view==='fisico')h=guidedHTML()+sheetHTML()+finishHTML();
   if(U.toast)h+='<div class="toast" role="status">'+esc(U.toast)+'</div>';
   o.innerHTML=h;ANIM.mount(o);
   if(U.ob&&U.ob.stage==='gen')animGen();
@@ -3343,6 +3711,15 @@ document.addEventListener('click',function(ev){
     case 'an-inc':case 'an-dec':{anRead();var ab=S.anCur&&S.anCur.blocks[S.anCur.i];if(ab){ab.c[v]=Math.max(0,(ab.c[v]||0)+(a==='an-inc'?1:-1));save();render();}break;}
     case 'an-save':anSave();render();window.scrollTo(0,0);toast('Análisis guardado');break;
     case 'an-cancel':clearInterval(AT.iv);AT.iv=0;S.anCur=null;save();render();break;
+    case 'fis-save-data':fisRead();save();render();toast(fisReady(C.fisDef(S))?'Datos guardados':'Faltan peso, altura u objetivo');break;
+    case 'fis-calc':fisRead();save();render();break;
+    case 'fis-rate':fisRead();C.fisDef(S).rate=+v;save();render();break;
+    case 'fis-on':{fisRead();var Fo=C.fisDef(S);Fo.on=!Fo.on;save();render();toast(Fo.on?'Programa en marcha':'Programa en pausa');break;}
+    case 'fis-day':{fisRead();var Fd=C.fisDef(S),dd2=+v,ix=Fd.days.indexOf(dd2);if(ix>=0){if(Fd.days.length>1)Fd.days.splice(ix,1);else{toast('Deja al menos un día');break;}}else{if(Fd.days.length>=4){toast('Máximo 4 días');break;}Fd.days.push(dd2);}Fd.days.sort();save();render();break;}
+    case 'fis-log':{var Fl=C.fisDef(S),lw=fisNum('f-lw'),lc=fisNum('f-lc'),tk=today();if(!lw&&!lc){toast('Escribe tu peso o tu cintura');break;}Fl.log=(Fl.log||[]).filter(function(x){return x.d!==tk;});Fl.log.push({d:tk,w:lw||'',cin:lc||''});save();render();toast('Semana guardada');break;}
+    case 'fis-del':{var Fx=C.fisDef(S);Fx.log=(Fx.log||[]).filter(function(x){return x.d!==v;});save();render();break;}
+    case 'fis-test':{var Ft=C.fisDef(S),tv={vj:fisNum('f-vj'),li:fisNum('f-li'),ld:fisNum('f-ld'),ag:fisNum('f-ag')},tk2=today();if(!tv.vj&&!tv.li&&!tv.ld&&!tv.ag){toast('Escribe al menos un resultado');break;}Ft.tests=(Ft.tests||[]).filter(function(x){return x.d!==tk2;});tv.d=tk2;Ft.tests.push(tv);save();render();toast('Tests guardados');break;}
+    case 'fis-go':{var fr=C.RUTI[v];if(!fr)break;var Fg=C.fisDef(S);dayO(today()).sp={g:Date.now(),sit:'recuperar',rut:v,doms:2,loc:'gimnasio',gear:rutGear().slice(),mode:'solo',mins:fr.mins,dl:Fg.start<=today()&&fisDeload(Fg,today())};save();U.date=today();U.view='sesion';render();window.scrollTo(0,0);toast('Sesión lista');break;}
     case 'vd':S.vd=v;save();render();toast(v==='no'?'Sin día de volar':(v==='auto'?'Día de volar automático':'Volar: '+C.DAYS[+v]));break;
     case 'g-nav':U.ob=null;U.sheet=null;U.view='guia';U.g=v||'home';render();window.scrollTo(0,0);break;
     case 'v-open':{var vo=vState();vo.k=v;save();U.view='guia';U.g='video';render();window.scrollTo(0,0);break;}
@@ -3363,7 +3740,7 @@ document.addEventListener('click',function(ev){
     case 'sp-set':{var so=C.spOf(S,k);if(!so)break;var fld=t.getAttribute('data-f');so[fld]=(fld==='doms'||fld==='mins')?+v:v;save();render();break;}
     case 'sp-gear':{var sg=C.spOf(S,k);if(!sg)break;sg.gear=sg.gear||[];var gi=sg.gear.indexOf(v);if(gi>=0)sg.gear.splice(gi,1);else sg.gear.push(v);save();render();break;}
     case 'sp-del':{var sd=C.spOf(S,k);if(!sd)break;spClear(sd.g,today());if(S.day[k])delete S.day[k].sp;save();U.view='hoy';U.open['ses-aj']=false;U.open['hoy-aj']=false;render();window.scrollTo(0,0);toast(P()?'Has vuelto a tu plan':'Rutina borrada');break;}
-    case 'tab':if(v==='guia')U.g='home';U.view=v;U.sheet=null;if(v==='plan')U.planWeek=null;render();window.scrollTo(0,0);break;
+    case 'tab':if(v==='guia')U.g='home';if(v==='fisico'){U.ob=null;U.sheet=null;}U.view=v;U.sheet=null;if(v==='plan')U.planWeek=null;render();window.scrollTo(0,0);break;
     case 'open-ses':U.date=k;U.view='sesion';render();window.scrollTo(0,0);break;
     case 'd-mode':dayO(k).mode=v;save();render();break;
     case 'd-loc':dayO(k).loc=v;save();render();break;
@@ -3411,6 +3788,7 @@ document.addEventListener('input',function(ev){
   if(ev.target.id==='libq'){U.lib.q=ev.target.value;libList();}
   if(/^v-(o|m|note)$/.test(ev.target.id||'')){vRead();try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}var vsb=document.querySelector('[data-a="v-save"]');if(vsb&&ev.target.id==='v-note'&&ev.target.value.trim())vsb.disabled=false;}
   if(/^an-(who|link|note|copy|drill)$/.test(ev.target.id||'')){anRead();try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+  if(/^f-(w0|h|goal|a|start)$/.test(ev.target.id||'')){fisRead();try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
   if(/^d-[wha]$/.test(ev.target.id||'')){dietRead();try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
   if(ev.target.id==='ob-name'&&U.ob){U.ob.a.name=ev.target.value;}
 });

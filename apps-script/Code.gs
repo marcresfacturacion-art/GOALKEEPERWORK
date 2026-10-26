@@ -24,7 +24,8 @@ const TIPOS = {
   partido: 'Día de partido',
   descanso: 'Descanso',
   especial: 'Rutina especial',
-  vuelo: 'Volar'
+  vuelo: 'Volar',
+  gimnasio: 'Gimnasio'
 };
 const LUGARES = { campo: 'Campo', parque: 'Parque', gimnasio: 'Gimnasio', pared: 'Pared', casa: 'Casa' };
 const TESTS = {
