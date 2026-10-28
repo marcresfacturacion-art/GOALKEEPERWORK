@@ -726,6 +726,15 @@ X('fis-banca','fis','Press de banca',{need:['pesas'],avoid:['hombro'],int:3,t:6,
 X('fis-latlunge','fis','Zancada lateral',{avoid:['rodilla','cadera'],int:2,t:4,d:D([2,3,3,3],'8','por lado',60),
   how:['Pies juntos. Da un paso largo hacia un lado y baja la cadera hacia atrás sobre esa pierna, con la otra estirada.','Empuja con el pie de la pierna doblada para volver. Con una mancuerna en el pecho cuando sea fácil.'],
   cues:['Pecho arriba y rodilla en la línea del pie.','Es la fuerza que usas para desplazarte de lado en la portería.'],err:['Despegar el talón de la pierna doblada.'],yt:'zancada lateral técnica'}),
+X('fis-sprint','fis','Sprint corto',{need:['espacio'],avoid:['rodilla','tobillo'],int:3,t:5,d:D([3,4,4,5],'1','sprint',90),
+  how:['Calienta bien antes. Sal de pie con un pie delante, o desde tu posición de base de portero.','Corre a tope 10–30 m y frena en 5–10 m.','Vuelve andando y descansa lo suficiente para que cada sprint sea al máximo.'],
+  cues:['Primeros pasos cortos y potentes, con el cuerpo inclinado hacia delante.','Brazos fuertes, de la cadera a la cara.'],err:['Hacerlos cansado: entonces ya no entrenas velocidad.'],yt:'técnica de aceleración sprint 10 metros'}),
+X('fis-broad','fis','Salto horizontal a pies juntos',{avoid:['rodilla','tobillo'],int:3,t:4,d:D([2,3,3,4],'3','',60),
+  how:['Pies a la anchura de la cadera. Lleva los brazos atrás y baja rápido.','Salta hacia delante lo más lejos que puedas, con los brazos.','Cae con las dos piernas a la vez, sin ruido, y aguanta 2 segundos.'],
+  cues:['Empuja el suelo hacia atrás y hacia abajo, como en un despegue.'],err:['Caer con las rodillas hacia dentro.','Encadenar saltos sin controlar la caída.'],yt:'salto horizontal pies juntos técnica'}),
+X('fis-approach','fis','Salto con carrera',{loc:['campo','parque','gimnasio','pared'],avoid:['rodilla','tobillo'],int:3,t:4,d:D([2,3,3,4],'3','',60),
+  how:['Dos o tres pasos de carrera, con el último más largo y bajando la cadera.','Apoya los dos pies casi a la vez, lleva los brazos de atrás arriba y salta a tocar lo más alto posible: una marca en la pared o el larguero.','Cae con las dos piernas, suave.'],
+  cues:['Es el salto del remate de vóley y del mate de baloncesto: convierte la carrera en altura.'],err:['Frenar antes de saltar.','Caer sobre una sola pierna sin control.'],yt:'salto con carrera técnica voleibol'}),
 X('fis-intervalos','fis','Intervalos en bici o carrera',{int:3,t:10,d:D([1,1,1,1],null,'',0,600),
   how:['5 minutos suaves para entrar en calor.','Después, 30 s fuerte y 60 s suave, de 6 a 8 veces, en bici o corriendo.'],
   cues:['En días sin saltos, o al menos 3 horas después de una sesión de saltos.'],err:['Hacerlo justo antes de los saltos.'],yt:'intervalos bici estática principiantes'}),
@@ -949,7 +958,7 @@ var ANIM_MAP={
   'agu-saque':[['roll','Rodado'],['overarm','Por encima del hombro']],'agu-voz':'voice','agu-ensayo':'visual','agu-respira':'breath','agu-pies-suaves':'passwall',
   'agu-rodillo':'roller','agu-espalda':'backball','agu-calor':'heat','agu-frio':'coldbath','agu-contraste':'shower',
   'men-palabra':'cue','men-activa':'hops','men-foco':'eyes','men-quieteye':'qeye','men-penalti':'dive_shot','men-dormir':'legsup',
-  'fis-hipthrust':'hipthrust','fis-stepup':'stepup','fis-soleo':'soleus','fis-pie':'towel','fis-tibial':'tibraise','fis-5105':'proagility','fis-banca':'benchpress','fis-latlunge':'latlunge','fis-intervalos':[['bike','Bici'],['run','Carrera']],
+  'fis-hipthrust':'hipthrust','fis-stepup':'stepup','fis-soleo':'soleus','fis-pie':'towel','fis-tibial':'tibraise','fis-5105':'proagility','fis-banca':'benchpress','fis-latlunge':'latlunge','fis-intervalos':[['bike','Bici'],['run','Carrera']],'fis-sprint':'run','fis-broad':'broadjump','fis-approach':'approach',
   'vol-frena':'snapstick','vol-pogo':'pogo','vol-cono':'conehop','vol-lateral-arriba':'boundup','vol-cajon':'dropbound','vol-forma':'flyform','vol-media':'halfkneel','vol-paso':'powerstep','vol-despegue':'takeoff',
   'coo-malabar':'juggle','coo-palmada':'clap','coo-debil':'tennis1','coo-escalera':'ladder','coo-colores':'ptennis',
   'pp-mov':'march','pp-manos':'catchW','pp-desp':'shuffle','pp-caidas':[['dive_knee','Desde rodillas'],['dive_squat','Desde cuclillas'],['dive_set','De pie']],'pp-todas':'pmix','pp-aereo':'aero','pp-tiros':[['pmix','Tiros'],['longkick','Saques largos']],'pp-cabeza':'visual'
@@ -1320,7 +1329,7 @@ var FIS_PH=[
   {id:'f3',n:'Fuerza y potencia',w:[13,20],rir:'te sobran 1–2',d:'Pesado y rápido: cada ejercicio de fuerza va seguido de un salto. Te sobran 1 o 2 repeticiones.'},
   {id:'f4',n:'Explosividad y agilidad',w:[21,26],rir:'te sobran 2',d:'Mantienes la fuerza con menos series y el resto es salto reactivo, despegue aéreo y cambio de dirección.'}];
 var FIS_WEEKS=26,FIS_DELOAD=[4,8,12,16,20,24],FIS_TESTW=[1,4,8,12,16,20,24,26],FIS_BREAK=[8,9];
-var FIS_PLYO=['vol-frena','vol-pogo','vol-cono','vol-lateral-arriba','vol-cajon','pot-cmj','pot-cajon','pot-skater','pot-imp','aer-batida','fis-5105','pie-vallas'];
+var FIS_PLYO=['fis-sprint','fis-broad','fis-approach','vol-frena','vol-pogo','vol-cono','vol-lateral-arriba','vol-cajon','pot-cmj','pot-cajon','pot-skater','pot-imp','aer-batida','fis-5105','pie-vallas'];
 function fisDef(S){if(!S.fis)S.fis={on:true,start:'2026-11-05',days:[0,2,4],w0:'',h:'',goal:'',a:'',rate:.7,log:[],tests:[]};return S.fis;}
 function fisWeek(F,k){return Math.floor(daysBetween(F.start,k)/7)+1;}
 function fisPhaseIdx(wk){if(wk<=4)return 0;if(wk<=12)return 1;if(wk<=20)return 2;return 3;}
@@ -1347,12 +1356,12 @@ var FIS_SES={
       ['Fuerza',[[RR('fis-hipthrust',3,'10','· te sobran 3',90,0,7),RR('fue-puente',3,'12','por pierna',45,0,4)],[RR('fis-stepup',3,'8','por pierna · te sobran 3',60,0,6),RR('fue-bulgara',3,'8','por pierna',60,0,6)],[RR('fue-press',3,'10','· te sobran 3',60,0,5)],[RR('fue-dominadas',3,'5','asistidas si hace falta',90,0,6),RR('fue-remoinv',3,'8','',60,0,5)]]],
       ['Prevención',[[RR('pre-copen',2,'6','por lado',45,0,3)],[RR('pre-hombro',2,'12','',30,0,3),RR('pre-ytw',2,'8','de cada',30,0,3)]]],['Pies',[[RR('fis-pie',2,null,'por pie',20,45,3)]]]]},
   C:{n:'Una pierna, pies y agilidad',why:'Trabajo a una pierna y hacia los lados, como en la portería, con la agilidad 5-10-5 aprendida a ritmo suave.',
-   b:[['Calentar',[[RR('cal-mov',1,null,'',0,240,4)],[RR('pie-lateral',2,null,'',20,20,2)]]],['Agilidad',[[RR('fis-5105',4,'1','carrera al 70 %',60,0,5)],[RR('pie-escalera',2,'2','pasadas',30,0,3)]]],
+   b:[['Calentar',[[RR('cal-mov',1,null,'',0,240,4)],[RR('pie-lateral',2,null,'',20,20,2)]]],['Agilidad',[[RR('fis-5105',4,'1','carrera al 70 %',60,0,5)],[RR('fis-sprint',3,'1','10 m al 80 %',60,0,3)],[RR('pie-escalera',2,'2','pasadas',30,0,3)]]],
       ['Fuerza',[[RR('fue-bulgara',3,'8','por pierna · te sobran 3',60,0,6)],[RR('fis-latlunge',3,'8','por lado',60,0,5)],[RR('fue-flex',3,'10','',60,0,4)]]],
       ['Pies',[[RR('fis-soleo',3,'15','',45,0,4),RR('fue-gemelo',3,'12','por pierna',45,0,4)]]],['Tronco',[[RR('fue-pallof',2,'10','por lado',30,0,3),RR('fue-plancha',2,null,'por lado',30,30,3)]]]]}},
  f2:{
   A:{n:'Pierna fuerte y salto',why:'Sentadilla pesada, bisagra de cadera y hip thrust: la fuerza que luego se convierte en salto. Saltos al principio, con las piernas frescas.',
-   b:[['Calentar',[[RR('cal-mov',1,null,'',0,240,4)],[RR('vol-pogo',2,null,'',30,15,2)]]],['Salto',[[RR('pot-cmj',3,'4','al máximo',60,0,4)]]],
+   b:[['Calentar',[[RR('cal-mov',1,null,'',0,240,4)],[RR('vol-pogo',2,null,'',30,15,2)]]],['Salto',[[RR('pot-cmj',3,'4','al máximo',60,0,4)],[RR('fis-broad',3,'3','',60,0,3)]]],
       ['Fuerza',[[RR('fue-sentadilla',4,'6','· te sobran 2',150,0,10),RR('fue-goblet',4,'8','· te sobran 2',90,0,7)],[RR('fue-rdl',3,'8','por pierna · te sobran 2',60,0,6)],[RR('fis-hipthrust',3,'8','· te sobran 2',90,0,6),RR('fue-puente',3,'12','por pierna',45,0,4)]]],
       ['Pies',[[RR('fue-gemelo',3,'12','por pierna, con peso',45,0,4)],[RR('fis-tibial',2,'15','',30,0,2)]]],['Prevención',[[RR('pre-nordico',2,'5','',90,0,3),RR('pre-copen',2,'8','por lado',45,0,3)]]]]},
   B:{n:'Tren superior y tronco',why:'Empuje, tirón y lanzamientos para despejar de puños, sacar con la mano y aguantar los choques. Sin saltos: es el día que puede caer cerca del partido.',
@@ -1360,21 +1369,21 @@ var FIS_SES={
       ['Fuerza',[[RR('fis-banca',4,'8','· te sobran 2',120,0,8),RR('fue-flex',4,'12','',60,0,5)],[RR('fue-dominadas',4,'6','· te sobran 2',120,0,8),RR('fue-remoinv',4,'8','',60,0,5)],[RR('fue-press',3,'8','· te sobran 2',90,0,5)],[RR('fue-remo',3,'10','por brazo',60,0,5)]]],
       ['Tronco',[[RR('fue-pallof',3,'10','por lado',30,0,3)],[RR('fue-plancha',2,null,'por lado',30,40,3)]]],['Prevención',[[RR('pre-hombro',2,'12','',30,0,2),RR('pre-ytw',2,'8','de cada',30,0,2)]]]]},
   C:{n:'Una pierna, pies y agilidad',why:'Búlgara, subida al cajón con rodilla arriba (la batida del portero) y zancada lateral, con agilidad 5-10-5 a tope y saltos laterales.',
-   b:[['Calentar',[[RR('cal-mov',1,null,'',0,240,4)],[RR('pie-lateral',2,null,'',20,20,2)]]],['Agilidad',[[RR('fis-5105',5,'1','carrera a tope',90,0,8)]]],['Saltos laterales',[[RR('pot-skater',3,'5','por lado',60,0,4)]]],
+   b:[['Calentar',[[RR('cal-mov',1,null,'',0,240,4)],[RR('pie-lateral',2,null,'',20,20,2)]]],['Velocidad y agilidad',[[RR('fis-sprint',4,'1','10–20 m a tope',90,0,5)],[RR('fis-5105',4,'1','carrera a tope',90,0,6)]]],['Saltos laterales',[[RR('pot-skater',3,'5','por lado',60,0,4)]]],
       ['Fuerza',[[RR('fue-bulgara',3,'8','por pierna · te sobran 2',90,0,7)],[RR('fis-stepup',3,'6','por pierna, rodilla arriba',60,0,5),RR('aer-batida',3,'5','por pierna',45,0,4)],[RR('fis-latlunge',3,'8','por lado',60,0,5)]]],
       ['Pies',[[RR('fis-soleo',3,'15','',45,0,4),RR('fue-gemelo',3,'12','por pierna',45,0,4)],[RR('fis-pie',2,null,'por pie',20,45,3)]]]]}},
  f3:{
   A:{n:'Contraste: pesado y salto',why:'Cada serie pesada va seguida de saltos al máximo: el músculo cansado de fuerza salta más (potenciación). Es el corazón de la explosividad aérea.',
    b:[['Calentar',[[RR('cal-mov',1,null,'',0,240,4)],[RR('vol-pogo',2,null,'',30,15,2)]]],['Contraste 1',[[RR('fue-sentadilla',4,'4','pesado · te sobran 1–2',120,0,8),RR('fue-goblet',4,'6','pesado',90,0,6)],[RR('pot-cmj',4,'3','justo después, al máximo',120,0,4)]]],
-      ['Contraste 2',[[RR('fue-pmuerto',3,'4','· te sobran 2',150,0,7),RR('fue-rdl',3,'6','por pierna',90,0,5)],[RR('pot-cajon',3,'3','',90,0,4),RR('pot-cmj',3,'3','',90,0,3)]]],
+      ['Contraste 2',[[RR('fue-pmuerto',3,'4','· te sobran 2',150,0,7),RR('fue-rdl',3,'6','por pierna',90,0,5)],[RR('fis-broad',3,'3','justo después',90,0,4),RR('pot-cajon',3,'3','',90,0,4),RR('pot-cmj',3,'3','',90,0,3)]]],
       ['Cadera',[[RR('fis-hipthrust',3,'6','rápido al subir',90,0,5),RR('fue-puente',3,'10','por pierna',45,0,4)]]],['Pies',[[RR('fue-gemelo',3,'10','por pierna, pesado',60,0,4)]]],['Prevención',[[RR('pre-nordico',2,'6','',90,0,3),RR('pre-copen',2,'8','por lado',45,0,3)]]]]},
   B:{n:'Tren superior potente',why:'Lanzamientos explosivos y fuerza de empuje y tirón con menos repeticiones: potencia en los brazos para despejes y saques.',
    b:[['Calentar',[[RR('cal-banda',1,'10','de cada',0,0,3),RR('cal-mov',1,null,'',0,180,3)],[RR('pre-ytw',1,'8','de cada',0,0,2)]]],['Potencia',[[RR('pot-med',3,'5','',60,0,4),RR('pot-pase',3,'6','',45,0,3)],[RR('pot-medrot',3,'5','por lado',60,0,4)]]],
       ['Fuerza',[[RR('fis-banca',4,'6','· te sobran 1–2',120,0,8),RR('fue-flex',4,'12','',60,0,5)],[RR('fue-dominadas',4,'5','· te sobran 1–2',120,0,8),RR('fue-remoinv',4,'8','',60,0,5)],[RR('fue-press',3,'6','',90,0,5)]]],
       ['Tronco',[[RR('fue-pallof',3,'10','por lado',30,0,3)]]],['Prevención',[[RR('pre-hombro',2,'12','',30,0,2),RR('pre-ytw',2,'8','de cada',30,0,2)]]]]},
-  C:{n:'Agilidad y potencia lateral',why:'Cambios de dirección a tope, saltos laterales con salida hacia arriba y subida al cajón explosiva: moverte rápido de palo a palo y despegar.',
-   b:[['Calentar',[[RR('cal-mov',1,null,'',0,240,4)],[RR('pie-lateral',2,null,'',20,20,2)]]],['Agilidad',[[RR('fis-5105',6,'1','carrera a tope',90,0,9)],[RR('pie-vallas',3,'2','pasadas',45,0,3),RR('pie-escalera',3,'2','pasadas',30,0,3)]]],
-      ['Potencia lateral',[[RR('vol-lateral-arriba',3,'3','por lado',60,0,5)],[RR('pot-skater',3,'4','por lado',60,0,4)]]],
+  C:{n:'Velocidad, agilidad y potencia lateral',why:'Sprints cortos, cambios de dirección a tope, saltos laterales y salto con carrera: moverte rápido de palo a palo, despegar y rendir en cualquier deporte.',
+   b:[['Calentar',[[RR('cal-mov',1,null,'',0,240,4)],[RR('pie-lateral',2,null,'',20,20,2)]]],['Velocidad',[[RR('fis-sprint',4,'1','10–20 m a tope',120,0,5)]]],['Agilidad',[[RR('fis-5105',5,'1','carrera a tope',90,0,8)],[RR('pie-vallas',3,'2','pasadas',45,0,3),RR('pie-escalera',3,'2','pasadas',30,0,3)]]],
+      ['Potencia lateral',[[RR('vol-lateral-arriba',3,'3','por lado',60,0,5)],[RR('pot-skater',3,'4','por lado',60,0,4)]]],['Salto con carrera',[[RR('fis-approach',3,'3','',60,0,4)]]],
       ['Fuerza',[[RR('fis-stepup',3,'5','por pierna, explosivo',90,0,5),RR('aer-batida',3,'5','por pierna',60,0,4)],[RR('fue-bulgara',3,'6','por pierna · te sobran 2',90,0,6)]]],
       ['Pies',[[RR('fis-soleo',3,'12','pesado',60,0,4),RR('fue-gemelo',3,'10','por pierna',45,0,3)],[RR('fis-tibial',2,'15','',30,0,2)]]]]}},
  f4:{
@@ -1386,9 +1395,9 @@ var FIS_SES={
    b:[['Calentar',[[RR('cal-banda',1,'10','de cada',0,0,3),RR('cal-mov',1,null,'',0,180,3)]]],['Potencia',[[RR('pot-med',3,'5','',60,0,4),RR('pot-pase',3,'6','',45,0,3)],[RR('pot-medrot',3,'5','por lado',60,0,4)]]],
       ['Fuerza que mantienes',[[RR('fis-banca',3,'5','',120,0,6),RR('fue-flex',3,'12','',60,0,4)],[RR('fue-dominadas',3,'5','',120,0,6),RR('fue-remoinv',3,'8','',60,0,4)]]],
       ['Tronco',[[RR('fue-pallof',3,'10','por lado',30,0,3)],[RR('fue-plancha',2,null,'por lado',30,40,3)]]],['Prevención',[[RR('pre-copen',2,'8','por lado',45,0,3)]]]]},
-  C:{n:'Agilidad y despegue aéreo',why:'Agilidad a tope, batida a una pierna para el balón alto y trabajo lateral: lo que más se parece a un partido.',
-   b:[['Calentar',[[RR('cal-mov',1,null,'',0,240,4)],[RR('pie-lateral',2,null,'',20,20,2)]]],['Agilidad',[[RR('fis-5105',6,'1','carrera a tope',90,0,9)],[RR('pie-conos',3,null,'',30,20,3),RR('pie-escalera',3,'2','pasadas',30,0,3)]]],
-      ['Aéreo',[[RR('aer-batida',3,'5','por pierna',60,0,5)],[RR('fis-stepup',3,'5','por pierna, explosivo',90,0,5)]]],['Lateral',[[RR('pot-skater',3,'4','por lado',60,0,4)],[RR('fis-latlunge',2,'8','por lado',45,0,3)]]],
+  C:{n:'Velocidad, agilidad y despegue aéreo',why:'Sprints, agilidad a tope, salto con carrera y batida a una pierna para el balón alto: el atleta completo que buscas.',
+   b:[['Calentar',[[RR('cal-mov',1,null,'',0,240,4)],[RR('pie-lateral',2,null,'',20,20,2)]]],['Velocidad',[[RR('fis-sprint',5,'1','10–30 m a tope',120,0,6)]]],['Agilidad',[[RR('fis-5105',5,'1','carrera a tope',90,0,8)],[RR('pie-conos',3,null,'',30,20,3),RR('pie-escalera',3,'2','pasadas',30,0,3)]]],
+      ['Aéreo',[[RR('fis-approach',3,'3','',60,0,4)],[RR('aer-batida',3,'5','por pierna',60,0,5),RR('fis-stepup',3,'5','por pierna, explosivo',90,0,5)]]],['Lateral',[[RR('pot-skater',3,'4','por lado',60,0,4)],[RR('fis-latlunge',2,'8','por lado',45,0,3)]]],
       ['Pies',[[RR('fis-soleo',3,'12','',45,0,4)],[RR('fis-pie',2,null,'por pie',20,45,3)]]]]}}};
 var FIS_LOCS=['gimnasio','parque','campo','casa','pared'];
 (function(){FIS_PH.forEach(function(ph,i){['A','B','C'].forEach(function(L){var s=FIS_SES[ph.id][L];
@@ -1443,8 +1452,9 @@ var FIS_SRC=[['Garthe y cols. (2011). Dos ritmos de pérdida de peso en deportis
   ['Byrne y cols. (2018). Estudio MATADOR: pausas de dieta','https://ecite.utas.edu.au/123184'],
   ['NICE (2022). La cintura, menos de la mitad de la altura','https://www.nice.org.uk/news/articles/keep-the-size-of-your-waist-to-less-than-half-of-your-height-nice--recommends'],
   ['Sánchez-Sánchez y cols. (2024). Pliometría y fuerza en futbolistas','https://sportsmedicine-open.springeropen.com/counter/pdf/10.1186/s40798-024-00720-w.pdf'],
-  ['Fussballtransfers. Ficha de Antonín Kinský (1,90 m, 83 kg)','https://www.fussballtransfers.com/spieler/antonin-kinsky'],
-  ['Wikipedia. Antonín Kinský','https://en.wikipedia.org/wiki/Anton%C3%ADn_Kinsk%C3%BD_(footballer,_born_2003)']];
+  ['LaLiga. Ficha de Rubén Gómez (1,85 m, 73 kg)','https://www.laliga.com/jugador/ruben-gomez-peris'],
+  ['Wikipedia. Rubén Gómez Peris','https://en.wikipedia.org/wiki/Rub%C3%A9n_G%C3%B3mez_(Spanish_footballer)'],
+  ['Villarreal CF. Rubén Gómez, el último debutante','https://villarrealcf.es/ruben-gomez-el-ultimo-debutante/']];
 var RUTI={};RUT.forEach(function(r){RUTI[r.id]=r;});
 var MEAS={
   calor:'Calor local 15–20 minutos en la zona (bolsa de agua caliente con una toalla). Fue lo que más alivió el dolor a las 24 y 48 horas.',
@@ -2399,6 +2409,20 @@ var ANIMS_F={
   latlunge:{view:'front',scene:'floor',dur:3.6,kf:KF_LATL,still:.36}
 };
 for(var fkey in ANIMS_F)ANIMS[fkey]=ANIMS_F[fkey];
+/* ---------- Atleta multideporte: salto horizontal y salto con carrera ---------- */
+var BJ_C=P(CMJc,{p:[52,112],fa:[63,146],fb:[59,146],ha:[30,112],hb:[28,114]});
+var BJ_A={p:[100,84],t:30,hd:-10,fa:[84,118],fb:[80,122],kna:[100,104],knb:[96,106],ha:[128,74],hb:[126,78],toeA:[6,4],toeB:[6,4]};
+var BJ_L=P(CMJc,{p:[136,112],fa:[149,146],fb:[145,146],ha:[160,104],hb:[158,106]});
+var KF_BROAD=[k(0,STS(56)),k(.16,BJ_C,{lbl:'BRAZOS ATRÁS',lo:1}),k(.3,BJ_A,{lbl:'¡LEJOS!',lo:1}),k(.42,BJ_L,{e:'in',lbl:'AGUANTA',lo:1}),k(.66,BJ_L,{lbl:'AGUANTA',lo:1}),k(.82,STS(140),{lo:0}),k(.92,WKA(96)),k(1,STS(56))];
+var AJ_P={p:[86,100],t:22,hd:-8,fa:[102,146],fb:[70,138],ha:[64,108],hb:[60,110]};
+var AJ_C=P(CMJc,{p:[100,112],fa:[111,146],fb:[107,146],ha:[80,116],hb:[78,118]});
+var AJ_U=P(CMJa,{p:[108,68],fa:[110,120],fb:[106,122],ha:[116,6],hb:[112,8]});
+var KF_APPROACH=[k(0,RUNA(36)),k(.1,RUNB(54)),k(.2,AJ_P),k(.28,AJ_C,{lbl:'DOS PIES',lo:1}),k(.4,AJ_U,{lbl:'¡ARRIBA!',lo:1}),k(.5,AJ_U,{lbl:'¡ARRIBA!',lo:1}),k(.62,P(CMJc,{p:[104,112],fa:[115,146],fb:[111,146],ha:[124,100],hb:[122,102]}),{e:'in',lo:0}),k(.78,STS(104)),k(.9,WKA(70)),k(1,RUNA(36))];
+var ANIMS_G={
+  broadjump:{view:'side',f:1,scene:'floor',dur:3,kf:KF_BROAD,still:.3},
+  approach:{view:'side',f:1,scene:'floor',deco:'<circle class="dot2" cx="118" cy="10" r="3.5"/>',dur:3,kf:KF_APPROACH,still:.42}
+};
+for(var gkey in ANIMS_G)ANIMS[gkey]=ANIMS_G[gkey];
 
 function sceneMarkup(cfg){var s=cfg.scene||'floor';
   if(s==='wall'){var x=cfg.wallX||182;return '<rect class="wall" x="'+x+'" y="12" width="'+(200-x)+'" height="137"/><line class="edge" x1="'+x+'" y1="12" x2="'+x+'" y2="149"/><line class="floor" x1="6" y1="149" x2="'+x+'" y2="149"/>';}
@@ -3222,14 +3246,15 @@ function fisTrendHTML(F){var T=C.fisTrend(F);if(!T)return '<p class="muted" styl
 function fisSesList(id){var R=C.RUTI[id];if(!R)return '';return '<ol>'+R.b.map(function(b){return '<li><b>'+esc(b[0])+':</b> '+b[1].map(function(alts){var r=alts[0],e=C.EXI[r[0]];return e?'<button class="lnk" data-a="sheet" data-v="'+e.id+'">'+esc(e.n)+'</button> <span class="muted">('+esc(r[7]||((r[1]>1||r[2]?r[1]+' × ':'')+(r[2]||(r[5]?C.fmtSec(r[5]):''))+(r[3]?' '+r[3]:'')))+')</span>':'';}).join(', ')+'</li>';}).join('')+'</ol>';}
 var FIS_PIL=[['Explosividad aérea',['La base es la fuerza máxima de piernas y cadera: sentadilla, peso muerto e hip thrust. Los deportistas más fuertes saltan más.','Después, convertirla en salto: en la fase 3 cada serie pesada va seguida de saltos al máximo.','La batida del portero es a una pierna: subida al cajón con la rodilla arriba y batida con rodilla.','Cada kilo de grasa que bajas sin perder fuerza es un kilo menos que levantar en cada salto.'],['fue-sentadilla','fis-hipthrust','fis-stepup','aer-batida','pot-cmj','vol-cajon']],
   ['Fuerza en los pies',['Gemelo de pie y gemelo sentado (sóleo): el tobillo es lo último que empuja en el salto y en la estirada.','Dedos del pie: en un estudio, siete semanas de fuerza de los dedos alargaron el salto horizontal.','Elevación de puntas (tibial) para aterrizar y frenar mejor.','Saltos de tobillo: un tobillo rígido devuelve la energía del salto.'],['fue-gemelo','fis-soleo','fis-pie','fis-tibial','vol-pogo']],
+  ['Atleta multideporte',['Velocidad: sprints de 10–30 m con descanso completo, como en el fútbol americano.','Salto con carrera: el del remate de vóley y el mate de baloncesto.','Potencia del tren superior: lanzamientos de balón medicinal, press y dominadas para empujar, lanzar y aguantar choques.','Una vez por semana, si quieres, juega a baloncesto, vóley o flag football en lugar de los intervalos: es cardio y coordinación, en un día sin gimnasio de piernas y lejos del partido.'],['fis-sprint','fis-approach','fis-broad','pot-med','pot-medrot','fue-dominadas']],
   ['Agilidad',['Agilidad 5-10-5: arrancar, frenar y cambiar de dirección como de palo a palo.','Saltos laterales a una pierna y zancada lateral: fuerza hacia los lados.','Escalera, conos y vallas para pies rápidos.','La pliometría es el método más usado para mejorar el cambio de dirección en futbolistas.'],['fis-5105','pot-skater','fis-latlunge','pie-escalera','pie-conos']]];
-var FIS_HAB=['Duerme 8–9 horas: con poco sueño la dieta quita menos grasa y más músculo.','Camina 8.000–10.000 pasos al día, también los días de descanso.','Proteína en cada comida (3–4 al día): carne, pescado, huevos, lácteos o legumbres.','Fruta y verdura en cada comida: llenan con pocas calorías.','Agua: unos 35 ml por kilo al día, más en los entrenos.','Alcohol y bebidas azucaradas, lo mínimo: son calorías que no te dan nada.','El cardio extra, si lo haces, en días sin saltos o al menos 3 horas después.'];
+var FIS_HAB=['Duerme 8–9 horas: con poco sueño la dieta quita menos grasa y más músculo.','Camina 8.000–10.000 pasos al día, también los días de descanso.','Proteína en cada comida (3–4 al día): carne, pescado, huevos, lácteos o legumbres.','Fruta y verdura en cada comida: llenan con pocas calorías.','Agua: unos 35 ml por kilo al día, más en los entrenos.','Alcohol y bebidas azucaradas, lo mínimo: son calorías que no te dan nada.','El cardio extra, si lo haces, en días sin saltos o al menos 3 horas después.','Otro deporte una vez por semana (baloncesto, vóley, flag football) también cuenta como cardio: hazlo en un día sin gimnasio de piernas y nunca la víspera del partido.'];
 var FIS_TESTS=[['Salto vertical con alcance','De lado a una pared con tiza en los dedos: marca de pie con el brazo estirado y después salta y marca lo más alto. La diferencia en centímetros es tu salto.'],
   ['Salto lateral a una pierna','Sobre una pierna, salta hacia el lado y cae con la otra sin perder el equilibrio. Mide desde el borde del pie de salida al del pie de caída. Mejor de tres, por lado.'],
   ['Agilidad 5-10-5','Tres conos a 5 m: sales del centro, corres 5 m a un lado, tocas la línea, 10 m al otro, tocas y vuelves al centro. Cronometra con el móvil. Mejor de dos.'],
   ['Peso y cintura','Pésate al levantarte, después del baño y antes de comer, 3–7 días de la semana, y apunta la media. La cintura, a la altura del ombligo, soltando el aire.'],
   ['Fotos','Cada 4 semanas, con la misma luz y la misma ropa: de frente, de lado y de espaldas.']];
-var KINSKY=['Antonín Kinský, nacido el 13 de marzo de 2003 en Praga.','Mide 1,90 m y pesa 83 kg según su ficha.','Del Slavia de Praga al Tottenham en enero de 2025.','Diestro y convocado con la selección checa absoluta desde 2024.'];
+var REFP=['Rubén Gómez Peris, nacido el 24 de enero de 2002 en Alzira (Valencia).','Mide 1,85 m y pesa 73 kg según LaLiga.','Se formó en el Valencia, el Alzira y La Roda, y está en el Villarreal desde 2020.','Debutó como profesional con el Villarreal B en febrero de 2024 y ahora lleva el 13 del primer equipo.'];
 function fisicoHTML(){
   var F=C.fisDef(S),t=today(),p=P(),wk=C.fisWeek(F,t),pi=C.fisPhaseIdx(Math.max(1,wk)),started=t>=F.start,ready=fisReady(F),now=C.fisNow(F);
   var h='<section class="hero"><div class="pad"><p class="hello">'+(p&&p.name?esc(p.name)+', este':'Este')+' es tu cambio físico.</p><h1 class="disp">Físico</h1></div></section><div class="pad">';
@@ -3239,7 +3264,7 @@ function fisicoHTML(){
   if(started&&fisDeload(F,t))h+='<p class="note info">Semana de descarga y de tests: menos series y mide tu progreso.</p>';
   if(!ready){
     h+='<b style="font-size:17px">Tus datos para empezar</b><div class="dgrid"><label class="ctrl"><span>Peso hoy (kg)</span><input type="number" inputmode="decimal" id="f-w0" value="'+esc(F.w0)+'" placeholder="kg"></label><label class="ctrl"><span>Altura (cm)</span><input type="number" inputmode="numeric" id="f-h" value="'+esc(F.h)+'" placeholder="cm"></label><label class="ctrl"><span>Objetivo (kg)</span><input type="number" inputmode="decimal" id="f-goal" value="'+esc(F.goal)+'" placeholder="kg"></label></div>'+
-      (+F.h>120?'<p class="muted" style="font-size:14px">Con la proporción de Kinský (1,90 m y 83 kg), a tu altura serían unos '+Math.round(83/1.9/1.9*Math.pow(F.h/100,2))+' kg. Si ganas músculo, unos kilos más está bien: manda la cintura.</p>':'')+
+      (+F.h>120?'<p class="muted" style="font-size:14px">Con la proporción de Rubén Gómez (1,85 m y 73 kg), a tu altura serían unos '+Math.round(73/1.85/1.85*Math.pow(F.h/100,2))+' kg. Si ganas más músculo que él, unos kilos más está bien: manda la cintura.</p>':'')+
       '<button class="btn full" data-a="fis-save-data">Guardar mis datos</button>';
   }else{
     var lost=Math.max(0,+F.w0-now),tot=Math.max(.1,+F.w0-+F.goal),pc=Math.max(0,Math.min(100,lost/tot*100)),cin=(F.log||[]).filter(function(x){return +x.cin>0;}).slice(-1)[0],half=Math.round(+F.h/2);
@@ -3295,11 +3320,11 @@ function fisicoHTML(){
     h+=fold('fis-ph'+i,'Fase '+(i+1)+': '+esc(ph.n),body,{sm:'Semanas '+ph.w[0]+'–'+ph.w[1]+(cur?' · ahora':''),cls:cur?'cur':''});});
   h+=fold('fis-weeks','Descargas, tests y pausa de dieta',ul(['Semanas '+C.FIS_DELOAD.join(', ')+': descarga, con un 40 % menos de series, y tests.','Semanas '+C.FIS_BREAK.join(' y ')+' ('+fmtDate(C.addDays(F.start,(C.FIS_BREAK[0]-1)*7)).toLowerCase()+' en adelante): pausa de dieta, comes a mantenimiento.','Después de la semana '+C.FIS_WEEKS+', sigues con las sesiones de la fase 4 para mantener.']))+'</section>';
   /* Pilares */
-  h+='<section class="sec" style="gap:8px"><div class="sec-h"><h2>Los tres pilares</h2></div>'+FIS_PIL.map(function(x,i){return fold('fis-pil'+i,esc(x[0]),ul(x[1])+'<div class="chips wrap">'+x[2].map(function(id){var e=C.EXI[id];return e?'<button class="chip" data-a="sheet" data-v="'+id+'">'+esc(e.n)+'</button>':'';}).join('')+'</div>');}).join('')+'</section>';
-  /* Hábitos y Kinský */
+  h+='<section class="sec" style="gap:8px"><div class="sec-h"><h2>Los cuatro pilares</h2></div>'+FIS_PIL.map(function(x,i){return fold('fis-pil'+i,esc(x[0]),ul(x[1])+'<div class="chips wrap">'+x[2].map(function(id){var e=C.EXI[id];return e?'<button class="chip" data-a="sheet" data-v="'+id+'">'+esc(e.n)+'</button>':'';}).join('')+'</div>');}).join('')+'</section>';
+  /* Hábitos y referencia */
   h+='<section class="sec" style="gap:8px"><div class="sec-h"><h2>Hábitos</h2></div>'+fold('fis-hab','Lo que pasa fuera del gimnasio',ul(FIS_HAB)+'<div class="chips wrap"><button class="chip" data-a="sheet" data-v="fis-intervalos">Intervalos en bici o carrera</button></div>')+'</section>';
-  h+='<section class="sec" style="gap:8px"><div class="sec-h"><h2>Tu referencia</h2></div><div class="card" style="gap:8px"><b style="font-size:17px">Antonín Kinský</b><ul class="cl">'+KINSKY.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>'+
-    (ready?'<p style="margin:0;font-size:14px">Tú: '+nf(+F.h/100,2)+' m y '+nf(now,1)+' kg, con objetivo de '+nf(+F.goal,1)+' kg. Su peso es la referencia, pero tu meta real es la cintura por debajo de '+Math.round(+F.h/2)+' cm y saltar más alto y más lejos que hoy.</p>':'')+'</div></section>';
+  h+='<section class="sec" style="gap:8px"><div class="sec-h"><h2>Tu referencia</h2></div><div class="card" style="gap:8px"><b style="font-size:17px">Rubén Gómez · Villarreal</b><ul class="cl">'+REFP.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>'+
+    (ready?'<p style="margin:0;font-size:14px">Tú: '+nf(+F.h/100,2)+' m y '+nf(now,1)+' kg, con objetivo de '+nf(+F.goal,1)+' kg. Con su proporción, a tu altura serían unos '+Math.round(73/1.85/1.85*Math.pow(F.h/100,2))+' kg. Lo que más se parece a su perfil atlético no es el número de la báscula: es la cintura por debajo de '+Math.round(+F.h/2)+' cm, correr, saltar y cambiar de dirección cada vez mejor en los tests.</p>':'')+'</div></section>';
   /* Estudios, fuentes, ajustes y avisos */
   h+='<section class="sec" style="gap:8px">'+fold('fis-ev','Lo que dicen los estudios','<div class="facts-l">'+C.FIS_EV.map(function(f){return '<div><b>'+esc(f[0])+'</b><span>'+esc(f[1])+'</span></div>';}).join('')+'</div>')+fold('fis-src','Fuentes',srcList(C.FIS_SRC));
   h+=fold('fis-set','Ajustar el programa','<div class="dgrid"><label class="ctrl"><span>Inicio</span><input type="date" id="f-start" value="'+esc(F.start)+'"></label>'+(ready?'<label class="ctrl"><span>Peso inicial (kg)</span><input type="number" inputmode="decimal" id="f-w0" value="'+esc(F.w0)+'"></label><label class="ctrl"><span>Altura (cm)</span><input type="number" inputmode="numeric" id="f-h" value="'+esc(F.h)+'"></label><label class="ctrl"><span>Objetivo (kg)</span><input type="number" inputmode="decimal" id="f-goal" value="'+esc(F.goal)+'"></label>':'')+'</div><button class="btn small" data-a="fis-save-data" style="justify-self:start">Guardar</button><button class="btn small ghost" data-a="fis-on" style="justify-self:start">'+(F.on?'Pausar el programa':'Reanudar el programa')+'</button>');
